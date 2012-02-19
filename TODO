@@ -1,0 +1,2 @@
+Formula
+	X self.connective = "not" instead self.connective = self.CONN["not"]
