@@ -8,6 +8,7 @@ import copy
 
 
 class Logic:
+    """Basic class with fundamental constants."""
     #CONN = ["!", "&", "|", "=>", "<=", "!&", "!|", "!=>", "!<=", "=", "!="]
     #CONN = {NOT="!", AND="&", OR="|", IMP="=>", IMPR="<=", NAND="!&", NOR="!|", NIMP="!=>", NIMPR="!<=", EQ="=", NEQ="!="}
     CONN = {"not":"!", "and":"&", "or":"|", "impl":"=>", "implr":"<=", "nand":"!&", "nor":"!|", "nimpl":"!=>", "nimplr":"!<=", "eq":"=", "neq":"!="}
@@ -23,7 +24,20 @@ class Logic:
 
 
 class Formula(Logic):
+    """Represents a propositional logic formula."""
+
     def __init__(self, *args):
+        """ Constructor of a Formula.
+
+        Could take several arguments, depends of the type of Formula to construct:
+            1 argument: atomic formula (i.e. propositional letter "P", "Q", ... or costant top "T", or bottom "F")
+            2 arguments: unary operator negation "!" or "not"
+                         subformula
+            3 arguments: binary symbol (i.e. "&", "|", "=>", "<=", "!&", "!|", "!=>", "!<=", "=", "!="
+                          or in the extended versions "and", "or", "impl", "implr", "nand", "nor", "nimpl", "nimplr", "eq", "neq")
+                         subformula
+                         subformula
+        """
         if len(args) == 1:
             connective = None
             subformula1 = args[0]
@@ -62,6 +76,7 @@ class Formula(Logic):
         
         
     def alpha(self):
+        """Check if the Formula is an alpha formula."""
         if self.connective == None:
             return False
         elif self.connective == "not":
@@ -73,6 +88,7 @@ class Formula(Logic):
         
         
     def beta(self):
+        """Check if the Formula is a beta formula."""
         if self.connective == None:
             return False
         elif self.connective == "not":
@@ -84,6 +100,7 @@ class Formula(Logic):
 
         
     def is_literal(self):
+        """Check if the formula is a literal, namely an atomic formula or the negation of an atomic formula."""
         if self.connective == None:
             return True
         elif self.connective == "not" and self.subformula1.connective == None:
@@ -91,14 +108,14 @@ class Formula(Logic):
         else:
             return False
 
-            
 
     def negate(self):
+        """Returns the negation of the current Formula"""
         return Formula("not", self)
 
 
-
     def complement(self):
+        """Return the complement of the current Formula, namely the negation"""
         if self.connective == None:
             return self.negate()
         if self.connective == "not":
@@ -107,8 +124,10 @@ class Formula(Logic):
             return self.negate()
 
 
-
     def components(self):
+        """Return a tuple with the copy of the two components of the Formula,
+        e.g. if is an alpha formula the alpha_1 and alpha_2.
+        """
         if self.connective == None:
             ret = (self, None)
         if self.connective == "not":
@@ -140,6 +159,7 @@ class Formula(Logic):
 
 
     def nnf(self):
+        """Return the current Formula in Negation Normal Form."""
         if self.connective == None:
             return self
         if self.connective == "not":
@@ -160,24 +180,27 @@ class Formula(Logic):
                                self.subformula1.nnf(),\
                                self.subformula2.nnf())
 
+
     def cnf(self):
-        pass
+        return Generalization("and", Generalization("or", self)).cnf()
         
 
 
 class Generalization(Logic):
+    """Class that represents a generalized disjunction of conjunction."""
 
     def __init__(self, connective, formulas):
-        if connective != "and" and connective != "or":
+        """ Constructor of a Generalization.
+
+        Take two arguments:
+            connective -- determines the type of Generalization, admitted values "and", "or", "&", "|"
+            formulas -- list of the formulas in the Generalization
+        """
+        if connective != "and" and connective != "or" and connective != CONN["and"] and connective != CONN["or"]:
             raise Exception("Wrong connective: " + connective)
         self.connective = connective
         self.list = formulas
-        # if len(args) == 1:
-        #     """ formula """
-        #     self.list = [args[0]]
-        # else:
-        #     self.list = args
-        
+
     
     def __str__(self):
         if self.connective == "and":
@@ -198,8 +221,8 @@ class Generalization(Logic):
         return ret    
 
 
-
     def has_non_literal(self):
+        """Check if in the list of formulas there are non-literal formulas."""
         if len(self.list) == 0:
             raise Exception("Empty list of formulas")        
         for item in self.list:
@@ -213,16 +236,17 @@ class Generalization(Logic):
 
                
     def cnf(self):
+        """Return the current Generalization in Conjunctive Normal Form"""
+
         if self.connective != "and" or len(self.list) != 1\
                 or self.list[0].connective != "or" or len(self.list[0].list) != 1:
             raise Exception("Wrong type of generalization")
-
         """
         < [ ( X | !X ) , () ] , [ ... ] >
            conj       < ... >
            clause     [ ... ]
            member     ( ... )
-           subformula !X
+           subformula X, !X
         """
         conj = deepcopy(self)
         for clause in conj.list:
@@ -257,7 +281,9 @@ class Generalization(Logic):
 
 
 if __name__ == "__main__" :
-    
+    """Tests"""
+
+
     print "======   Formula   ======"
     formula = Formula("&", Formula("|", Formula("X"), Formula("Y")), Formula("!", Formula("Y")))
     print "%s \n   is an alpha %r\n   is a beta %r" % (formula, formula.alpha(), formula.beta())
