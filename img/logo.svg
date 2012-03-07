@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="64px"
+   height="64px"
+   id="svg2993"
+   version="1.1"
+   inkscape:version="0.48.1 r9760"
+   sodipodi:docname="Nuovo documento 2">
+  <defs
+     id="defs2995" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.5"
+     inkscape:cx="38.25284"
+     inkscape:cy="19.839132"
+     inkscape:current-layer="layer1"
+     showgrid="true"
+     inkscape:document-units="px"
+     inkscape:grid-bbox="true"
+     inkscape:window-width="1366"
+     inkscape:window-height="710"
+     inkscape:window-x="0"
+     inkscape:window-y="26"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata2998">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="layer1"
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer">
+    <rect
+       id="rect3009-1"
+       width="59.090908"
+       height="56.181816"
+       x="3.3636367"
+       y="3.2727289"
+       rx="15.476192"
+       ry="22.230215"
+       style="fill:#cccccc" />
+    <rect
+       id="rect3009"
+       width="57.636364"
+       height="54.909088"
+       x="1.6363634"
+       y="5.090909"
+       rx="15.095239"
+       ry="21.726618"
+       style="fill:#008080" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.00000059999999991%;letter-spacing:0px;word-spacing:0px;fill:#1f6061;fill-opacity:1;stroke:none;font-family:Sans"
+       x="6.4701705"
+       y="38.677334"
+       id="text3001-1"
+       sodipodi:linespacing="15.000001%"><tspan
+         sodipodi:role="line"
+         x="6.4701705"
+         y="38.677334"
+         id="tspan3005-9"
+         style="font-size:13px;line-height:15.00000059999999991%;fill:#1f6061;fill-opacity:1">PyLogic</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.00000059999999991%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       x="5.6363621"
+       y="39.272724"
+       id="text3001"
+       sodipodi:linespacing="15.000001%"><tspan
+         sodipodi:role="line"
+         x="5.6363621"
+         y="39.272724"
+         id="tspan3005"
+         style="font-size:13px;line-height:15.00000059999999991%;fill:#0000ff">PyLogic</tspan></text>
+  </g>
+</svg>

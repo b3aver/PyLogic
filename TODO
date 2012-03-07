@@ -1,2 +1,17 @@
+=== API ===
 Formula
 	X self.connective = "not" instead self.connective = self.CONN["not"]
+
+CNF
+
+resolution or tableaux
+
+First Order Logic
+
+
+=== GUI ===
+Parser with antlr
+
+
+
+
