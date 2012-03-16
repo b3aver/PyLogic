@@ -20,6 +20,8 @@ from MainWindow import Ui_MainWindow
 from AboutBox import Ui_Dialog
 
 
+from propositional.parser import parser
+
 
 
 """
@@ -38,13 +40,19 @@ class MyMainWindow(QMainWindow):
     def getInputString(self):
         return str(self.ui.textEditInput.toPlainText())
 
-    def output(self, string=""):
+
+    def appendOutput(self, string=""):
         outputBox = self.ui.textEditOutput
         outputBox.insertPlainText(QString(string+"\n"))
         outputBox.ensureCursorVisible()
 
+
     def workout(self):
-        self.output(self.getInputString())
+        # self.output(self.getInputString())
+        output = parser.parse(self.getInputString())
+        # print output
+        self.appendOutput(output.__str__())
+
 
     def showAboutBox(self):
         aboutBox = MyAboutBox()
