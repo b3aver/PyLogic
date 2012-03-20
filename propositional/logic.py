@@ -182,7 +182,7 @@ class Formula(Logic):
 
 
     def cnf(self):
-        return Generalization("and", Generalization("or", self)).cnf()
+        return Generalization("and", [Generalization("or", [self])]).cnf()
         
 
 
@@ -198,6 +198,8 @@ class Generalization(Logic):
         """
         if connective != "and" and connective != "or" and connective != CONN["and"] and connective != CONN["or"]:
             raise Exception("Wrong connective: " + connective)
+        if  not isinstance(formulas, list):
+            raise Exception("Second argument must be a list")
         self.connective = connective
         self.list = formulas
 
@@ -224,15 +226,112 @@ class Generalization(Logic):
     def has_non_literal(self):
         """Check if in the list of formulas there are non-literal formulas."""
         if len(self.list) == 0:
-            raise Exception("Empty list of formulas")        
+            #raise Exception("Empty list of formulas")
+            # an empty generalization has a meaning
+            # empty clause false, empty dual clause true
+            return False
         for item in self.list:
             if isinstance(item, Formula):
                 if not item.is_literal():
                     return True
+                # else: ignore it
             elif isinstance(item, Generalization):
                 if item.has_non_literal():
                     return True
         return False
+
+
+    def get_non_literal(self):
+        """Return a non-literal formula in the generalization.
+        None if not present."""
+        if len(self.list) == 0:
+            return None
+        for item in self.list:
+            if isinstance(item, Formula):
+                if not item.is_literal():
+                    return item
+                # else: ignore it
+            elif isinstance(item, Generalization):
+                non_literal = item.get_non_literal()
+                if non_literal != None:
+                    return non_literal
+                # else: ignore it
+        return None
+
+
+    def get_parent_non_literal(self):
+        """Find a non-literal formula in the generalization,
+        and return a tuple with parent and index of such formula.
+        None if not present."""
+        if len(self.list) == 0:
+            return None
+        for item in self.list:
+            if isinstance(item, Formula):
+                if not item.is_literal():
+                    #print "Formula", self, item
+                    return (self, self.list.index(item))
+                # else: ignore it
+            elif isinstance(item, Generalization):
+                #print "Generalization"
+                non_literal = item.get_parent_non_literal()
+                if non_literal != None:
+                    return non_literal
+                # else: ignore it
+        return None
+        
+
+    def cnf_action(self):
+        """Take a clause and return a list of clauses in cnf."""
+        if self.connective != "or":
+            raise Exception("Wrong type of generalization")
+
+        # basis case
+        if not self.has_non_literal():
+            return [self]
+        
+        # recursive case
+        (_, position) = self.get_parent_non_literal()
+        member = self.list[position]
+
+        if member.beta():
+            (beta1, beta2) = member.components()
+            self.list.pop(position)               # remove old
+            self.insert(position, [beta1, beta2]) # insert beta1 e beta2
+            return self.cnf_action() 
+        elif member.alpha():
+            (alpha1, alpha2) = member.components()
+            self.list.pop(position)            # remove old
+            clause1 = self                     # split 
+            clause2 = copy.deepcopy(self)      # split
+            clause1.insert(position, [alpha1]) # insert alpha1
+            clause2.insert(position, [alpha2]) # insert alpha2
+            list1 = clause1.cnf_action()       # recursive call
+            list2 = clause2.cnf_action()       # recursive call
+            list1.extend(list2) # merge
+            return list1
+        elif member.connective == "not":
+            subformula = member.subformula1
+            if subformula.connective == "not":
+                """ !!Z """
+                self.list[position] = subformula.subformula1
+            elif subformula.connective == None:
+                if subformula.subformula1 == self.TOP:
+                    """ !top """
+                    self.list[position] = Formula(self.BOTTOM)
+                elif subformula.subformula1 == self.BOTTOM:
+                    """ !bottom """
+                    self.list[position] = Formula(self.TOP)
+            return self.cnf_action()        
+
+
+    def insert(self, index, elements):
+        """ Take list of elements and inserts them at the given index."""
+        i = index
+        for element in elements:
+            self.list.insert(i, element)
+            i += 1
+            
+        
 
                
     def cnf(self):
@@ -248,34 +347,16 @@ class Generalization(Logic):
            member     ( ... )
            subformula X, !X
         """
-        conj = deepcopy(self)
-        for clause in conj.list:
-            # if clause.has_non_literal():
-            for member in clause.list:
-                if not member.is_literal():
-                    if member.connective == "not":
-                        subformula = member.subformula1
-                        if subformula.connective == "not":
-                            """ !!Z """
-                            member = subformula.subformula1
-                        elif subformula.connective == None:
-                            if subformula.subformula1 == self.TOP:
-                                """ !top """
-                                member = Formula(self.BOTTOM)
-                            elif subformula.subformula1 == self.BOTTOM:
-                                """ !bottom """
-                                member = Formula(self.TOP)
-                    elif member.connective in self.DISJ:
-                        (comp1, comp2) = member.components()
-                        index = clause.index(member)
-                        clause.insert(index, comp2)
-                        clause.insert(index, comp1)
-                        clause.remove(member)
-                    elif member.connective in self.CONJ:
-                        (comp1, comp2) = member.components()
-                        
-                        
+        # breadth-first
+        # first beta
+        # then alpha
 
+        
+        # deep-first
+        # resolve a non literal deeply
+        # take a clause with non-literal and return a list of clauses in cnf
+        clause = copy.deepcopy(self.list[0])
+        return Generalization("and", clause.cnf_action())
 
 
 
@@ -302,7 +383,7 @@ if __name__ == "__main__" :
     print "%s" % formula.negate()
     print "   %s" % formula.negate().nnf()
 
-    print "====== Disjunction ======"
+    print "====== Generalizations ======"
     disjunction = Generalization("or", [formula])
     print disjunction
     
@@ -310,10 +391,52 @@ if __name__ == "__main__" :
     print disjunction2
     
 
-    print "%s has non-literal? %s" % (disjunction2, disjunction2.has_non_literal())
- 
+    print "%s\n   has non-literal? %s" % (disjunction2, disjunction2.has_non_literal())
+    print "   it is", disjunction2.get_non_literal()
+    # (pos, ind) = disjunction2.get_parent_non_literal()
+    # print pos.list[ind]
+    print "   and is in %s at %s" % disjunction2.get_parent_non_literal()
 
 
     disjunction3 = Generalization("or", [Generalization("or", [Formula("not", Formula("X")), Formula("X")])])
     print "%s has non-literal? %s" % (disjunction3, disjunction3.has_non_literal())
+    non_literal = disjunction3.get_non_literal()
+    print "   it is", non_literal
+    if non_literal != None:
+        print "   and is in %s at %s" % disjunction3.get_parent_non_literal()
+
+
+    disjunction4 = Generalization("or", [Generalization("or", [Formula("and", Formula("X"), Formula("Y")), Formula("X")])])
+    print "%s has non-literal? %s" % (disjunction4, disjunction4.has_non_literal())
+    print "   it is", disjunction4.get_non_literal()
+    print "   and is in %s at %s" % disjunction4.get_parent_non_literal()
+
+
+    
+    print "======     CNF     ======"
+    formula1 = Formula("not", Formula("A"))
+    print formula1
+    print " "*3, formula1.cnf()
+
+    formula2 = Formula("not", Formula("not",Formula("A")))
+    print formula2
+    print " "*3, formula2.cnf()
+    
+    formula3 = Formula("or", Formula("A"), Formula("B"))
+    print formula3
+    print " "*3, formula3.cnf()
+    
+    formula4 = Formula("and", Formula("A"), Formula("B"))
+    print formula4
+    print " "*3, formula4.cnf()
+
+    formula5 = Formula("impl", Formula("A"), Formula("B"))
+    print formula5
+    print " "*3, formula5.cnf()
+
+    print formula
+    print " "*3, formula.cnf()
+
+    print formula.negate()
+    print " "*3, formula.negate().cnf()
 

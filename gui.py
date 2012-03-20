@@ -108,8 +108,7 @@ class MyMainWindow(QMainWindow):
     def propositionalCNF(self):
         """Transform the current formula in input in CNF"""
         formula = propositional_parser.parse(self.getInputString())
-        #output = formula.cnf()
-        output = "CNF not yet implemented."
+        output = formula.cnf() #"CNF not yet implemented."
         self.appendOutput(output.__str__())
 
 
