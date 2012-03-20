@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>679</width>
-    <height>491</height>
+    <width>700</width>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,105 +16,107 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout_3">
     <item row="0" column="0">
-     <widget class="QSplitter" name="splitter">
+     <widget class="QSplitter" name="splitter_2">
       <property name="orientation">
-       <enum>Qt::Vertical</enum>
+       <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QGroupBox" name="groupBox">
-       <property name="title">
-        <string>Input</string>
+      <widget class="QSplitter" name="splitter">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
        </property>
-       <layout class="QGridLayout" name="gridLayout">
-        <item row="0" column="0">
-         <widget class="QPlainTextEdit" name="textEditInput"/>
-        </item>
-        <item row="2" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout">
-          <item>
-           <widget class="QRadioButton" name="radioButtonPropositional">
-            <property name="text">
-             <string>Propositional</string>
-            </property>
-            <property name="checked">
-             <bool>true</bool>
-            </property>
-            <attribute name="buttonGroup">
-             <string>buttonGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <widget class="QRadioButton" name="radioButtonFirstOrder">
-            <property name="text">
-             <string>First Order</string>
-            </property>
-            <attribute name="buttonGroup">
-             <string>buttonGroup</string>
-            </attribute>
-           </widget>
-          </item>
-          <item>
-           <spacer name="horizontalSpacer">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButtonWorkout">
-            <property name="text">
-             <string>Work out</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </item>
-       </layout>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Input</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="0" column="0">
+          <widget class="QPlainTextEdit" name="textEditInput"/>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QGroupBox" name="groupBox_2">
+        <property name="title">
+         <string>Output</string>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="0" column="0">
+          <widget class="OutputTextEdit" name="textEditOutput">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <spacer name="horizontalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="QPushButton" name="pushButton">
+             <property name="text">
+              <string>Clear</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
       </widget>
-      <widget class="QGroupBox" name="groupBox_2">
-       <property name="title">
-        <string>Output</string>
-       </property>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="0">
-         <widget class="OutputTextEdit" name="textEditOutput">
-          <property name="enabled">
-           <bool>true</bool>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QTabWidget" name="tabWidget">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-          <property name="readOnly">
-           <bool>true</bool>
-          </property>
+          <widget class="QWidget" name="tabPropositional">
+           <attribute name="title">
+            <string>Propositional</string>
+           </attribute>
+           <layout class="QFormLayout" name="formLayout">
+            <item row="0" column="0">
+             <widget class="QPushButton" name="pushButtonCheckPropositional">
+              <property name="text">
+               <string>Check</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QPushButton" name="pushButtonNNF">
+              <property name="text">
+               <string>NNF</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QPushButton" name="pushButtonCNF">
+              <property name="text">
+               <string>CNF</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabFirstOrder">
+           <attribute name="title">
+            <string>First Order</string>
+           </attribute>
+          </widget>
          </widget>
-        </item>
-        <item row="2" column="0">
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
-          <item>
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item>
-           <widget class="QPushButton" name="pushButton">
-            <property name="text">
-             <string>Clear</string>
-            </property>
-           </widget>
-          </item>
-         </layout>
         </item>
        </layout>
       </widget>
@@ -127,7 +129,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>679</width>
+     <width>700</width>
      <height>29</height>
     </rect>
    </property>
@@ -240,28 +242,12 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>598</x>
-     <y>434</y>
+     <x>533</x>
+     <y>446</y>
     </hint>
     <hint type="destinationlabel">
-     <x>548</x>
-     <y>398</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButtonWorkout</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>workout()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>632</x>
-     <y>213</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>606</x>
-     <y>35</y>
+     <x>534</x>
+     <y>408</y>
     </hint>
    </hints>
   </connection>
@@ -297,14 +283,65 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButtonCheckPropositional</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>propositionalCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>606</x>
+     <y>103</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>425</x>
+     <y>466</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonNNF</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>propositionalNNF()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>601</x>
+     <y>140</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>561</x>
+     <y>463</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonCNF</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>propositionalCNF()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>172</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>578</x>
+     <y>461</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>workout()</slot>
   <slot>showAboutBox()</slot>
   <slot>saveFile()</slot>
   <slot>openFile()</slot>
+  <slot>propositionalCheck()</slot>
+  <slot>propositionalNNF()</slot>
+  <slot>propositionalCNF()</slot>
  </slots>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
+  <buttongroup name="logicTypeButtonGroup"/>
  </buttongroups>
 </ui>

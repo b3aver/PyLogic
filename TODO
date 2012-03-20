@@ -1,6 +1,13 @@
+
+Make uniform the notation.
+	  Prover9
+		  there aren't a notation for nand ... nimpl
+
+
 === API ===
 Formula
 	X self.connective = "not" instead self.connective = self.CONN["not"]
+	refactor alpha to is_alpha (idem beta)
 
 CNF
 
@@ -10,8 +17,14 @@ First Order Logic
 
 
 === GUI ===
-Parser with antlr
+(NO) Parser with antlr
+Parser with ply
+
+Redirect parser's error output to gui.
+
+(DONE) vertical split: input and output | commands
 
 
-
-
+=== Parser ===
+Propositional
+   (DONE) check the "not" behaviour

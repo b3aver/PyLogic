@@ -20,7 +20,7 @@ from MainWindow import Ui_MainWindow
 from AboutBox import Ui_Dialog
 
 
-from propositional.parser import parser
+from propositional.parser import parser as propositional_parser
 
 
 
@@ -45,13 +45,6 @@ class MyMainWindow(QMainWindow):
         outputBox = self.ui.textEditOutput
         outputBox.insertPlainText(QString(string+"\n"))
         outputBox.ensureCursorVisible()
-
-
-    def workout(self):
-        # self.output(self.getInputString())
-        output = parser.parse(self.getInputString())
-        # print output
-        self.appendOutput(output.__str__())
 
 
     def showAboutBox(self):
@@ -98,6 +91,36 @@ class MyMainWindow(QMainWindow):
             print "save to file"
             f = open(filename, "w")
             f.write(self.getInputString())
+
+
+    # def workout(self):
+    #     # self.output(self.getInputString())
+    #     if self.ui.logicTypeButtonGroup.checkedButton() == self.ui.radioButtonPropositional:
+    #         output = propositional_parser.parse(self.getInputString())
+    #     else:
+    #         #output = first_order_parser.parse(self.getInputString())
+    #         output = "First Order Logic not yet implemented."
+        
+    #     # print output
+    #     self.appendOutput(output.__str__())
+
+
+    def propositionalCheck(self):
+        """Check the sintax of the formula in input"""
+        output = propositional_parser.parse(self.getInputString())
+        self.appendOutput(output.__str__())
+
+    def propositionalNNF(self):
+        """Transform the current formula in input in NNF"""
+        #formula = propositional_parser.parse(self.getInputString())
+        output = "NNF not yet implemented."
+        self.appendOutput(output.__str__())
+
+    def propositionalCNF(self):
+        """Transform the current formula in input in CNF"""
+        output = "CNF not yet implemented."
+        self.appendOutput(output.__str__())
+
 
 
 class MyAboutBox(QDialog):
