@@ -161,24 +161,24 @@ class Formula(Logic):
     def nnf(self):
         """Return the current Formula in Negation Normal Form."""
         if self.connective == None:
-            return self
+            return copy.deepcopy(self)
         if self.connective == "not":
             subformula = self.subformula1
             if subformula.connective == "not":
                 """ !!Z """
-                return subformula.subformula1.nnf()
+                return copy.deepcopy(subformula.subformula1).nnf()
             elif subformula.connective == None:
                 """ litteral """
-                return self
+                return copy.deepcopy(self)
             else:
                 """ dual """
-                comp1 = subformula.subformula1.negate()
-                comp2 = subformula.subformula2.negate()
+                comp1 = copy.deepcopy(subformula.subformula1).negate()
+                comp2 = copy.deepcopy(subformula.subformula2).negate()
                 return Formula(self.DUAL[subformula.connective], comp1, comp2).nnf()
         else:
-            return Formula(self.connective,\
-                               self.subformula1.nnf(),\
-                               self.subformula2.nnf())
+            return copy.deepcopy(Formula(self.connective,\
+                                             self.subformula1.nnf(),\
+                                             self.subformula2.nnf()))
 
 
     def cnf(self):
