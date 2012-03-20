@@ -20,6 +20,11 @@ CONN = {'&': 'and', '<-': 'implr', '|': 'or', '->': 'impl', '<->': 'eq'}
 
 # {'!': 'not', '&': 'and', '!<=': 'nimplr', '!=>': 'nimpl', '!=': 'neq', '<=': 'implr', '|': 'or', '!&': 'nand', '=>': 'impl', '=': 'eq', '!|': 'nor'}
 
+def p_begin(p):
+    '''begin : formula
+             | formula_no_par'''
+    p[0] = p[1]
+
 '''Unique parsing
    formula : LETTER
            | NOT formula
@@ -39,11 +44,12 @@ def p_formula_connective(p):
     # p[0] = "%s %s %s %s %s" % (p[1], p[2], p[3], p[4], p[5])
     p[0] = Formula(CONN[p[3]], p[2], p[4])
 
-'''
 def p_formula_connective_nopar(p):
-    'formula : formula CONNECTIVE formula'
-    p[0] = "%s %s %s" % (p[1], p[2], p[3])
-'''
+    'formula_no_par : formula CONNECTIVE formula'
+    p[0] = Formula(CONN[p[2]], p[1], p[3])
+    # p[0] = "%s %s %s" % (p[1], p[2], p[3])
+
+
 
 # Error rule for syntax errors
 def p_error(p):
