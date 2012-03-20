@@ -37,7 +37,7 @@ def p_formula_letter(p):
 def p_formula_not(p):
     '''formula : NOT formula'''
     # p[0] = "%s %s" % (p[1], p[2])
-    p[0] = Formula("not", p[1])
+    p[0] = Formula("not", p[2])
 
 def p_formula_connective(p):
     ''' formula : LPAREN formula CONNECTIVE formula RPAREN'''
