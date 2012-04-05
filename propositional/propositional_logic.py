@@ -5,53 +5,48 @@
 import copy
 
 
-
-
-class Logic:
-    """Basic class with fundamental constants."""
-    #CONN = ["!", "&", "|", "=>", "<=", "!&", "!|", "!=>", "!<=", "=", "!="]
-    #CONN = {NOT="!", AND="&", OR="|", IMP="=>", IMPR="<=", NAND="!&", NOR="!|", NIMP="!=>", NIMPR="!<=", EQ="=", NEQ="!="}
-    CONN = {"not":"!", "and":"&", "or":"|", "impl":"=>", "implr":"<=", "nand":"!&", "nor":"!|", "nimpl":"!=>", "nimplr":"!<=", "eq":"=", "neq":"!="}
-    #NOT = "!"
-    #CONJ = ["&", "!|", "!=>", "!<="]
-    CONJ = ["and", "nor", "nimpl", "nimplr"]
-    #DISJ = ["|", "=>", "<=", "!&"]
-    DISJ = ["or", "impl", "implr", "nand"]
-    TOP = "T"
-    BOTTOM = "F"
-    DUAL = {"and":"or", "or":"and", "impl":"nimplr", "implr":"nimpl", "nand":"nor", "nor":"nand", "nimpl":"implr", "nimplr":"impl", "eq":"neq", "neq":"eq"}
+import sys
+sys.path.append("..")
+import logic
 
 
 
-class Formula(Logic):
+class Formula():
     """Represents a propositional logic formula."""
 
     def __init__(self, *args):
         """ Constructor of a Formula.
 
-        Could take several arguments, depends of the type of Formula to construct:
-            1 argument: atomic formula (i.e. propositional letter "P", "Q", ... or costant top "T", or bottom "F")
-            2 arguments: unary operator negation "!" or "not"
-                         subformula
-            3 arguments: binary symbol (i.e. "&", "|", "=>", "<=", "!&", "!|", "!=>", "!<=", "=", "!="
-                          or in the extended versions "and", "or", "impl", "implr", "nand", "nor", "nimpl", "nimplr", "eq", "neq")
-                         subformula
-                         subformula
+        Could take several arguments, depends of the type of Formula:
+            1 argument:
+                atomic formula
+                  (i.e. propositional letter "P", "Q", ... or costant top "T", or
+                  bottom "F")
+            2 arguments:
+                unary operator negation "!" or "not"
+                subformula
+            3 arguments:
+                binary symbol
+                  (i.e. "&", "|", "=>", "<=", "!&", "!|", "!=>", "!<=", "=", "!="
+                  or in the extended versions "and", "or", "impl", "implr",
+                  "nand", "nor", "nimpl", "nimplr", "eq", "neq")
+                subformula
+                subformula
         """
         if len(args) == 1:
             connective = None
             subformula1 = args[0]
             subformula2 = None
         elif len(args) == 2:
-            if args[0] != "not" and args[0] != self.CONN["not"]:
+            if args[0] != "not" and args[0] != logic.CONN["not"]:
                 raise Exception("Wrong connective: " + args[0])
             connective = "not"
             subformula1 = args[1]
             subformula2 = None
         else:
-            if args[0] in self.CONN.viewvalues():
-                connective = [item[0] for item in self.CONN.items() if item[1] == args[0]][0]
-            elif args[0] in self.CONN.viewkeys():
+            if args[0] in logic.CONN.viewvalues():
+                connective = [item[0] for item in logic.CONN.items() if item[1] == args[0]][0]
+            elif args[0] in logic.CONN.viewkeys():
                 connective = args[0]
             else:
                 raise Exception("Wrong connective: " + args[0])
@@ -68,10 +63,10 @@ class Formula(Logic):
         if self.connective == None:
             return self.subformula1
         elif self.subformula2 == None:
-            return "%s%s" % (self.CONN[self.connective], str(self.subformula1))
+            return "%s%s" % (logic.CONN[self.connective], str(self.subformula1))
         else:
             return "(%s %s %s)" % (str(self.subformula1),\
-                                       self.CONN[self.connective],\
+                                       logic.CONN[self.connective],\
                                        str(self.subformula2))
         
         
@@ -81,7 +76,7 @@ class Formula(Logic):
             return False
         elif self.connective == "not":
             return not self.subformula1.alpha()
-        elif self.connective in self.CONJ:
+        elif self.connective in logic.CONJ:
             return True
         else:
             return False
@@ -93,7 +88,7 @@ class Formula(Logic):
             return False
         elif self.connective == "not":
             return not self.subformula1.beta()
-        elif self.connective in self.DISJ:
+        elif self.connective in logic.DISJ:
             return True
         else:
             return False
@@ -174,7 +169,7 @@ class Formula(Logic):
                 """ dual """
                 comp1 = copy.deepcopy(subformula.subformula1).negate()
                 comp2 = copy.deepcopy(subformula.subformula2).negate()
-                return Formula(self.DUAL[subformula.connective], comp1, comp2).nnf()
+                return Formula(logic.DUAL[subformula.connective], comp1, comp2).nnf()
         else:
             return copy.deepcopy(Formula(self.connective,\
                                              self.subformula1.nnf(),\
@@ -186,7 +181,7 @@ class Formula(Logic):
         
 
 
-class Generalization(Logic):
+class Generalization():
     """Class that represents a generalized disjunction of conjunction."""
 
     def __init__(self, connective, formulas):
@@ -196,7 +191,7 @@ class Generalization(Logic):
             connective -- determines the type of Generalization, admitted values "and", "or", "&", "|"
             formulas -- list of the formulas in the Generalization
         """
-        if connective != "and" and connective != "or" and connective != CONN["and"] and connective != CONN["or"]:
+        if connective != "and" and connective != "or" and connective != logic.CONN["and"] and connective != logic.CONN["or"]:
             raise Exception("Wrong connective: " + connective)
         if  not isinstance(formulas, list):
             raise Exception("Second argument must be a list")
@@ -315,12 +310,12 @@ class Generalization(Logic):
                 """ !!Z """
                 self.list[position] = subformula.subformula1
             elif subformula.connective == None:
-                if subformula.subformula1 == self.TOP:
+                if subformula.subformula1 == logic.TOP:
                     """ !top """
-                    self.list[position] = Formula(self.BOTTOM)
-                elif subformula.subformula1 == self.BOTTOM:
+                    self.list[position] = Formula(logic.BOTTOM)
+                elif subformula.subformula1 == logic.BOTTOM:
                     """ !bottom """
-                    self.list[position] = Formula(self.TOP)
+                    self.list[position] = Formula(logic.TOP)
             return self.cnf_action()        
 
 

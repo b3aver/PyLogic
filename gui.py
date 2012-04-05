@@ -20,6 +20,7 @@ from MainWindow import Ui_MainWindow
 from AboutBox import Ui_Dialog
 
 
+
 from propositional.parser import parser as propositional_parser
 
 

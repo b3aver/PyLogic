@@ -48,12 +48,10 @@ lexer = lex.lex()
 #
 
 import ply.yacc as yacc
-from logic import Formula
+from propositional_logic import Formula
+import logic
 
 
-CONN = {'&': 'and', '<-': 'implr', '|': 'or', '->': 'impl', '<->': 'eq'}
-
-# {'!': 'not', '&': 'and', '!<=': 'nimplr', '!=>': 'nimpl', '!=': 'neq', '<=': 'implr', '|': 'or', '!&': 'nand', '=>': 'impl', '=': 'eq', '!|': 'nor'}
 
 def p_begin(p):
     '''begin : formula
@@ -77,11 +75,11 @@ def p_formula_not(p):
 def p_formula_connective(p):
     ''' formula : LPAREN formula CONNECTIVE formula RPAREN'''
     # p[0] = "%s %s %s %s %s" % (p[1], p[2], p[3], p[4], p[5])
-    p[0] = Formula(CONN[p[3]], p[2], p[4])
+    p[0] = Formula(logic.CONN_ST[p[3]], p[2], p[4])
 
 def p_formula_connective_nopar(p):
     'formula_no_par : formula CONNECTIVE formula'
-    p[0] = Formula(CONN[p[2]], p[1], p[3])
+    p[0] = Formula(logic.CONN_ST[p[2]], p[1], p[3])
     # p[0] = "%s %s %s" % (p[1], p[2], p[3])
 
 
