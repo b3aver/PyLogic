@@ -27,6 +27,8 @@ Redirect parser's error output to gui.
 
 (DONE) vertical split: input and output | commands
 
+Load the .ui file with PyQt4.uic.loadUi
+
 
 === Parser ===
 Propositional

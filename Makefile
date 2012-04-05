@@ -1,5 +1,5 @@
 
-
+PROJECT = PyLogic
 
 
 all: gui.py compile
@@ -25,3 +25,9 @@ clean:
 # -mv AboutBox.py trash
 # -mv parser.out trash
 # -mv parsetab.py trash
+
+
+documentation:
+	pyreverse . -p${PROJECT} -ojpg
+	mv classes_${PROJECT}.jpg doc
+	mv packages_${PROJECT}.jpg doc
