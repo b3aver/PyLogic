@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-
+'''Definition of the Propositional Logic: Formulas and Generalizations'''
 
 import copy
 
@@ -45,7 +45,11 @@ class Formula():
             subformula2 = None
         else:
             if args[0] in logic.CONN.viewvalues():
-                connective = [item[0] for item in logic.CONN.items() if item[1] == args[0]][0]
+                connective = [ item[0]
+                               for item
+                               in logic.CONN.items()
+                               if item[1] == args[0]
+                               ][0]
             elif args[0] in logic.CONN.viewkeys():
                 connective = args[0]
             else:
@@ -65,8 +69,8 @@ class Formula():
         elif self.subformula2 == None:
             return "%s%s" % (logic.CONN[self.connective], str(self.subformula1))
         else:
-            return "(%s %s %s)" % (str(self.subformula1),\
-                                       logic.CONN[self.connective],\
+            return "(%s %s %s)" % (str(self.subformula1), \
+                                       logic.CONN[self.connective], \
                                        str(self.subformula2))
         
         
@@ -95,7 +99,8 @@ class Formula():
 
         
     def is_literal(self):
-        """Check if the formula is a literal, namely an atomic formula or the negation of an atomic formula."""
+        """Check if the formula is a literal,
+        namely an atomic formula or the negation of an atomic formula."""
         if self.connective == None:
             return True
         elif self.connective == "not" and self.subformula1.connective == None:
@@ -127,7 +132,7 @@ class Formula():
             ret = (self, None)
         if self.connective == "not":
             if self.subformula1.subformula2 == None:
-                """ letteral """
+                # letteral
                 ret = (self, None)
             else:
                 (comp1, comp2) = self.subformula1.components()
@@ -160,23 +165,27 @@ class Formula():
         if self.connective == "not":
             subformula = self.subformula1
             if subformula.connective == "not":
-                """ !!Z """
+                # !!Z
                 return copy.deepcopy(subformula.subformula1).nnf()
             elif subformula.connective == None:
-                """ litteral """
+                # litteral
                 return copy.deepcopy(self)
             else:
-                """ dual """
+                # dual
                 comp1 = copy.deepcopy(subformula.subformula1).negate()
                 comp2 = copy.deepcopy(subformula.subformula2).negate()
-                return Formula(logic.DUAL[subformula.connective], comp1, comp2).nnf()
+                return Formula(logic.DUAL[subformula.connective],
+                               comp1,
+                               comp2
+                               ).nnf()
         else:
-            return copy.deepcopy(Formula(self.connective,\
-                                             self.subformula1.nnf(),\
+            return copy.deepcopy(Formula(self.connective, \
+                                             self.subformula1.nnf(), \
                                              self.subformula2.nnf()))
 
 
     def cnf(self):
+        '''Return the current Formula in Conjunctive Normal Form'''
         return Generalization("and", [Generalization("or", [self])]).cnf()
         
 
@@ -188,10 +197,14 @@ class Generalization():
         """ Constructor of a Generalization.
 
         Take two arguments:
-            connective -- determines the type of Generalization, admitted values "and", "or", "&", "|"
+            connective -- determines the type of Generalization,
+                          admitted values "and", "or", "&", "|"
             formulas -- list of the formulas in the Generalization
         """
-        if connective != "and" and connective != "or" and connective != logic.CONN["and"] and connective != logic.CONN["or"]:
+        if connective != "and"\
+                and connective != "or"\
+                and connective != logic.CONN["and"]\
+                and connective != logic.CONN["or"]:
             raise Exception("Wrong connective: " + connective)
         if  not isinstance(formulas, list):
             raise Exception("Second argument must be a list")
@@ -205,12 +218,12 @@ class Generalization():
         elif self.connective == "or":
             ret = "[ "
         first = True
-        for el in self.list:
+        for elem in self.list:
             if not first:
                 ret += " , "
             else:
                 first = False
-            ret += str(el)
+            ret += str(elem)
         if self.connective == "and":
             ret += " >"
         elif self.connective == "or":
@@ -307,14 +320,14 @@ class Generalization():
         elif member.connective == "not":
             subformula = member.subformula1
             if subformula.connective == "not":
-                """ !!Z """
+                # !!Z
                 self.list[position] = subformula.subformula1
             elif subformula.connective == None:
                 if subformula.subformula1 == logic.TOP:
-                    """ !top """
+                    # !top
                     self.list[position] = Formula(logic.BOTTOM)
                 elif subformula.subformula1 == logic.BOTTOM:
-                    """ !bottom """
+                    # !bottom
                     self.list[position] = Formula(logic.TOP)
             return self.cnf_action()        
 
@@ -332,16 +345,18 @@ class Generalization():
     def cnf(self):
         """Return the current Generalization in Conjunctive Normal Form"""
 
-        if self.connective != "and" or len(self.list) != 1\
-                or self.list[0].connective != "or" or len(self.list[0].list) != 1:
+        if self.connective != "and"\
+                or len(self.list) != 1\
+                or self.list[0].connective != "or"\
+                or len(self.list[0].list) != 1:
             raise Exception("Wrong type of generalization")
-        """
-        < [ ( X | !X ) , () ] , [ ... ] >
-           conj       < ... >
-           clause     [ ... ]
-           member     ( ... )
-           subformula X, !X
-        """
+        
+        # < [ ( X | !X ) , () ] , [ ... ] >
+        #    conj       < ... >
+        #    clause     [ ... ]
+        #    member     ( ... )
+        #    subformula X, !X
+        
         # breadth-first
         # first beta
         # then alpha
@@ -357,12 +372,17 @@ class Generalization():
 
 
 if __name__ == "__main__" :
-    """Tests"""
+    # Tests
 
 
     print "======   Formula   ======"
-    formula = Formula("&", Formula("|", Formula("X"), Formula("Y")), Formula("!", Formula("Y")))
-    print "%s \n   is an alpha %r\n   is a beta %r" % (formula, formula.alpha(), formula.beta())
+    formula = Formula("&",
+                      Formula("|",Formula("X"), Formula("Y")),
+                      Formula("!", Formula("Y"))
+                      )
+    print "%s \n   is an alpha %r\n   is a beta %r" % (formula,
+                                                       formula.alpha(),
+                                                       formula.beta())
 
     print "====== Complement  ======"
     print formula.complement()
@@ -386,23 +406,38 @@ if __name__ == "__main__" :
     print disjunction2
     
 
-    print "%s\n   has non-literal? %s" % (disjunction2, disjunction2.has_non_literal())
+    print "%s\n   has non-literal? %s" % (disjunction2,
+                                          disjunction2.has_non_literal())
     print "   it is", disjunction2.get_non_literal()
     # (pos, ind) = disjunction2.get_parent_non_literal()
     # print pos.list[ind]
     print "   and is in %s at %s" % disjunction2.get_parent_non_literal()
 
 
-    disjunction3 = Generalization("or", [Generalization("or", [Formula("not", Formula("X")), Formula("X")])])
-    print "%s has non-literal? %s" % (disjunction3, disjunction3.has_non_literal())
-    non_literal = disjunction3.get_non_literal()
-    print "   it is", non_literal
-    if non_literal != None:
+    disjunction3 = Generalization("or",
+                                  [Generalization("or",
+                                                  [Formula("not", Formula("X")),
+                                                   Formula("X")
+                                                   ])
+                                   ])
+    print "%s has non-literal? %s" % (disjunction3,
+                                      disjunction3.has_non_literal())
+    n_literal = disjunction3.get_non_literal()
+    print "   it is", n_literal
+    if n_literal != None:
         print "   and is in %s at %s" % disjunction3.get_parent_non_literal()
 
 
-    disjunction4 = Generalization("or", [Generalization("or", [Formula("and", Formula("X"), Formula("Y")), Formula("X")])])
-    print "%s has non-literal? %s" % (disjunction4, disjunction4.has_non_literal())
+    disjunction4 = Generalization("or",
+                                  [Generalization("or",
+                                                  [Formula("and",
+                                                           Formula("X"),
+                                                           Formula("Y")),
+                                                   Formula("X")
+                                                   ])
+                                   ])
+    print "%s has non-literal? %s" % (disjunction4,
+                                      disjunction4.has_non_literal())
     print "   it is", disjunction4.get_non_literal()
     print "   and is in %s at %s" % disjunction4.get_parent_non_literal()
 
@@ -413,7 +448,7 @@ if __name__ == "__main__" :
     print formula1
     print " "*3, formula1.cnf()
 
-    formula2 = Formula("not", Formula("not",Formula("A")))
+    formula2 = Formula("not", Formula("not", Formula("A")))
     print formula2
     print " "*3, formula2.cnf()
     
