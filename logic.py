@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """Basic fundamental constants."""
 
@@ -22,6 +23,7 @@ BOTTOM = "F"
 DUAL = {"and":"or", "or":"and", "impl":"nimplr", "implr":"nimpl", "nand":"nor",
         "nor":"nand", "nimpl":"implr", "nimplr":"impl", "eq":"neq", "neq":"eq"}
 
+QUANT = {'all':'∀', 'exists':'∃'}
 
 # logics that use this constants
 import propositional.propositional_logic
