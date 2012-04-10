@@ -6,6 +6,7 @@
 
 #from form import *
 import sys
+import string
 # for file checks
 import os.path
 
@@ -44,9 +45,10 @@ class MyMainWindow(QMainWindow):
 
     def appendOutput(self, string=""):
         outputBox = self.ui.textEditOutput
-        outputBox.appendPlainText(QString(string))
-        outputBox.moveCursor(QTextCursor.End)
-        outputBox.ensureCursorVisible()
+        outputBox.write(string)
+        # outputBox.appendPlainText(QString(string))
+        # outputBox.moveCursor(QTextCursor.End)
+        # outputBox.ensureCursorVisible()
 
 
     def showAboutBox(self):
@@ -112,6 +114,10 @@ class MyMainWindow(QMainWindow):
         output = formula.cnf() #"CNF not yet implemented."
         self.appendOutput(output.__str__())
 
+    def getOutputBox(self):
+        return self.ui.textEditOutput
+
+        
 
 
 class MyAboutBox(QDialog):
@@ -125,6 +131,16 @@ class MyAboutBox(QDialog):
 class OutputTextEdit(QPlainTextEdit):
     def __init__(self, parent=None):
         QPlainTextEdit.__init__(self, parent)
+
+    def write(self, txt):
+        sys.__stdout__.write(txt+'\n')
+        sys.__stdout__.flush()
+        #self.appendPlainText(QString(string.rstrip(txt, '\n')))
+        self.moveCursor(QTextCursor.End)
+        self.insertPlainText(QString(string.rstrip(txt, '\n')+'\n'))
+        self.moveCursor(QTextCursor.End)
+        self.ensureCursorVisible()
+
 
 """
 class CentralWidget(QWidget):
@@ -158,6 +174,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MyMainWindow() #Window()
     window.show()
+    sys.stdout=window.getOutputBox()
     sys.exit(app.exec_())
 
 
