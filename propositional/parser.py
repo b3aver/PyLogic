@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# pylint: disable-msg=C0103
 
 #
 # Lexer
@@ -49,6 +50,8 @@ lexer = lex.lex()
 
 import ply.yacc as yacc
 from propositional_logic import Formula
+import sys
+sys.path.append("..")
 import logic
 
 
