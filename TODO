@@ -1,13 +1,13 @@
 
-Make uniform the notation.
+(DONE) Make uniform the notation.
 	  Prover9
 		  there aren't a notation for nand ... nimpl
 
 
 === API ===
 Formula
-	X self.connective = "not" instead self.connective = self.CONN["not"]
-	refactor alpha to is_alpha (idem beta)
+	(DONE) self.connective = "not" instead self.connective = self.CONN["not"]
+	(DONE) refactor alpha to is_alpha (idem beta)
 
 Generalization
    trasform using __getitem__ __setitem__

@@ -74,24 +74,24 @@ class Formula():
                                        str(self.subformula2))
         
         
-    def alpha(self):
+    def is_alpha(self):
         """Check if the Formula is an alpha formula."""
         if self.connective == None:
             return False
         elif self.connective == "not":
-            return not self.subformula1.alpha()
+            return not self.subformula1.is_alpha()
         elif self.connective in logic.CONJ:
             return True
         else:
             return False
         
         
-    def beta(self):
+    def is_beta(self):
         """Check if the Formula is a beta formula."""
         if self.connective == None:
             return False
         elif self.connective == "not":
-            return not self.subformula1.beta()
+            return not self.subformula1.is_beta()
         elif self.connective in logic.DISJ:
             return True
         else:
@@ -301,12 +301,12 @@ class Generalization():
         (_, position) = self.get_parent_non_literal()
         member = self.list[position]
 
-        if member.beta():
+        if member.is_beta():
             (beta1, beta2) = member.components()
             self.list.pop(position)               # remove old
             self.insert(position, [beta1, beta2]) # insert beta1 e beta2
             return self.cnf_action() 
-        elif member.alpha():
+        elif member.is_alpha():
             (alpha1, alpha2) = member.components()
             self.list.pop(position)            # remove old
             clause1 = self                     # split 
@@ -381,8 +381,8 @@ if __name__ == "__main__" :
                       Formula("!", Formula("Y"))
                       )
     print "%s \n   is an alpha %r\n   is a beta %r" % (formula,
-                                                       formula.alpha(),
-                                                       formula.beta())
+                                                       formula.is_alpha(),
+                                                       formula.is_beta())
 
     print "====== Complement  ======"
     print formula.complement()
