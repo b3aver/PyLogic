@@ -5,6 +5,11 @@
 
 
 === API ===
+
+Unittest
+  http://docs.python.org/library/unittest.html
+
+== Propositional logic ==
 Formula
 	(DONE) self.connective = "not" instead self.connective = self.CONN["not"]
 	(DONE) refactor alpha to is_alpha (idem beta)
@@ -16,21 +21,31 @@ Generalization
 
 resolution or tableaux
 
-First Order Logic
+
+== First Order Logic ==
+Formula
+
+CNF
+
+Resolution or tableaux
+		
 
 
 === GUI ===
 (NO) Parser with antlr
 Parser with ply
 
-Redirect parser's error output to gui.
-
+(DONE) Redirect parser's error output to gui.
 (DONE) vertical split: input and output | commands
 
 Load the .ui file with PyQt4.uic.loadUi
 
+Improve the quality of the icon
+
 
 === Parser ===
 Propositional
-   (DONE) check the "not" behaviour
-	grammar for generalizations
+  (DONE) check the "not" behaviour
+  grammar for generalizations
+
+First order

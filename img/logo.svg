@@ -7,16 +7,50 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="64px"
-   height="64px"
+   width="68"
+   height="64"
    id="svg2993"
    version="1.1"
    inkscape:version="0.48.1 r9760"
-   sodipodi:docname="Nuovo documento 2">
+   sodipodi:docname="logo.svg">
   <defs
-     id="defs2995" />
+     id="defs2995">
+    <radialGradient
+       cx="299.70135"
+       cy="371.76376"
+       r="76.696358"
+       fx="299.70135"
+       fy="371.76376"
+       id="radialGradient4972"
+       xlink:href="#linearGradient4966"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.4594595,0,0,0.9121621,-183.956,8.810365)" />
+    <linearGradient
+       id="linearGradient4966">
+      <stop
+         id="stop4968"
+         style="stop-color:#8ceded;stop-opacity:1;"
+         offset="0" />
+      <stop
+         id="stop4970"
+         style="stop-color:#b6b3d8;stop-opacity:0"
+         offset="1" />
+    </linearGradient>
+    <radialGradient
+       r="76.696358"
+       fy="371.76376"
+       fx="299.70135"
+       cy="371.76376"
+       cx="299.70135"
+       gradientTransform="matrix(0.21562636,0.02378217,-0.01778994,0.13836004,-35.551834,-12.583572)"
+       gradientUnits="userSpaceOnUse"
+       id="radialGradient3062"
+       xlink:href="#linearGradient4966"
+       inkscape:collect="always" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -24,9 +58,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="5.5"
-     inkscape:cx="38.25284"
-     inkscape:cy="19.839132"
+     inkscape:zoom="7.7781746"
+     inkscape:cx="28.544844"
+     inkscape:cy="29.143012"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
@@ -44,7 +78,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -69,10 +103,17 @@
        y="5.090909"
        rx="15.095239"
        ry="21.726618"
-       style="fill:#008080" />
+       style="fill:#00adad;fill-opacity:1" />
+    <path
+       d="M 38.995779,47.805231 C 38.24457,53.667352 30.228577,57.603473 21.093214,56.595905 11.957858,55.588333 5.1640086,50.018784 5.9202641,44.157221 6.671451,38.295098 14.68747,34.358975 23.822828,35.366545 c 9.13536,1.00757 15.929207,6.577122 15.172951,12.438686 l 0,0 z"
+       id="path4946"
+       style="fill:url(#radialGradient3062);fill-opacity:1;stroke:#7b0000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:connector-curvature="0"
+       inkscape:transform-center-x="-9.5890791"
+       inkscape:transform-center-y="-1.0683438" />
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.00000059999999991%;letter-spacing:0px;word-spacing:0px;fill:#1f6061;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.0000006%;letter-spacing:0px;word-spacing:0px;fill:#1f6061;fill-opacity:1;stroke:none;font-family:Sans"
        x="6.4701705"
        y="38.677334"
        id="text3001-1"
@@ -81,10 +122,10 @@
          x="6.4701705"
          y="38.677334"
          id="tspan3005-9"
-         style="font-size:13px;line-height:15.00000059999999991%;fill:#1f6061;fill-opacity:1">PyLogic</tspan></text>
+         style="font-size:13px;line-height:15.0000006%;fill:#1f6061;fill-opacity:1">PyLogic</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.00000059999999991%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.0000006%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
        x="5.6363621"
        y="39.272724"
        id="text3001"
@@ -93,6 +134,6 @@
          x="5.6363621"
          y="39.272724"
          id="tspan3005"
-         style="font-size:13px;line-height:15.00000059999999991%;fill:#0000ff">PyLogic</tspan></text>
+         style="font-size:13px;line-height:15.0000006%;fill:#0000ff">PyLogic</tspan></text>
   </g>
 </svg>

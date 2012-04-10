@@ -173,6 +173,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     window = MyMainWindow() #Window()
+    app.setWindowIcon(QIcon('img/logo.svg'))
     window.show()
     sys.stdout=window.getOutputBox()
     sys.exit(app.exec_())
