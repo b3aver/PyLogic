@@ -36,6 +36,7 @@ Resolution or tableaux
 Parser with ply
 
 (DONE) Redirect parser's error output to gui.
+Fix output redirect, too many \n
 (DONE) vertical split: input and output | commands
 
 Load the .ui file with PyQt4.uic.loadUi
