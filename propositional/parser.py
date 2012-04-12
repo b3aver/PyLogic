@@ -19,7 +19,7 @@ tokens = (
 # Regular expression rules for simple tokens
 t_LETTER = r'[A-Z]'
 t_NOT   = r'-'
-t_CONNECTIVE = r'\||\&|->|<-'
+t_CONNECTIVE = r'\||\&|<->|->|<-'
 t_LPAREN  = r'\('
 t_RPAREN  = r'\)'
 
@@ -78,11 +78,23 @@ def p_formula_not(p):
 def p_formula_connective(p):
     ''' formula : LPAREN formula CONNECTIVE formula RPAREN'''
     # p[0] = "%s %s %s %s %s" % (p[1], p[2], p[3], p[4], p[5])
-    p[0] = Formula(logic.CONN_ST[p[3]], p[2], p[4])
+    print p[3]
+    if p[3] == '<->':
+        f1 = Formula(logic.CONN['impl'], p[2], p[4])
+        f2 = Formula(logic.CONN['impl'], p[4], p[2])
+        p[0] = Formula(logic.CONN['and'], f1, f2)
+    else:
+        p[0] = Formula(logic.CONN_ST[p[3]], p[2], p[4])
 
 def p_formula_connective_nopar(p):
     'formula_no_par : formula CONNECTIVE formula'
-    p[0] = Formula(logic.CONN_ST[p[2]], p[1], p[3])
+    print p[2]
+    if p[2] == '<->':
+        f1 = Formula(logic.CONN['impl'], p[1], p[3])
+        f2 = Formula(logic.CONN['impl'], p[3], p[1])
+        p[0] = Formula(logic.CONN['and'], f1, f2)
+    else:
+        p[0] = Formula(logic.CONN_ST[p[2]], p[1], p[3])
     # p[0] = "%s %s %s" % (p[1], p[2], p[3])
 
 
