@@ -115,6 +115,19 @@
            <attribute name="title">
             <string>First Order</string>
            </attribute>
+           <widget class="QPushButton" name="ushButtonCheckFirstOrder">
+            <property name="geometry">
+             <rect>
+              <x>10</x>
+              <y>10</y>
+              <width>85</width>
+              <height>31</height>
+             </rect>
+            </property>
+            <property name="text">
+             <string>Check</string>
+            </property>
+           </widget>
           </widget>
          </widget>
         </item>
@@ -242,11 +255,11 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>533</x>
+     <x>397</x>
      <y>446</y>
     </hint>
     <hint type="destinationlabel">
-     <x>534</x>
+     <x>398</x>
      <y>408</y>
     </hint>
    </hints>
@@ -290,8 +303,8 @@
    <slot>propositionalCheck()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>606</x>
-     <y>103</y>
+     <x>510</x>
+     <y>113</y>
     </hint>
     <hint type="destinationlabel">
      <x>425</x>
@@ -306,8 +319,8 @@
    <slot>propositionalNNF()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>601</x>
-     <y>140</y>
+     <x>510</x>
+     <y>150</y>
     </hint>
     <hint type="destinationlabel">
      <x>561</x>
@@ -322,12 +335,28 @@
    <slot>propositionalCNF()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>575</x>
-     <y>172</y>
+     <x>510</x>
+     <y>187</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>
      <y>461</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>ushButtonCheckFirstOrder</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>firstOrderCheck()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>469</x>
+     <y>99</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>349</x>
+     <y>246</y>
     </hint>
    </hints>
   </connection>
@@ -340,8 +369,6 @@
   <slot>propositionalCheck()</slot>
   <slot>propositionalNNF()</slot>
   <slot>propositionalCNF()</slot>
+  <slot>firstOrderCheck()</slot>
  </slots>
- <buttongroups>
-  <buttongroup name="logicTypeButtonGroup"/>
- </buttongroups>
 </ui>

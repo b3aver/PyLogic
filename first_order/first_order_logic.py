@@ -40,7 +40,10 @@ class Relation():
         self.symbol = args[0]
         args = list(args)
         args.pop(0)
-        self.parameters = args
+        if len(args) == 1 and isinstance(args[0], list):
+            self.parameters = args[0]
+        else:
+            self.parameters = args
 
 
     def __str__(self):
@@ -63,7 +66,10 @@ class Function():
         self.name = args[0]
         args = list(args)
         args.pop(0)
-        self.parameters = args
+        if len(args) == 1 and isinstance(args[0], list):
+            self.parameters = args[0]
+        else:
+            self.parameters = args
 
 
     def __str__(self):
@@ -99,6 +105,11 @@ class Formula():
                 subformula
                 subformula
         """
+        quantifier = None
+        variable = None
+        connective = None
+        subformula1 = None
+        subformula2 = None
         if len(args) == 1:
             # atomic formula
             if not (isinstance(args[0], Relation) \
@@ -106,36 +117,25 @@ class Formula():
                         or args[0] == logic.BOTTOM
                     ):
                 raise Exception("Wrong atomic formula.")
-            quantifier = None
-            variable = None
-            connective = None
             subformula1 = args[0]
-            subformula2 = None
         elif len(args) == 2:
             # not
             if args[0] != "not" and args[0] != logic.CONN["not"]:
                 raise Exception("Wrong connective: " + args[0])
             if not isinstance(args[1], Formula):
                 raise Exception("Wrong type of formula.")
-            quantifier = None
-            variable = None
             connective = "not"
             subformula1 = args[1]
-            subformula2 = None
-        else:
-            quantifier = None
-            variable = None
-            # quantifier
+        elif len(args) == 3:
             if args[0] in logic.QUANT:
+                # quantifier
                 if not isinstance(args[1], Variable):
                     raise Exception("Wrong type of variable.")
                 if not isinstance(args[2], Formula):
                     raise Exception("Wrong type of formula.")
                 quantifier = args[0]
                 variable = args[1]
-                connective = None
                 subformula1 = args[2]
-                subformula2 = None
             else:
                 # binary connective
                 if args[0] in logic.CONN.viewvalues():
@@ -153,6 +153,8 @@ class Formula():
                     raise Exception("Wrong type of formula.")
                 subformula1 = args[1]
                 subformula2 = args[2]
+        else:
+            raise Exception("Wrong number of arguments.")
 
         self.quantifier = quantifier
         self.variable = variable
@@ -184,6 +186,7 @@ if __name__ == '__main__':
     print Variable('x')
     print Constant('c')
     print Relation('A', Variable('y'), Variable('y'))
+    print Relation('A', [Variable('y'), Variable('z')])
     print Function('f', Constant('c'), Constant('d'), Variable('x'))
     print Formula('&', Formula(Relation('A', 'B')), Formula(Relation('C', 'B')))
     print Formula('exists',

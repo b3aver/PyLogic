@@ -5,10 +5,10 @@
 
 # connectives: strings to symbols
 CONN = {"not":"!", "and":"&", "or":"|", "impl":"=>", "implr":"<=", "nand":"!&",
-        "nor":"!|", "nimpl":"!=>", "nimplr":"!<=", "eq":"=", "neq":"!="}
+        "nor":"!|", "nimpl":"!=>", "nimplr":"!<=", "eq":"<=>", "neq":"!="}
 # connectives: symbols to strings
 CONN_ST = {'!': 'not', '&': 'and', '!<=': 'nimplr', '!=>': 'nimpl', '!=': 'neq',
-           '<=': 'implr', '|': 'or', '!&': 'nand', '=>': 'impl', '=': 'eq',
+           '<=': 'implr', '|': 'or', '!&': 'nand', '=>': 'impl', '<=>': 'eq',
            '!|': 'nor',
            # prover9 version
            # '&': 'and', '|': 'or',

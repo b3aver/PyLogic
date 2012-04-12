@@ -20,6 +20,7 @@ from AboutBox import Ui_Dialog
 
 
 from propositional.parser import parser as propositional_parser
+from first_order.parser import parser as firstOrder_parser
 
 
 class MyMainWindow(QMainWindow):
@@ -87,6 +88,13 @@ class MyMainWindow(QMainWindow):
         output = formula.cnf() #"CNF not yet implemented."
         self.appendOutput(output.__str__())
 
+
+    def firstOrderCheck(self):
+        """Check the sintax of the formula in input"""
+        output = firstOrder_parser.parse(self.getInputString())
+        self.appendOutput(output.__str__())
+
+        
     def getOutputBox(self):
         return self.ui.textEditOutput
 

@@ -45,8 +45,11 @@ Improve the quality of the icon
 
 
 === Parser ===
+Manage comments % 
+
 Propositional
   (DONE) check the "not" behaviour
   grammar for generalizations
 
 First order
+  ? insert equality
