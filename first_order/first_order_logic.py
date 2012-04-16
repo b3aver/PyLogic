@@ -4,8 +4,8 @@
    Variable, Constant, Relation, Function, Formula'''
 
 import copy
-
 import sys
+import re
 sys.path.append("..")
 import logic
 
@@ -112,9 +112,11 @@ class Formula():
         subformula2 = None
         if len(args) == 1:
             # atomic formula
+            pattern_letter = re.compile(logic.re_LETTER)
             if not (isinstance(args[0], Relation) \
                         or args[0] == logic.TOP \
                         or args[0] == logic.BOTTOM
+                        or pattern_letter.match(args[0])
                     ):
                 raise Exception("Wrong atomic formula.")
             subformula1 = args[0]

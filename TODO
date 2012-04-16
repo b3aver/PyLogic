@@ -47,9 +47,13 @@ Improve the quality of the icon
 === Parser ===
 Manage comments % 
 
+Make functions for parsing, to avoid anytimes to specify the lexer to use
+  manage the uses in gui.py
+
 Propositional
   (DONE) check the "not" behaviour
   grammar for generalizations
 
 First order
   ? insert equality
+  re_* from logic.py

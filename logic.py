@@ -25,5 +25,13 @@ DUAL = {"and":"or", "or":"and", "impl":"nimplr", "implr":"nimpl", "nand":"nor",
 
 QUANT = {'all':'∀', 'exists':'∃'}
 
+
+re_LETTER = r'[A-Z]+'
+re_VARIABLE = r'[abd-z][0-9]*'
+re_CONSTANT = r'c[0-9]*'
+
+
+
 # logics that use this constants
 import propositional.propositional_logic
+import first_order.first_order_logic

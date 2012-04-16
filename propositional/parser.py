@@ -39,7 +39,7 @@ def t_error(t):
 
 
 # Build the lexer
-lexer = lex.lex()
+propositional_lexer = lex.lex()
 
 
 
@@ -78,7 +78,6 @@ def p_formula_not(p):
 def p_formula_connective(p):
     ''' formula : LPAREN formula CONNECTIVE formula RPAREN'''
     # p[0] = "%s %s %s %s %s" % (p[1], p[2], p[3], p[4], p[5])
-    print p[3]
     if p[3] == '<->':
         f1 = Formula(logic.CONN['impl'], p[2], p[4])
         f2 = Formula(logic.CONN['impl'], p[4], p[2])
@@ -88,7 +87,6 @@ def p_formula_connective(p):
 
 def p_formula_connective_nopar(p):
     'formula_no_par : formula CONNECTIVE formula'
-    print p[2]
     if p[2] == '<->':
         f1 = Formula(logic.CONN['impl'], p[1], p[3])
         f2 = Formula(logic.CONN['impl'], p[3], p[1])
@@ -106,7 +104,7 @@ def p_error(p):
 
 
 # Build the parser
-parser = yacc.yacc()
+propositional_parser = yacc.yacc()
 
 
 if __name__ == "__main__":
@@ -115,11 +113,11 @@ if __name__ == "__main__":
     data = '''(A & B) -> A'''
     
     # Give the lexer some input
-    lexer.input(data)
+    propositional_lexer.input(data)
     
     # Tokenize
     while True:
-        tok = lexer.token()
+        tok = propositional_lexer.token()
         if not tok:
             break      # No more input
         print tok
@@ -133,5 +131,5 @@ if __name__ == "__main__":
             break
         if not s :
             continue
-        result = parser.parse(s)
+        result = propositional_parser.parse(s)
         print result

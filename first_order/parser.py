@@ -20,6 +20,8 @@ def next_char_is(t, char, skip_blank=True):
     if skip_blank:
         while nextchar in [' ', '\t']:
             t.lexer.skip(1)
+            if len(lexdata) <= t.lexer.lexpos:
+                return False
             nextchar = lexdata[t.lexer.lexpos]
     return nextchar == char
 
@@ -110,7 +112,7 @@ def t_error(t):
 
 
 # Build the lexer
-lexer = lex.lex()
+first_order_lexer = lex.lex()
 
 
 
@@ -118,6 +120,7 @@ lexer = lex.lex()
 # Parser
 #
 #
+
 
 import ply.yacc as yacc
 from first_order_logic import *
@@ -250,7 +253,7 @@ def p_error(p):
 
 
 # Build the parser
-parser = yacc.yacc()
+first_order_parser = yacc.yacc()
 
 
 if __name__ == "__main__":
@@ -261,19 +264,19 @@ if __name__ == "__main__":
     data = '(F(c(x,y))) <-> (A(x) & F(y))'
     
     # Give the lexer some input
-    lexer.input(data)
+    first_order_lexer.input(data)
 
     print "Scanning the input string: \"%s\"" % data
     # Tokenize
     while True:
-        tok = lexer.token()
+        tok = first_order_lexer.token()
         if not tok:
             break      # No more input
         print tok
 
 
     print "Parsing of the input string: \"%s\"" % data
-    result = parser.parse(data)
+    result = first_order_parser.parse(data)
     print result
 
 

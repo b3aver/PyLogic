@@ -19,8 +19,9 @@ from MainWindow import Ui_MainWindow
 from AboutBox import Ui_Dialog
 
 
-from propositional.parser import parser as propositional_parser
-from first_order.parser import parser as firstOrder_parser
+from propositional.parser import propositional_parser, propositional_lexer
+from first_order.parser import first_order_parser, first_order_lexer
+
 
 
 class MyMainWindow(QMainWindow):
@@ -73,25 +74,29 @@ class MyMainWindow(QMainWindow):
 
     def propositionalCheck(self):
         """Check the sintax of the formula in input"""
-        output = propositional_parser.parse(self.getInputString())
+        output = propositional_parser.parse(self.getInputString(),
+                                            lexer = propositional_lexer)
         self.appendOutput(output.__str__())
 
     def propositionalNNF(self):
         """Transform the current formula in input in NNF"""
-        formula = propositional_parser.parse(self.getInputString())
+        formula = propositional_parser.parse(self.getInputString(),
+                                             lexer = propositional_lexer)
         output = formula.nnf() #"NNF not yet implemented."
         self.appendOutput(output.__str__())
 
     def propositionalCNF(self):
         """Transform the current formula in input in CNF"""
-        formula = propositional_parser.parse(self.getInputString())
+        formula = propositional_parser.parse(self.getInputString(),
+                                             lexer = propositional_lexer)
         output = formula.cnf() #"CNF not yet implemented."
         self.appendOutput(output.__str__())
 
 
     def firstOrderCheck(self):
         """Check the sintax of the formula in input"""
-        output = firstOrder_parser.parse(self.getInputString())
+        output = first_order_parser.parse(self.getInputString(),
+                                          lexer = first_order_lexer)
         self.appendOutput(output.__str__())
 
         
