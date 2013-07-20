@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 
 #from PyQt4 import *
@@ -11,13 +11,11 @@ import string
 import os.path
 
 
-from PyQt4.QtCore import Qt, SIGNAL, QString
+from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import *
-
 
 from MainWindow import Ui_MainWindow
 from AboutBox import Ui_Dialog
-
 
 from propositional.parser import propositional_parser, propositional_lexer
 from first_order.parser import first_order_parser, first_order_lexer
@@ -53,9 +51,9 @@ class MyMainWindow(QMainWindow):
         filename = QFileDialog.getOpenFileName()
         if filename != "":
             if os.path.isfile(filename):
-                print "open file"
+                print("open file")
                 f = open(filename, "r")
-                self.ui.textEditInput.setPlainText(QString(f.read()))
+                self.ui.textEditInput.setPlainText(f.read())
             else:
                 QMessageBox.warning(self,
                                     "File not found!",
@@ -67,7 +65,7 @@ class MyMainWindow(QMainWindow):
     def saveFile(self):
         filename = QFileDialog.getSaveFileName()
         if filename != "":
-            print "save to file"
+            print("save to file")
             f = open(filename, "w")
             f.write(self.getInputString())
 
@@ -99,11 +97,11 @@ class MyMainWindow(QMainWindow):
                                           lexer = first_order_lexer)
         self.appendOutput(output.__str__())
 
-        
+
     def getOutputBox(self):
         return self.ui.textEditOutput
 
-        
+
 
 class MyAboutBox(QDialog):
     def __init__(self, parent=None):
@@ -122,12 +120,12 @@ class OutputTextEdit(QPlainTextEdit):
         sys.__stdout__.flush()
         #self.appendPlainText(QString(string.rstrip(txt, '\n')))
         self.moveCursor(QTextCursor.End)
-        self.insertPlainText(QString(string.rstrip(txt, '\n')+'\n'))
+        self.insertPlainText(txt.rstrip('\n')+'\n')
         self.moveCursor(QTextCursor.End)
         self.ensureCursorVisible()
 
-        
-        
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = MyMainWindow() #Window()
@@ -135,5 +133,3 @@ if __name__ == "__main__":
     window.show()
     sys.stdout = window.getOutputBox()
     sys.exit(app.exec_())
-
-

@@ -1,5 +1,3 @@
-#!/usr/bin/python
-
 '''Definition of the Propositional Logic: Formulas and Generalizations'''
 
 import copy
@@ -44,13 +42,13 @@ class Formula():
             subformula1 = args[1]
             subformula2 = None
         else:
-            if args[0] in logic.CONN.viewvalues():
+            if args[0] in list(logic.CONN.values()):
                 connective = [ item[0]
                                for item
-                               in logic.CONN.items()
+                               in list(logic.CONN.items())
                                if item[1] == args[0]
                                ][0]
-            elif args[0] in logic.CONN.viewkeys():
+            elif args[0] in list(logic.CONN.keys()):
                 connective = args[0]
             else:
                 raise Exception("Wrong connective: " + args[0])
@@ -375,43 +373,43 @@ if __name__ == "__main__" :
     # Tests
 
 
-    print "======   Formula   ======"
+    print("======   Formula   ======")
     formula = Formula("&",
                       Formula("|",Formula("X"), Formula("Y")),
                       Formula("!", Formula("Y"))
                       )
-    print "%s \n   is an alpha %r\n   is a beta %r" % (formula,
+    print("%s \n   is an alpha %r\n   is a beta %r" % (formula,
                                                        formula.is_alpha(),
-                                                       formula.is_beta())
+                                                       formula.is_beta()))
 
-    print "====== Complement  ======"
-    print formula.complement()
+    print("====== Complement  ======")
+    print(formula.complement())
 
-    print "====== Components  ======"
+    print("====== Components  ======")
     formula2 = Formula("!", Formula("!", Formula("X")))
-    print "%s" % formula2
-    print "   %s --- %s" % Formula("!", Formula("!", Formula("X"))).components()
-    print "%s" % formula
-    print "   %s --- %s" % formula.complement().components()
+    print("%s" % formula2)
+    print("   %s --- %s" % Formula("!", Formula("!", Formula("X"))).components())
+    print("%s" % formula)
+    print("   %s --- %s" % formula.complement().components())
 
-    print "======     NNF     ======"
-    print "%s" % formula.negate()
-    print "   %s" % formula.negate().nnf()
+    print("======     NNF     ======")
+    print("%s" % formula.negate())
+    print("   %s" % formula.negate().nnf())
 
-    print "====== Generalizations ======"
+    print("====== Generalizations ======")
     disjunction = Generalization("or", [formula])
-    print disjunction
+    print(disjunction)
     
     disjunction2 = Generalization("and", [formula, disjunction, formula2])
-    print disjunction2
+    print(disjunction2)
     
 
-    print "%s\n   has non-literal? %s" % (disjunction2,
-                                          disjunction2.has_non_literal())
-    print "   it is", disjunction2.get_non_literal()
+    print("%s\n   has non-literal? %s" % (disjunction2,
+                                          disjunction2.has_non_literal()))
+    print("   it is", disjunction2.get_non_literal())
     # (pos, ind) = disjunction2.get_parent_non_literal()
     # print pos.list[ind]
-    print "   and is in %s at %s" % disjunction2.get_parent_non_literal()
+    print("   and is in %s at %s" % disjunction2.get_parent_non_literal())
 
 
     disjunction3 = Generalization("or",
@@ -420,12 +418,12 @@ if __name__ == "__main__" :
                                                    Formula("X")
                                                    ])
                                    ])
-    print "%s has non-literal? %s" % (disjunction3,
-                                      disjunction3.has_non_literal())
+    print("%s has non-literal? %s" % (disjunction3,
+                                      disjunction3.has_non_literal()))
     n_literal = disjunction3.get_non_literal()
-    print "   it is", n_literal
+    print("   it is", n_literal)
     if n_literal != None:
-        print "   and is in %s at %s" % disjunction3.get_parent_non_literal()
+        print("   and is in %s at %s" % disjunction3.get_parent_non_literal())
 
 
     disjunction4 = Generalization("or",
@@ -436,37 +434,37 @@ if __name__ == "__main__" :
                                                    Formula("X")
                                                    ])
                                    ])
-    print "%s has non-literal? %s" % (disjunction4,
-                                      disjunction4.has_non_literal())
-    print "   it is", disjunction4.get_non_literal()
-    print "   and is in %s at %s" % disjunction4.get_parent_non_literal()
+    print("%s has non-literal? %s" % (disjunction4,
+                                      disjunction4.has_non_literal()))
+    print("   it is", disjunction4.get_non_literal())
+    print("   and is in %s at %s" % disjunction4.get_parent_non_literal())
 
 
     
-    print "======     CNF     ======"
+    print("======     CNF     ======")
     formula1 = Formula("not", Formula("A"))
-    print formula1
-    print " "*3, formula1.cnf()
+    print(formula1)
+    print(" "*3, formula1.cnf())
 
     formula2 = Formula("not", Formula("not", Formula("A")))
-    print formula2
-    print " "*3, formula2.cnf()
+    print(formula2)
+    print(" "*3, formula2.cnf())
     
     formula3 = Formula("or", Formula("A"), Formula("B"))
-    print formula3
-    print " "*3, formula3.cnf()
+    print(formula3)
+    print(" "*3, formula3.cnf())
     
     formula4 = Formula("and", Formula("A"), Formula("B"))
-    print formula4
-    print " "*3, formula4.cnf()
+    print(formula4)
+    print(" "*3, formula4.cnf())
 
     formula5 = Formula("impl", Formula("A"), Formula("B"))
-    print formula5
-    print " "*3, formula5.cnf()
+    print(formula5)
+    print(" "*3, formula5.cnf())
 
-    print formula
-    print " "*3, formula.cnf()
+    print(formula)
+    print(" "*3, formula.cnf())
 
-    print formula.negate()
-    print " "*3, formula.negate().cnf()
+    print(formula.negate())
+    print(" "*3, formula.negate().cnf())
 

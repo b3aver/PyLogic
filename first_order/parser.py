@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # pylint: disable-msg=C0103
 
 #
@@ -107,7 +106,7 @@ t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print "Illegal character '%s'" % t.value[0]
+    print("Illegal character '%s'" % t.value[0])
     t.lexer.skip(1)
 
 
@@ -123,7 +122,7 @@ first_order_lexer = lex.lex()
 
 
 import ply.yacc as yacc
-from first_order_logic import *
+from .first_order_logic import *
 import sys
 sys.path.append("..")
 import logic
@@ -248,7 +247,7 @@ def p_function(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print "Syntax error in input!"
+    print("Syntax error in input!")
 
 
 
@@ -266,18 +265,18 @@ if __name__ == "__main__":
     # Give the lexer some input
     first_order_lexer.input(data)
 
-    print "Scanning the input string: \"%s\"" % data
+    print("Scanning the input string: \"%s\"" % data)
     # Tokenize
     while True:
         tok = first_order_lexer.token()
         if not tok:
             break      # No more input
-        print tok
+        print(tok)
 
 
-    print "Parsing of the input string: \"%s\"" % data
+    print("Parsing of the input string: \"%s\"" % data)
     result = first_order_parser.parse(data)
-    print result
+    print(result)
 
 
 
