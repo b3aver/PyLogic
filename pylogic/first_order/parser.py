@@ -64,7 +64,7 @@ def t_RELATION(t):
             t.type = 'LETTER'
     return t
 
-    
+
 def t_FUNCTION(t):
     r'[a-z]([A-Za-z]|[0-9]|[_-])*'
     if not next_char_is(t, '('):
@@ -94,8 +94,6 @@ t_COMMA = r','
 
 
 
-
-
 # Define a rule so we can track line numbers
 def t_newline(t):
     r'\n+'
@@ -119,8 +117,6 @@ first_order_lexer = lex.lex()
 # Parser
 #
 #
-
-
 import ply.yacc as yacc
 from .first_order_logic import *
 import sys
@@ -141,7 +137,7 @@ Unique parsing
            | LPAREN EXIST variable RPAREN formula
            | LPAREN ALL variable RPAREN formula
            | relation
-           
+
    relation : RELATION LPAREN termslist RPAREN
 
    termslist : term
@@ -155,7 +151,7 @@ Unique parsing
 
    constant : CONSTANT
 
-   function : FUNCTION LPAREN termslist RPAREN   
+   function : FUNCTION LPAREN termslist RPAREN
 '''
 def p_begin(p):
     '''begin : formula
@@ -227,8 +223,8 @@ def p_term(p):
             | constant
             | function'''
     p[0] = p[1]
-   
- 
+
+
 def p_variable(p):
     '''variable : VARIABLE'''
     p[0] = Variable(p[1])
@@ -260,7 +256,7 @@ if __name__ == "__main__":
     data = '''(A & B) -> A'''
     data = '(A(x) -> c(x,y) <-> o(x,y))'
     data = '(F(c(x,y))) <-> (A(x) & F(y))'
-    
+
     # Give the lexer some input
     first_order_lexer.input(data)
 
@@ -271,7 +267,6 @@ if __name__ == "__main__":
         if not tok:
             break      # No more input
         print(tok)
-
 
     print("Parsing of the input string: \"%s\"" % data)
     result = first_order_parser.parse(data)

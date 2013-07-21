@@ -53,7 +53,7 @@ class Formula():
                 raise Exception("Wrong connective: " + args[0])
             subformula1 = args[1]
             subformula2 = args[2]
-                
+
         self.connective = connective
         self.subformula1 = subformula1
         self.subformula2 = subformula2
@@ -69,8 +69,8 @@ class Formula():
             return "(%s %s %s)" % (str(self.subformula1), \
                                        logic.CONN[self.connective], \
                                        str(self.subformula2))
-        
-        
+
+
     def is_alpha(self):
         """Check if the Formula is an alpha formula."""
         if self.connective == None:
@@ -81,8 +81,8 @@ class Formula():
             return True
         else:
             return False
-        
-        
+
+
     def is_beta(self):
         """Check if the Formula is a beta formula."""
         if self.connective == None:
@@ -94,7 +94,7 @@ class Formula():
         else:
             return False
 
-        
+
     def is_literal(self):
         """Check if the formula is a literal,
         namely an atomic formula or the negation of an atomic formula."""
@@ -184,7 +184,7 @@ class Formula():
     def cnf(self):
         '''Return the current Formula in Conjunctive Normal Form'''
         return Generalization("and", [Generalization("or", [self])]).cnf()
-        
+
 
 
 class Generalization():
@@ -208,7 +208,7 @@ class Generalization():
         self.connective = connective
         self.list = formulas
 
-    
+
     def __str__(self):
         if self.connective == "and":
             ret = "< "
@@ -225,7 +225,7 @@ class Generalization():
             ret += " >"
         elif self.connective == "or":
             ret += " ]"
-        return ret    
+        return ret
 
 
     def has_non_literal(self):
@@ -283,7 +283,7 @@ class Generalization():
                     return non_literal
                 # else: ignore it
         return None
-        
+
 
     def cnf_action(self):
         """Take a clause and return a list of clauses in cnf."""
@@ -293,7 +293,7 @@ class Generalization():
         # basis case
         if not self.has_non_literal():
             return [self]
-        
+
         # recursive case
         (_, position) = self.get_parent_non_literal()
         member = self.list[position]
@@ -302,11 +302,11 @@ class Generalization():
             (beta1, beta2) = member.components()
             self.list.pop(position)               # remove old
             self.insert(position, [beta1, beta2]) # insert beta1 e beta2
-            return self.cnf_action() 
+            return self.cnf_action()
         elif member.is_alpha():
             (alpha1, alpha2) = member.components()
             self.list.pop(position)            # remove old
-            clause1 = self                     # split 
+            clause1 = self                     # split
             clause2 = copy.deepcopy(self)      # split
             clause1.insert(position, [alpha1]) # insert alpha1
             clause2.insert(position, [alpha2]) # insert alpha2
@@ -326,7 +326,7 @@ class Generalization():
                 elif subformula.subformula1 == logic.BOTTOM:
                     # !bottom
                     self.list[position] = Formula(logic.TOP)
-            return self.cnf_action()        
+            return self.cnf_action()
 
 
     def insert(self, index, elements):
@@ -335,10 +335,9 @@ class Generalization():
         for element in elements:
             self.list.insert(i, element)
             i += 1
-            
-        
 
-               
+
+
     def cnf(self):
         """Return the current Generalization in Conjunctive Normal Form"""
 
@@ -347,18 +346,17 @@ class Generalization():
                 or self.list[0].connective != "or"\
                 or len(self.list[0].list) != 1:
             raise Exception("Wrong type of generalization")
-        
+
         # < [ ( X | !X ) , () ] , [ ... ] >
         #    conj       < ... >
         #    clause     [ ... ]
         #    member     ( ... )
         #    subformula X, !X
-        
+
         # breadth-first
         # first beta
         # then alpha
 
-        
         # deep-first
         # resolve a non literal deeply
         # take a clause with non-literal and return a list of clauses in cnf
@@ -370,8 +368,6 @@ class Generalization():
 
 if __name__ == "__main__" :
     # Tests
-
-
     print("======   Formula   ======")
     formula = Formula("&",
                       Formula("|",Formula("X"), Formula("Y")),
@@ -398,10 +394,10 @@ if __name__ == "__main__" :
     print("====== Generalizations ======")
     disjunction = Generalization("or", [formula])
     print(disjunction)
-    
+
     disjunction2 = Generalization("and", [formula, disjunction, formula2])
     print(disjunction2)
-    
+
 
     print("%s\n   has non-literal? %s" % (disjunction2,
                                           disjunction2.has_non_literal()))
@@ -439,7 +435,7 @@ if __name__ == "__main__" :
     print("   and is in %s at %s" % disjunction4.get_parent_non_literal())
 
 
-    
+
     print("======     CNF     ======")
     formula1 = Formula("not", Formula("A"))
     print(formula1)
@@ -448,11 +444,11 @@ if __name__ == "__main__" :
     formula2 = Formula("not", Formula("not", Formula("A")))
     print(formula2)
     print(" "*3, formula2.cnf())
-    
+
     formula3 = Formula("or", Formula("A"), Formula("B"))
     print(formula3)
     print(" "*3, formula3.cnf())
-    
+
     formula4 = Formula("and", Formula("A"), Formula("B"))
     print(formula4)
     print(" "*3, formula4.cnf())
@@ -466,4 +462,3 @@ if __name__ == "__main__" :
 
     print(formula.negate())
     print(" "*3, formula.negate().cnf())
-

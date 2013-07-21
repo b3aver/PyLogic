@@ -11,12 +11,12 @@ class Variable():
     '''Variable'''
     def __init__(self, var):
         self.var = var
-        
+
 
     def __str__(self):
         return self.var
 
-        
+
 
 class Constant():
     '''Constant'''
@@ -26,7 +26,7 @@ class Constant():
 
     def __str__(self):
         return self.const
-        
+
 
 
 class Relation():
@@ -47,10 +47,9 @@ class Relation():
         #string = self.symbol + '('
         parameters = ''
         for par in self.parameters:
-            parameters += par.__str__() + ', '            
+            parameters += par.__str__() + ', '
         if parameters != '':
             parameters = parameters[:-2]
-        
         return '%s(%s)' % (self.symbol, parameters)
 
 
@@ -73,10 +72,9 @@ class Function():
         #string = self.symbol + '('
         parameters = ''
         for par in self.parameters:
-            parameters += par.__str__() + ', '            
+            parameters += par.__str__() + ', '
         if parameters != '':
             parameters = parameters[:-2]
-        
         return '%s(%s)' % (self.name, parameters)
 
 
@@ -181,7 +179,6 @@ class Formula():
 
 
 if __name__ == '__main__':
-    
     print(Variable('x'))
     print(Constant('c'))
     print(Relation('A', Variable('y'), Variable('y')))

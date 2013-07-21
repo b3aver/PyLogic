@@ -46,7 +46,6 @@ propositional_lexer = lex.lex()
 # Parser
 #
 #
-
 import ply.yacc as yacc
 from .propositional_logic import Formula
 import sys
@@ -94,7 +93,6 @@ def p_formula_connective_nopar(p):
     # p[0] = "%s %s %s" % (p[1], p[2], p[3])
 
 
-
 # Error rule for syntax errors
 def p_error(p):
     print("Syntax error in input!")
@@ -106,13 +104,12 @@ propositional_parser = yacc.yacc()
 
 
 if __name__ == "__main__":
-
     # Test the lexer
     data = '''(A & B) -> A'''
-    
+
     # Give the lexer some input
     propositional_lexer.input(data)
-    
+
     # Tokenize
     while True:
         tok = propositional_lexer.token()
