@@ -50,8 +50,7 @@ propositional_lexer = lex.lex()
 import ply.yacc as yacc
 from .propositional_logic import Formula
 import sys
-sys.path.append("..")
-import logic
+from pylogic import logic
 
 
 

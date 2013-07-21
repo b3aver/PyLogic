@@ -1,24 +1,15 @@
-#!/usr/bin/python3
-
-
-#from PyQt4 import *
-#from PyQt4 import QtGui
-
-#from form import *
 import sys
 import string
-# for file checks
-import os.path
-
+import os.path  # for file checks
 
 from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import *
 
-from MainWindow import Ui_MainWindow
-from AboutBox import Ui_Dialog
+from .MainWindow import Ui_MainWindow
+from .AboutBox import Ui_Dialog
 
-from propositional.parser import propositional_parser, propositional_lexer
-from first_order.parser import first_order_parser, first_order_lexer
+from ..propositional.parser import propositional_parser, propositional_lexer
+from ..first_order.parser import first_order_parser, first_order_lexer
 
 
 
@@ -111,22 +102,7 @@ class MyAboutBox(QDialog):
 
 
 
-class OutputTextEdit(QPlainTextEdit):
-    def __init__(self, parent=None):
-        QPlainTextEdit.__init__(self, parent)
-
-    def write(self, txt):
-        sys.__stdout__.write(txt+'\n')
-        sys.__stdout__.flush()
-        #self.appendPlainText(QString(string.rstrip(txt, '\n')))
-        self.moveCursor(QTextCursor.End)
-        self.insertPlainText(txt.rstrip('\n')+'\n')
-        self.moveCursor(QTextCursor.End)
-        self.ensureCursorVisible()
-
-
-
-if __name__ == "__main__":
+def start():
     app = QApplication(sys.argv)
     window = MyMainWindow() #Window()
     app.setWindowIcon(QIcon('img/logo.svg'))

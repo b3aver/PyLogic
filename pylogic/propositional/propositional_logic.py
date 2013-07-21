@@ -4,8 +4,7 @@ import copy
 
 
 import sys
-sys.path.append("..")
-import logic
+from pylogic import logic
 
 
 

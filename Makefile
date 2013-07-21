@@ -2,27 +2,27 @@
 PROJECT = PyLogic
 
 
-all: gui.py compile
-	./gui.py
+all: pylogic.py compile
+	./pylogic.py
 
 
-compile: MainWindow.py AboutBox.py
+compile: pylogic/gui/MainWindow.py pylogic/gui/AboutBox.py
 
 
-MainWindow.py: mainwindow.ui
-	pyuic4 --pyqt3-wrapper mainwindow.ui > MainWindow.py
+pylogic/gui/MainWindow.py: pylogic/gui/mainwindow.ui
+	pyuic4 --pyqt3-wrapper pylogic/gui/mainwindow.ui > pylogic/gui/MainWindow.py
 
-AboutBox.py: aboutBox.ui
-	pyuic4 --pyqt3-wrapper aboutBox.ui > AboutBox.py
+pylogic/gui/AboutBox.py: pylogic/gui/aboutBox.ui
+	pyuic4 --pyqt3-wrapper pylogic/gui/aboutBox.ui > pylogic/gui/AboutBox.py
 
 
 clean:
-	-@rm MainWindow.py AboutBox.py
-	-@rm parser.out parsetab.py
-	-@rm propositional/parser.out propositional/parsetab.py
-	-@rm first_order/parser.out first_order/parsetab.py
-	-@rm *pyc propositional/*pyc first_order/*pyc
-	-@rm -R __pycache__ propositional/__pycache__ first_order/__pycache__
+	-@rm pylogic/gui/MainWindow.py pylogic/gui/AboutBox.py
+	-@rm pylogic/parser.out pylogic/parsetab.py
+	-@rm pylogic/propositional/parser.out pylogic/propositional/parsetab.py
+	-@rm pylocic/first_order/parser.out pylogic/first_order/parsetab.py
+	-@rm *pyc pylogic/propositional/*pyc pylogic/first_order/*pyc
+	-@rm -R __pycache__ pylogic/__pycache__ pylogic/propositional/__pycache__ pylogic/first_order/__pycache__ pylogic/gui/__pycache__
 
 
 documentation:

@@ -124,8 +124,7 @@ first_order_lexer = lex.lex()
 import ply.yacc as yacc
 from .first_order_logic import *
 import sys
-sys.path.append("..")
-import logic
+from pylogic import logic
 
 
 

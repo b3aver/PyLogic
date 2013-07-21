@@ -32,5 +32,5 @@ re_CONSTANT = r'c[0-9]*'
 
 
 # logics that use this constants
-import propositional.propositional_logic
-import first_order.first_order_logic
+# import pylogic.propositional.propositional_logic
+# import pylogic.first_order.first_order_logic
