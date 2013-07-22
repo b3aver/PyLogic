@@ -1,5 +1,5 @@
 import unittest
-from pylogic.propositional.propositional_logic import Formula
+from pylogic.propositional.propositional_logic import Formula, Generalization
 
 
 class TestFormula(unittest.TestCase):
@@ -194,6 +194,67 @@ class TestFormula(unittest.TestCase):
         self.assertIsNot(atom1, formula.nnf().subformula1)
         self.assertIsNot(atom2, formula.nnf().subformula2)
 
+
+
+class TestGeneralization(unittest.TestCase):
+    def setUp(self):
+        self.f1 = Formula("&", Formula("X"), Formula("Y"))
+        self.f2 = Formula("|", Formula("X"), Formula("Y"))
+        # self.g1 = Generalization("and", [self.f1, self.f2])
+        # self.g2 = Generalization("or", [self.f1, Formula("Z"),
+        #                                 Formula("!", Formula("Y")), self.f2])
+
+
+    def test_init_wrong_connective(self):
+        self.assertRaises(Exception, Generalization, "!", [self.f1, self.f2])
+        self.assertRaises(Exception, Generalization, "=>", [self.f1, self.f2])
+        self.assertRaises(Exception, Generalization, "!&", [self.f1, self.f2])
+
+    def test_init_wrong_formulas(self):
+        self.assertRaises(Exception, Generalization, "&", self.f1)
+        self.assertRaises(Exception, Generalization, "&", ["hello", "world"])
+
+    def test_init_and(self):
+        gen = Generalization("and", [self.f1, self.f2])
+        self.assertEqual("and", gen.connective)
+        self.assertEqual([self.f1, self.f2], gen.list)
+        gen2 = Generalization("&", [self.f1, self.f2])
+        self.assertEqual("and", gen2.connective)
+        self.assertEqual([self.f1, self.f2], gen2.list)
+
+    def test_init_or(self):
+        gen = Generalization("or", [self.f1, self.f2])
+        self.assertEqual("or", gen.connective)
+        self.assertEqual([self.f1, self.f2], gen.list)
+        gen2 = Generalization("|", [self.f1, self.f2])
+        self.assertEqual("or", gen2.connective)
+        self.assertEqual([self.f1, self.f2], gen2.list)
+
+    def test_init_empty(self):
+        gen = Generalization("or", [])
+        self.assertEqual("or", gen.connective)
+        self.assertEqual([], gen.list)
+
+
+    def test_str(self):
+        exp = "<%s , %s>" % (str(self.f1), str(self.f2))
+        self.assertEqual(exp, str(Generalization("&", [self.f1, self.f2])))
+        exp2 = "[%s , %s]" % (str(self.f1), str(self.f2))
+        self.assertEqual(exp2, str(Generalization("or", [self.f1, self.f2])))
+
+
+    def test_has_non_literal(self):
+        g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
+        g2 = Generalization("or", [Formula("Z"), Formula("!", Formula("Y"))])
+        g3 = Generalization("or", [])
+        self.assertTrue(g1.has_non_literal)
+        self.assertFalse(g2.has_non_literal)
+        self.assertFalse(g3.has_non_literal)
+
+
+    def test_get_non_literal(self):
+        g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
+        self.assertIs(self.f1, g1.get_non_literal())
 
 
 if __name__ == '__main__':

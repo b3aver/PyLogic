@@ -201,7 +201,7 @@ class Formula():
 
 
 class Generalization():
-    """Class that represents a generalized disjunction of conjunction."""
+    """Class that represents a generalized disjunction or conjunction."""
 
     def __init__(self, connective, formulas):
         """ Constructor of a Generalization.
@@ -223,6 +223,7 @@ class Generalization():
 
 
     def __str__(self):
+        ret = ""
         if self.connective == "and":
             ret = "< "
         elif self.connective == "or":
