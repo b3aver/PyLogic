@@ -210,6 +210,7 @@ class Generalization():
             connective -- determines the type of Generalization,
                           admitted values "and", "or", "&", "|"
             formulas -- list of the formulas in the Generalization
+                        or a Generalization
         """
         if connective != "and"\
                 and connective != "or"\
@@ -217,7 +218,15 @@ class Generalization():
                 and connective != logic.CONN["or"]:
             raise Exception("Wrong connective: " + connective)
         if  not isinstance(formulas, list):
-            raise Exception("Second argument must be a list")
+            raise Exception("Wrong formula")
+        for item in formulas:
+            if (not isinstance(item, Generalization)) \
+                    and (not isinstance(item, Formula)):
+                raise Exception("Wrong formula")
+        if connective == logic.CONN["and"]:
+            connective = "and"
+        elif connective == logic.CONN["or"]:
+            connective = "or"
         self.connective = connective
         self.list = formulas
 

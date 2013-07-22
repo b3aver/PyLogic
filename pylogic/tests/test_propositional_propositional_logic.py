@@ -237,9 +237,9 @@ class TestGeneralization(unittest.TestCase):
 
 
     def test_str(self):
-        exp = "<%s , %s>" % (str(self.f1), str(self.f2))
+        exp = "< %s , %s >" % (str(self.f1), str(self.f2))
         self.assertEqual(exp, str(Generalization("&", [self.f1, self.f2])))
-        exp2 = "[%s , %s]" % (str(self.f1), str(self.f2))
+        exp2 = "[ %s , %s ]" % (str(self.f1), str(self.f2))
         self.assertEqual(exp2, str(Generalization("or", [self.f1, self.f2])))
 
 
@@ -248,8 +248,8 @@ class TestGeneralization(unittest.TestCase):
         g2 = Generalization("or", [Formula("Z"), Formula("!", Formula("Y"))])
         g3 = Generalization("or", [])
         self.assertTrue(g1.has_non_literal)
-        self.assertFalse(g2.has_non_literal)
-        self.assertFalse(g3.has_non_literal)
+        self.assertFalse(g3.has_non_literal())
+        self.assertFalse(g2.has_non_literal())
 
 
     def test_get_non_literal(self):
