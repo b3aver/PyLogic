@@ -59,7 +59,6 @@ class Formula():
         self.subformula2 = subformula2
 
 
-
     def __str__(self):
         if self.connective == None:
             return self.subformula1
@@ -69,6 +68,20 @@ class Formula():
             return "(%s %s %s)" % (str(self.subformula1), \
                                        logic.CONN[self.connective], \
                                        str(self.subformula2))
+
+
+    def __eq__(self, other):
+        if type(other) != Formula:
+            return False
+        if self.connective == None and other.connective == None:
+            return self.subformula1 == other.subformula1
+        else:
+            return self.connective == other.connective \
+                and self.subformula1 == other.subformula1 \
+                and self.subformula2 == other.subformula2
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
 
 
     def is_alpha(self):
@@ -129,7 +142,7 @@ class Formula():
             ret = (self, None)
         if self.connective == "not":
             if self.subformula1.subformula2 == None:
-                # letteral
+                # literal
                 ret = (self, None)
             else:
                 (comp1, comp2) = self.subformula1.components()

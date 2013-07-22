@@ -21,7 +21,7 @@ documentation:
 	mv packages_${PROJECT}.jpg doc
 
 test:
-	nosetests
+	nosetests3
 
 pylogic/gui/MainWindow.py: pylogic/gui/mainwindow.ui
 	pyuic4 --pyqt3-wrapper pylogic/gui/mainwindow.ui > pylogic/gui/MainWindow.py
