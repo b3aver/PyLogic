@@ -1,8 +1,7 @@
 '''Definition of the Propositional Logic: Formulas and Generalizations'''
 
 import copy
-
-
+import re
 import sys
 from pylogic import logic
 
@@ -31,26 +30,36 @@ class Formula():
                 subformula
         """
         if len(args) == 1:
+            letter = args[0]
+            regex = re.compile("[A-Z]")
+            if not regex.match(letter):
+                raise Exception("Wrong formula: " + letter)
             connective = None
-            subformula1 = args[0]
+            subformula1 = letter
             subformula2 = None
         elif len(args) == 2:
             if args[0] != "not" and args[0] != logic.CONN["not"]:
                 raise Exception("Wrong connective: " + args[0])
+            if not isinstance(args[1], Formula):
+                raise Exception("Wrong formula: " + args[1])
             connective = "not"
             subformula1 = args[1]
             subformula2 = None
         else:
-            if args[0] in list(logic.CONN.values()):
+            if args[0] in list(set(logic.CONN.values()) - set("!")):
                 connective = [ item[0]
                                for item
                                in list(logic.CONN.items())
                                if item[1] == args[0]
                                ][0]
-            elif args[0] in list(logic.CONN.keys()):
+            elif args[0] in list(set(logic.CONN.keys()) - set("not")):
                 connective = args[0]
             else:
                 raise Exception("Wrong connective: " + args[0])
+            if not isinstance(args[1], Formula):
+                raise Exception("Wrong formula: " + args[1])
+            if not isinstance(args[2], Formula):
+                raise Exception("Wrong formula: " + args[2])
             subformula1 = args[1]
             subformula2 = args[2]
 

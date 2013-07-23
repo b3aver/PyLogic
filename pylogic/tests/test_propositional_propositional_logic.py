@@ -362,10 +362,11 @@ class TestGeneralization(unittest.TestCase):
 
     def test_cnf(self):
         g1 = Generalization("or", [
-                Formula("&", "X", Formula("!", Formula("Y")))])
+                Formula("&", Formula("X"), Formula("!", Formula("Y")))])
         g2 = Generalization("and", [
                 Generalization("or", [
-                        Formula("&", "X", Formula("!", Formula("Y")))])])
+                        Formula("&", Formula("X"),
+                                Formula("!", Formula("Y")))])])
         self.assertEqual(Generalization("and", g1.cnf_action()), g2.cnf())
 
 
