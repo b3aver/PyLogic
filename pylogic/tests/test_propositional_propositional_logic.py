@@ -3,39 +3,59 @@ from pylogic.propositional.propositional_logic import Formula, Generalization
 
 
 class TestFormula(unittest.TestCase):
+    def setUp(self):
+        self.a1 = Formula("X")
+        self.a2 = Formula("Y")
+
+
     def test_init_atomic(self):
         formula = Formula("X")
         self.assertIsInstance(formula, Formula)
-        self.assertEqual("X", str(formula))
+        self.assertEqual(None, formula.connective)
+        self.assertEqual("X", formula.subformula1)
 
     def test_init_atomic_wrong(self):
         self.assertRaises(Exception, Formula, "!")
 
     def test_init_unary(self):
-        formula = Formula("!", Formula("X"))
+        formula = Formula("!", self.a1)
         self.assertIsInstance(formula, Formula)
-        self.assertEqual("!X", str(formula))
+        self.assertEqual("not", formula.connective)
+        self.assertEqual(self.a1, formula.subformula1)
 
     def test_init_unary_wrong(self):
         self.assertRaises(Exception, Formula, "&", Formula("X"))
         self.assertRaises(Exception, Formula, "!", "X")
 
     def test_init_binary(self):
-        formula = Formula("&", Formula("X"), Formula("Y"))
+        formula = Formula("&", self.a1, self.a2)
         self.assertIsInstance(formula, Formula)
-        self.assertEqual("(X & Y)", str(formula))
+        self.assertEqual("and", formula.connective)
+        self.assertEqual(self.a1, formula.subformula1)
+        self.assertEqual(self.a2, formula.subformula2)
 
     def test_init_binary_wrong(self):
         self.assertRaises(Exception, Formula, "&", "X", "Y")
         self.assertRaises(Exception, Formula, "?", Formula("X"), Formula("Y"))
         self.assertRaises(Exception, Formula, "!", Formula("X"), Formula("Y"))
 
-    def test_init_complex(self):
+
+    def test_str_atomic(self):
+        self.assertEqual("X", str(self.a1))
+
+    def test_str_unary(self):
+        formula = Formula("!", self.a1)
+        self.assertEqual("!X", str(formula))
+
+    def test_str_binary(self):
+        formula = Formula("&", self.a1, self.a2)
+        self.assertEqual("(X & Y)", str(formula))
+
+    def test_str_complex(self):
         formula = Formula("&",
                           Formula("|",Formula("X"), Formula("Y")),
                           Formula("!", Formula("Y"))
                           )
-        self.assertIsInstance(formula, Formula)
         self.assertEqual("((X | Y) & !Y)", str(formula))
 
 
@@ -156,9 +176,8 @@ class TestFormula(unittest.TestCase):
 
 
     def test_nnf_atomic(self):
-        formula = Formula("X")
-        self.assertIsNot(formula, formula.nnf())
-        self.assertEqual(formula, formula.nnf())
+        self.assertIsNot(self.a1, self.a1.nnf())
+        self.assertEqual(self.a1, self.a1.nnf())
 
     def test_nnf_unary_literal(self):
         formula = Formula("!", Formula("X"))
@@ -166,33 +185,28 @@ class TestFormula(unittest.TestCase):
         self.assertEqual(formula, formula.nnf())
 
     def test_nnf_unary(self):
-        atom1 = Formula("X")
-        atom2 = Formula("Y")
-        sub = Formula("&", atom1, atom2)
+        sub = Formula("&", self.a1, self.a2)
         formula = Formula("!", sub)
         exp = Formula("|",
                       Formula("!", Formula("X")),
                       Formula("!", Formula("Y")))
         self.assertEqual(exp, formula.nnf())
-        self.assertIsNot(atom1, formula.nnf().subformula1.subformula1)
-        self.assertIsNot(atom2, formula.nnf().subformula2.subformula1)
+        self.assertIsNot(self.a1, formula.nnf().subformula1.subformula1)
+        self.assertIsNot(self.a2, formula.nnf().subformula2.subformula1)
 
     def test_nnf_not_not(self):
-        sub = Formula("X")
-        formula = Formula("!", Formula("!", sub))
-        self.assertIsNot(sub, formula.nnf())
-        self.assertEqual(sub, formula.nnf())
+        formula = Formula("!", Formula("!", self.a1))
+        self.assertIsNot(self.a1, formula.nnf())
+        self.assertEqual(self.a1, formula.nnf())
 
     def test_nnf_binary(self):
-        atom1 = Formula("X")
-        atom2 = Formula("Y")
-        sub1 = Formula("!", Formula("!", atom1))
-        sub2 = Formula("!", Formula("!", atom2))
+        sub1 = Formula("!", Formula("!", self.a1))
+        sub2 = Formula("!", Formula("!", self.a2))
         formula = Formula("&", sub1, sub2)
-        exp = Formula("&", atom1, atom2)
+        exp = Formula("&", self.a1, self.a2)
         self.assertEqual(exp, formula.nnf())
-        self.assertIsNot(atom1, formula.nnf().subformula1)
-        self.assertIsNot(atom2, formula.nnf().subformula2)
+        self.assertIsNot(self.a1, formula.nnf().subformula1)
+        self.assertIsNot(self.a2, formula.nnf().subformula2)
 
 
 
@@ -255,6 +269,7 @@ class TestGeneralization(unittest.TestCase):
     def test_get_non_literal(self):
         g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
         self.assertIs(self.f1, g1.get_non_literal())
+
 
 
 if __name__ == '__main__':
