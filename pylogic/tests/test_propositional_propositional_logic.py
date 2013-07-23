@@ -256,6 +256,23 @@ class TestGeneralization(unittest.TestCase):
         exp2 = "[ %s , %s ]" % (str(self.f1), str(self.f2))
         self.assertEqual(exp2, str(Generalization("or", [self.f1, self.f2])))
 
+    def test_eq_ne(self):
+        g1 = Generalization("and", [self.f1, self.f2])
+        g12 = Generalization("and", [self.f1, self.f2])
+        g13 = Generalization("and", [self.f1])
+        g2 = Generalization("or", [self.f1, self.f2])
+        g22 = Generalization("or", [self.f1, self.f2])
+        g3 = Generalization("or", [g1])
+        g32 = Generalization("or", [g1])
+        g33 = Generalization("or", [g13])
+        self.assertEqual(g1, g12)
+        self.assertEqual(g2, g22)
+        self.assertEqual(g3, g32)
+        self.assertNotEqual(g1, g2)
+        self.assertNotEqual(g1, g13)
+        self.assertNotEqual(g2, g3)
+        self.assertNotEqual(g3, g1)
+
 
     def test_has_non_literal(self):
         g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
@@ -270,6 +287,16 @@ class TestGeneralization(unittest.TestCase):
         g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
         self.assertIs(self.f1, g1.get_non_literal())
 
+
+    def test_get_parent_non_literal(self):
+        g1 = Generalization("or",[
+                self.f1,
+                Generalization("and", [self.f1]),
+                Generalization("and", [self.f1, Formula("Z"), self.f2])
+                ])
+        (p, i) = g1.get_parent_non_literal()
+        print(str(g1), i, str(p), sep = "\n")
+        self.assertIs(self.f1, g1.get_parent_non_literal())
 
 
 if __name__ == '__main__':

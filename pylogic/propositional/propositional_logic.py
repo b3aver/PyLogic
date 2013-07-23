@@ -251,6 +251,12 @@ class Generalization():
         return ret
 
 
+    def __eq__(self, other):
+        return self.connective == other.connective and self.list == other.list
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def has_non_literal(self):
         """Check if in the list of formulas there are non-literal formulas."""
         if len(self.list) == 0:
