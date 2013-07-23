@@ -88,6 +88,24 @@ class TestFormula(unittest.TestCase):
         self.assertTrue(self.fand1.is_alpha())
         self.assertFalse(self.for1.is_alpha())
 
+    def test_is_alpha_not_not_not_literal(self):
+        f1 = self.l1.negate().negate()
+        f2 = self.l1.negate().negate().negate()
+        self.assertFalse(f1.is_alpha())
+        self.assertFalse(f2.is_alpha())
+
+    def test_is_alpha_not_not_not_alpha(self):
+        f1 = self.fand1.negate()
+        f2 = self.fand1.negate().negate()
+        self.assertFalse(f1.is_alpha())
+        self.assertTrue(f2.is_alpha())
+
+    def test_is_alpha_not_not_not_beta(self):
+        f1 = self.for1.negate()
+        f2 = self.for1.negate().negate()
+        self.assertTrue(f1.is_alpha())
+        self.assertFalse(f2.is_alpha())
+
 
     def test_is_beta_atomic(self):
         self.assertFalse(self.a1.is_beta())
@@ -102,6 +120,24 @@ class TestFormula(unittest.TestCase):
     def test_is_beta_binary(self):
         self.assertFalse(self.fand1.is_beta())
         self.assertTrue(self.for1.is_beta())
+
+    def test_is_beta_not_not_not_literal(self):
+        f1 = self.l1.negate().negate()
+        f2 = self.l1.negate().negate().negate()
+        self.assertFalse(f1.is_beta())
+        self.assertFalse(f2.is_beta())
+
+    def test_is_beta_not_not_not_alpha(self):
+        f1 = self.fand1.negate()
+        f2 = self.fand1.negate().negate()
+        self.assertTrue(f1.is_beta())
+        self.assertFalse(f2.is_beta())
+
+    def test_is_beta_not_not_not_beta(self):
+        f1 = self.for1.negate()
+        f2 = self.for1.negate().negate()
+        self.assertFalse(f1.is_beta())
+        self.assertTrue(f2.is_beta())
 
 
     def test_is_literal_atomic(self):
@@ -216,12 +252,12 @@ class TestFormula(unittest.TestCase):
         exp = Generalization("and", [Generalization("or", [self.a1])])
         self.assertEqual(exp, Formula("!", self.l1).cnf())
 
-    def test_cnf_top(self):
+    def test_cnf_not_top(self):
         formula = Formula("!", Formula("T"))
         exp = Generalization("and", [Generalization("or", [Formula("F")])])
         self.assertEqual(exp, formula.cnf())
 
-    def test_cnf_bottom(self):
+    def test_cnf_not_bottom(self):
         formula = Formula("!", Formula("F"))
         exp = Generalization("and", [Generalization("or", [Formula("T")])])
         self.assertEqual(exp, formula.cnf())

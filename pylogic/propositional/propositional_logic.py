@@ -88,24 +88,57 @@ class Formula():
         """Check if the Formula is an alpha formula."""
         if self.connective == None:
             return False
-        elif self.connective == "not":
-            return not self.subformula1.is_alpha()
         elif self.connective in logic.CONJ:
             return True
-        else:
+        elif self.connective in logic.DISJ:
             return False
+        # jump the nots
+        connective = self.connective # == "not"
+        subformula = self.subformula1
+        bool_value = False
+        while connective == "not":
+            next_connective = subformula.connective
+            # base cases
+            if next_connective == None:
+                return False
+            if next_connective != "not":
+                if bool_value:
+                    return subformula.is_alpha()
+                else:
+                    return not subformula.is_alpha()
+            # recursion (next_connective == "not")
+            connective = next_connective
+            subformula = subformula.subformula1
+            bool_value = not bool_value
 
 
     def is_beta(self):
         """Check if the Formula is a beta formula."""
         if self.connective == None:
             return False
-        elif self.connective == "not":
-            return not self.subformula1.is_beta()
         elif self.connective in logic.DISJ:
             return True
-        else:
+        elif self.connective in logic.CONJ:
             return False
+        # jump the nots
+        connective = self.connective # == "not"
+        subformula = self.subformula1
+        bool_value = False
+        while connective == "not":
+            next_connective = subformula.connective
+            # base cases
+            if next_connective == None:
+                return False
+            if next_connective != "not":
+                if bool_value:
+                    return subformula.is_beta()
+                else:
+                    return not subformula.is_beta()
+            # recursion (next_connective == "not")
+            connective = next_connective
+            subformula = subformula.subformula1
+            bool_value = not bool_value
+
 
 
     def is_literal(self):
@@ -113,7 +146,10 @@ class Formula():
         namely an atomic formula or the negation of an atomic formula."""
         if self.connective == None:
             return True
-        elif self.connective == "not" and self.subformula1.connective == None:
+        elif self.connective == "not" \
+                and self.subformula1.connective == None \
+                and self.subformula1.subformula1 != logic.TOP \
+                and self.subformula1.subformula1 != logic.BOTTOM:
             return True
         else:
             return False
