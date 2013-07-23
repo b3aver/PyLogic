@@ -6,6 +6,9 @@ class TestFormula(unittest.TestCase):
     def setUp(self):
         self.a1 = Formula("X")
         self.a2 = Formula("Y")
+        self.l1 = Formula("!", Formula("X"))
+        self.fand1 = Formula("&", Formula("X"), Formula("Y"))
+        self.for1 = Formula("|", Formula("X"), Formula("Y"))
 
 
     def test_init_atomic(self):
@@ -44,19 +47,14 @@ class TestFormula(unittest.TestCase):
         self.assertEqual("X", str(self.a1))
 
     def test_str_unary(self):
-        formula = Formula("!", self.a1)
-        self.assertEqual("!X", str(formula))
+        self.assertEqual("!X", str(self.l1))
 
     def test_str_binary(self):
-        formula = Formula("&", self.a1, self.a2)
-        self.assertEqual("(X & Y)", str(formula))
+        self.assertEqual("(X & Y)", str(self.fand1))
 
     def test_str_complex(self):
-        formula = Formula("&",
-                          Formula("|",Formula("X"), Formula("Y")),
-                          Formula("!", Formula("Y"))
-                          )
-        self.assertEqual("((X | Y) & !Y)", str(formula))
+        formula = Formula("&", self.for1, self.l1)
+        self.assertEqual("((X | Y) & !X)", str(formula))
 
 
     def test_eq_ne_atomic(self):
@@ -77,102 +75,84 @@ class TestFormula(unittest.TestCase):
 
 
     def test_is_alpha_atomic(self):
-        formula1 = Formula("X")
-        self.assertEqual(False, formula1.is_alpha())
+        self.assertEqual(False, self.a1.is_alpha())
 
     def test_is_alpha_unary(self):
-        formula1 = Formula("!", Formula("X"))
-        self.assertEqual(False, formula1.is_alpha())
-        formula2 = Formula("!", Formula("&", Formula("X"), Formula("Y")))
+        self.assertEqual(False, self.l1.is_alpha())
+        formula2 = Formula("!", self.fand1)
         self.assertEqual(False, formula2.is_alpha())
-        formula3 = Formula("!", Formula("|", Formula("X"), Formula("Y")))
+        formula3 = Formula("!", self.for1)
         self.assertEqual(True, formula3.is_alpha())
 
     def test_is_alpha_binary(self):
-        formula1 = Formula("&", Formula("X"), Formula("Y"))
-        self.assertEqual(True, formula1.is_alpha())
-        formula2 = Formula("|", Formula("X"), Formula("Y"))
-        self.assertEqual(False, formula2.is_alpha())
+        self.assertEqual(True, self.fand1.is_alpha())
+        self.assertEqual(False, self.for1.is_alpha())
 
 
     def test_is_beta_atomic(self):
-        formula1 = Formula("X")
-        self.assertEqual(False, formula1.is_beta())
+        self.assertEqual(False, self.a1.is_beta())
 
     def test_is_beta_unary(self):
-        formula1 = Formula("!", Formula("X"))
-        self.assertEqual(False, formula1.is_beta())
-        formula2 = Formula("!", Formula("&", Formula("X"), Formula("Y")))
+        self.assertEqual(False, self.l1.is_beta())
+        formula2 = Formula("!", self.fand1)
         self.assertEqual(True, formula2.is_beta())
-        formula3 = Formula("!", Formula("|", Formula("X"), Formula("Y")))
+        formula3 = Formula("!", self.for1)
         self.assertEqual(False, formula3.is_beta())
 
     def test_is_beta_binary(self):
-        formula1 = Formula("&", Formula("X"), Formula("Y"))
-        self.assertEqual(False, formula1.is_beta())
-        formula2 = Formula("|", Formula("X"), Formula("Y"))
-        self.assertEqual(True, formula2.is_beta())
+        self.assertEqual(False, self.fand1.is_beta())
+        self.assertEqual(True, self.for1.is_beta())
 
 
     def test_is_literal_atomic(self):
-        formula1 = Formula("X")
-        self.assertEqual(True, formula1.is_literal())
+        self.assertEqual(True, self.a1.is_literal())
 
     def test_is_literal_unary(self):
-        formula1 = Formula("!", Formula("X"))
-        self.assertEqual(True, formula1.is_literal())
-        formula2 = Formula("!", Formula("&", Formula("X"), Formula("Y")))
+        self.assertEqual(True, self.l1.is_literal())
+        formula2 = Formula("!", self.fand1)
         self.assertEqual(False, formula2.is_literal())
 
     def test_is_literal_binary(self):
-        formula1 = Formula("&", Formula("X"), Formula("Y"))
-        self.assertEqual(False, formula1.is_literal())
-        formula2 = Formula("|", Formula("X"), Formula("Y"))
-        self.assertEqual(False, formula2.is_literal())
+        self.assertEqual(False, self.fand1.is_literal())
+        self.assertEqual(False, self.for1.is_literal())
 
 
     def test_negate(self):
-        formula = Formula("&", Formula("X"), Formula("Y"))
-        self.assertIsInstance(formula.negate(), Formula)
-        self.assertEqual(Formula("!", Formula("&", Formula("X"), Formula("Y"))),
-                         formula.negate())
+        self.assertIsInstance(self.fand1.negate(), Formula)
+        self.assertEqual(Formula("!", self.fand1), self.fand1.negate())
 
 
     def test_complement(self):
-        formula1 = Formula("&", Formula("X"), Formula("Y"))
-        self.assertIsInstance(formula1.complement(), Formula)
-        self.assertEqual(formula1.negate(), formula1.complement())
-        formula2 = Formula("!", Formula("X"))
-        self.assertIsInstance(formula2.complement(), Formula)
-        self.assertEqual(Formula("X"), formula2.complement())
-        formula3 = Formula("X")
-        self.assertIsInstance(formula3.complement(), Formula)
-        self.assertEqual(Formula("!", Formula("X")), formula3.complement())
+        # binary
+        self.assertIsInstance(self.fand1.complement(), Formula)
+        self.assertEqual(self.fand1.negate(), self.fand1.complement())
+        # literal
+        self.assertIsInstance(self.l1.complement(), Formula)
+        self.assertEqual(self.a1, self.l1.complement())
+        # atomic
+        self.assertIsInstance(self.a1.complement(), Formula)
+        self.assertEqual(self.l1, self.a1.complement())
 
 
     def test_components_atomic(self):
-        formula = Formula("X")
-        (comp1, comp2) = formula.components()
-        self.assertIsNot(comp1, formula)
-        self.assertEqual(comp1, formula)
+        (comp1, comp2) = self.a1.components()
+        self.assertIsNot(comp1, self.a1)
+        self.assertEqual(comp1, self.a1)
         self.assertEqual(None, comp2)
 
     def test_components_unary(self):
-        formula = Formula("!", Formula("X"))
-        (comp1, comp2) = formula.components()
-        self.assertIsNot(comp1, formula)
-        self.assertEqual(comp1, formula)
+        (comp1, comp2) = self.l1.components()
+        self.assertIsNot(comp1, self.l1)
+        self.assertEqual(comp1, self.l1)
         self.assertEqual(None, comp2)
 
     def test_components_binary(self):
-        sub1 = Formula("X")
-        sub2 = Formula("Y")
-        formula = Formula("&", sub1, sub2)
+        formula = Formula("&", self.a1, self.a2)
         (comp1, comp2) = formula.components()
-        self.assertIsNot(comp1, sub1)
-        self.assertIsNot(comp2, sub2)
-        self.assertEqual(comp1, sub1)
-        self.assertEqual(comp2, sub2)
+        self.assertIsNot(comp1, self.a1)
+        self.assertIsNot(comp2, self.a2)
+        self.assertEqual(comp1, self.a1)
+        self.assertEqual(comp2, self.a2)
 
 
     def test_nnf_atomic(self):
@@ -180,9 +160,8 @@ class TestFormula(unittest.TestCase):
         self.assertEqual(self.a1, self.a1.nnf())
 
     def test_nnf_unary_literal(self):
-        formula = Formula("!", Formula("X"))
-        self.assertIsNot(formula, formula.nnf())
-        self.assertEqual(formula, formula.nnf())
+        self.assertIsNot(self.l1, self.l1.nnf())
+        self.assertEqual(self.l1, self.l1.nnf())
 
     def test_nnf_unary(self):
         sub = Formula("&", self.a1, self.a2)
@@ -207,6 +186,39 @@ class TestFormula(unittest.TestCase):
         self.assertEqual(exp, formula.nnf())
         self.assertIsNot(self.a1, formula.nnf().subformula1)
         self.assertIsNot(self.a2, formula.nnf().subformula2)
+
+
+    def test_cnf_atomic(self):
+        exp = Generalization("and", [Generalization("or", [self.a1])])
+        self.assertEqual(exp, self.a1.cnf())
+
+    def test_cnf_literal(self):
+        exp = Generalization("and", [Generalization("or", [self.l1])])
+        self.assertEqual(exp, self.l1.cnf())
+
+    def test_cnf_alpha(self):
+        exp = Generalization("and", [
+                Generalization("or", [self.a1]),
+                Generalization("or", [self.a2])])
+        self.assertEqual(exp, self.fand1.cnf())
+
+    def test_cnf_beta(self):
+        exp = Generalization("and", [Generalization("or", [self.a1, self.a2])])
+        self.assertEqual(exp, self.for1.cnf())
+
+    def test_cnf_not_not(self):
+        exp = Generalization("and", [Generalization("or", [self.a1])])
+        self.assertEqual(exp, Formula("!", self.l1).cnf())
+
+    def test_cnf_top(self):
+        formula = Formula("!", Formula("T"))
+        exp = Generalization("and", [Generalization("or", [Formula("F")])])
+        self.assertEqual(exp, formula.cnf())
+
+    def test_cnf_bottom(self):
+        formula = Formula("!", Formula("F"))
+        exp = Generalization("and", [Generalization("or", [Formula("T")])])
+        self.assertEqual(exp, formula.cnf())
 
 
 
