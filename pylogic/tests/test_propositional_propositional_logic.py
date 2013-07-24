@@ -74,70 +74,57 @@ class TestFormula(unittest.TestCase):
         self.assertNotEqual(formula1, formula4)
 
 
-    def test_is_alpha_atomic(self):
-        self.assertFalse(self.a1.is_alpha())
+    def test_is_alpha_none(self):
+        # atomic
+        self.assertIsNone(self.a1.is_alpha())
+        # literal
+        self.assertIsNone(self.l1.is_alpha())
+        # secondary connectives
+        s1 = Formula("<=>", self.a1, self.a2)
+        s2 = Formula("!=", self.a1, self.a2)
+        self.assertIsNone(s1.is_alpha())
+        self.assertIsNone(s2.is_alpha())
+        # not not
+        f1 = self.l1.negate().negate()
+        self.assertIsNone(f1.is_alpha())
+        f2 = self.fand1.negate().negate()
+        self.assertIsNone(f2.is_alpha())
+        f3 = self.for1.negate().negate()
+        self.assertIsNone(f3.is_alpha())
 
-    def test_is_alpha_unary(self):
-        self.assertFalse(self.l1.is_alpha())
-        formula2 = Formula("!", self.fand1)
-        self.assertFalse(formula2.is_alpha())
-        formula3 = Formula("!", self.for1)
-        self.assertTrue(formula3.is_alpha())
-
-    def test_is_alpha_binary(self):
+    def test_is_alpha_primary(self):
         self.assertTrue(self.fand1.is_alpha())
         self.assertFalse(self.for1.is_alpha())
-
-    def test_is_alpha_not_not_not_literal(self):
-        f1 = self.l1.negate().negate()
-        f2 = self.l1.negate().negate().negate()
+        f1 = Formula("!", self.fand1)
         self.assertFalse(f1.is_alpha())
-        self.assertFalse(f2.is_alpha())
-
-    def test_is_alpha_not_not_not_alpha(self):
-        f1 = self.fand1.negate()
-        f2 = self.fand1.negate().negate()
-        self.assertFalse(f1.is_alpha())
+        f2 = Formula("!", self.for1)
         self.assertTrue(f2.is_alpha())
 
-    def test_is_alpha_not_not_not_beta(self):
-        f1 = self.for1.negate()
-        f2 = self.for1.negate().negate()
-        self.assertTrue(f1.is_alpha())
-        self.assertFalse(f2.is_alpha())
+    def test_is_beta_none(self):
+        # atomic
+        self.assertIsNone(self.a1.is_beta())
+        # literal
+        self.assertIsNone(self.l1.is_beta())
+        # secondary connectives
+        s1 = Formula("<=>", self.a1, self.a2)
+        s2 = Formula("!=", self.a1, self.a2)
+        self.assertIsNone(s1.is_beta())
+        self.assertIsNone(s2.is_beta())
+        # not not
+        f1 = self.l1.negate().negate()
+        self.assertIsNone(f1.is_beta())
+        f2 = self.fand1.negate().negate()
+        self.assertIsNone(f2.is_beta())
+        f3 = self.for1.negate().negate()
+        self.assertIsNone(f3.is_beta())
 
-
-    def test_is_beta_atomic(self):
-        self.assertFalse(self.a1.is_beta())
-
-    def test_is_beta_unary(self):
-        self.assertFalse(self.l1.is_beta())
-        formula2 = Formula("!", self.fand1)
-        self.assertTrue(formula2.is_beta())
-        formula3 = Formula("!", self.for1)
-        self.assertFalse(formula3.is_beta())
-
-    def test_is_beta_binary(self):
+    def test_is_beta_primary(self):
         self.assertFalse(self.fand1.is_beta())
         self.assertTrue(self.for1.is_beta())
-
-    def test_is_beta_not_not_not_literal(self):
-        f1 = self.l1.negate().negate()
-        f2 = self.l1.negate().negate().negate()
-        self.assertFalse(f1.is_beta())
-        self.assertFalse(f2.is_beta())
-
-    def test_is_beta_not_not_not_alpha(self):
-        f1 = self.fand1.negate()
-        f2 = self.fand1.negate().negate()
+        f1 = Formula("!", self.fand1)
         self.assertTrue(f1.is_beta())
+        f2 = Formula("!", self.for1)
         self.assertFalse(f2.is_beta())
-
-    def test_is_beta_not_not_not_beta(self):
-        f1 = self.for1.negate()
-        f2 = self.for1.negate().negate()
-        self.assertFalse(f1.is_beta())
-        self.assertTrue(f2.is_beta())
 
 
     def test_is_literal_atomic(self):

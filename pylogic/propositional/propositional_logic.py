@@ -94,60 +94,35 @@ class Formula():
 
 
     def is_alpha(self):
-        """Check if the Formula is an alpha formula."""
-        if self.connective == None:
-            return False
-        elif self.connective in logic.CONJ:
+        """Check if the Formula is an alpha formula.
+        The notion of alpha formula is defined only for formulas in the form:
+        (X o Y) and -(X o Y) where o is a primary connective"""
+        if self.connective in logic.CONJ:
             return True
         elif self.connective in logic.DISJ:
             return False
-        # jump the nots
-        connective = self.connective # == "not"
-        subformula = self.subformula1
-        bool_value = False
-        while connective == "not":
-            next_connective = subformula.connective
-            # base cases
-            if next_connective == None:
+        elif self.connective == "not":
+            if self.subformula1.connective in logic.CONJ:
                 return False
-            if next_connective != "not":
-                if bool_value:
-                    return subformula.is_alpha()
-                else:
-                    return not subformula.is_alpha()
-            # recursion (next_connective == "not")
-            connective = next_connective
-            subformula = subformula.subformula1
-            bool_value = not bool_value
+            elif self.subformula1.connective in logic.DISJ:
+                return True
+        return None
 
 
     def is_beta(self):
-        """Check if the Formula is a beta formula."""
-        if self.connective == None:
-            return False
-        elif self.connective in logic.DISJ:
+        """Check if the Formula is a beta formula.
+        The notion of beta formula is defined only for formulas in the form:
+        (X o Y) and -(X o Y) where o is a primary connective"""
+        if self.connective in logic.DISJ:
             return True
         elif self.connective in logic.CONJ:
             return False
-        # jump the nots
-        connective = self.connective # == "not"
-        subformula = self.subformula1
-        bool_value = False
-        while connective == "not":
-            next_connective = subformula.connective
-            # base cases
-            if next_connective == None:
+        elif self.connective == "not":
+            if self.subformula1.connective in logic.DISJ:
                 return False
-            if next_connective != "not":
-                if bool_value:
-                    return subformula.is_beta()
-                else:
-                    return not subformula.is_beta()
-            # recursion (next_connective == "not")
-            connective = next_connective
-            subformula = subformula.subformula1
-            bool_value = not bool_value
-
+            elif self.subformula1.connective in logic.CONJ:
+                return True
+        return None
 
 
     def is_literal(self):

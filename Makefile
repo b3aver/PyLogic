@@ -11,7 +11,7 @@ clean:
 	-@rm parser.out parsetab.py
 	-@rm pylogic/propositional/parser.out pylogic/propositional/parsetab.py
 	-@rm pylocic/first_order/parser.out pylogic/first_order/parsetab.py
-	-@rm *pyc pylogic/propositional/*pyc pylogic/first_order/*pyc
+	-@rm *pyc pylogic/*pyc pylogic/propositional/*pyc pylogic/first_order/*pyc
 	-@rm -R __pycache__ pylogic/__pycache__ pylogic/gui/__pycache__
 	-@rm -R pylogic/propositional/__pycache__ pylogic/first_order/__pycache__
 
