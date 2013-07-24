@@ -143,7 +143,7 @@
      <x>0</x>
      <y>0</y>
      <width>700</width>
-     <height>29</height>
+     <height>27</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -208,7 +208,7 @@
   <customwidget>
    <class>OutputTextEdit</class>
    <extends>QPlainTextEdit</extends>
-   <header>gui.h</header>
+   <header>pylogic.gui.widgets.h</header>
    <slots>
     <slot>workout()</slot>
    </slots>
@@ -303,8 +303,8 @@
    <slot>propositionalCheck()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>510</x>
-     <y>113</y>
+     <x>515</x>
+     <y>111</y>
     </hint>
     <hint type="destinationlabel">
      <x>425</x>
@@ -319,8 +319,8 @@
    <slot>propositionalNNF()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>510</x>
-     <y>150</y>
+     <x>515</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>561</x>
@@ -335,8 +335,8 @@
    <slot>propositionalCNF()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>510</x>
-     <y>187</y>
+     <x>515</x>
+     <y>185</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>

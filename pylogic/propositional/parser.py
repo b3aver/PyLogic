@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # pylint: disable-msg=C0103
 
 #
@@ -34,7 +33,7 @@ t_ignore  = ' \t'
 
 # Error handling rule
 def t_error(t):
-    print "Illegal character '%s'" % t.value[0]
+    print("Illegal character", t.value[0])
     t.lexer.skip(1)
 
 
@@ -47,12 +46,10 @@ propositional_lexer = lex.lex()
 # Parser
 #
 #
-
 import ply.yacc as yacc
-from propositional_logic import Formula
+from .propositional_logic import Formula
 import sys
-sys.path.append("..")
-import logic
+from pylogic import logic
 
 
 
@@ -96,10 +93,9 @@ def p_formula_connective_nopar(p):
     # p[0] = "%s %s %s" % (p[1], p[2], p[3])
 
 
-
 # Error rule for syntax errors
 def p_error(p):
-    print "Syntax error in input!"
+    print("Syntax error in input!")
 
 
 
@@ -108,19 +104,18 @@ propositional_parser = yacc.yacc()
 
 
 if __name__ == "__main__":
-
     # Test the lexer
     data = '''(A & B) -> A'''
-    
+
     # Give the lexer some input
     propositional_lexer.input(data)
-    
+
     # Tokenize
     while True:
         tok = propositional_lexer.token()
         if not tok:
             break      # No more input
-        print tok
+        print(tok)
 
 
     # Test the parser
@@ -132,4 +127,4 @@ if __name__ == "__main__":
         if not s :
             continue
         result = propositional_parser.parse(s)
-        print result
+        print(result)
