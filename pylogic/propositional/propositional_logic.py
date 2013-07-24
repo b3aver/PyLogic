@@ -314,6 +314,24 @@ class Generalization():
         return None
 
 
+    def get_non_literal_position(self):
+        """Return the position of a non-literal formula in the generalization.
+        None if not present."""
+        if len(self.list) == 0:
+            return None
+        for item in self.list:
+            if isinstance(item, Formula):
+                if not item.is_literal():
+                    return self.list.index(item)
+                # else: ignore it
+            elif isinstance(item, Generalization):
+                non_literal = item.get_non_literal_position()
+                if non_literal != None:
+                    return non_literal
+                # else: ignore it
+        return None
+
+
     def get_parent_non_literal(self):
         """Find a non-literal formula in the generalization,
         and return a tuple with parent and index of such formula.
@@ -345,7 +363,7 @@ class Generalization():
             return [self]
 
         # recursive case
-        (_, position) = self.get_parent_non_literal()
+        position = self.get_non_literal_position()
         member = self.list[position]
 
         if member.is_beta():

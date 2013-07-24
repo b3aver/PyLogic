@@ -324,6 +324,8 @@ class TestGeneralization(unittest.TestCase):
     def test_get_non_literal(self):
         g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
         self.assertIs(self.f1, g1.get_non_literal())
+        g2 = Generalization("and", [Formula("Z"), self.f2])
+        self.assertIs(self.f2, g2.get_non_literal())
 
 
     # def test_get_parent_non_literal(self):
@@ -335,6 +337,13 @@ class TestGeneralization(unittest.TestCase):
     #     (p, i) = g1.get_parent_non_literal()
     #     print(str(g1), i, str(p), sep = "\n")
     #     self.assertIs(self.f1, g1.get_parent_non_literal())
+
+
+    def test_get_non_literal_position(self):
+        g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
+        self.assertIs(0, g1.get_non_literal_position())
+        g2 = Generalization("and", [Formula("Z"), self.f2])
+        self.assertIs(1, g2.get_non_literal_position())
 
 
     def test_cnf_wrong(self):
