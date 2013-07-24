@@ -1,5 +1,8 @@
 import unittest
 from pylogic.propositional.propositional_logic import Formula, Generalization
+from pylogic.propositional.parser \
+    import propositional_parser as parser, \
+    propositional_lexer as lexer
 
 
 class TestFormula(unittest.TestCase):
@@ -248,6 +251,29 @@ class TestFormula(unittest.TestCase):
         formula = Formula("!", Formula("F"))
         exp = Generalization("and", [Generalization("or", [Formula("T")])])
         self.assertEqual(exp, formula.cnf())
+
+    def test_cnf_particular(self):
+        # components
+        p = Formula("P")
+        np = Formula("!", p)
+        q = Formula("Q")
+        nq = Formula("!", q)
+        r = Formula("R")
+        # formulas
+        f1s = "-(P-> (Q-> R)) -> ((P->Q) -> (P -> R))"
+        f1 = parser.parse(f1s, lexer = lexer)
+        f2s = "-(P&Q) -> R"
+        f2 = parser.parse(f2s, lexer = lexer)
+        # expected
+        exp1 = Generalization("and", [
+                Generalization("or", [np, nq, r, p, np, r]),
+                Generalization("or", [np, nq, r, nq, np, r])])
+        exp2 = Generalization("and", [
+                Generalization("or", [p, r]),
+                Generalization("or", [q, r])])
+        # assertions
+        self.assertEqual(exp1, f1.cnf())
+        self.assertEqual(exp2, f2.cnf())
 
 
 
