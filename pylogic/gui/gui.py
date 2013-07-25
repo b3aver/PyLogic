@@ -4,9 +4,7 @@ import os.path  # for file checks
 
 from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import *
-
-from .MainWindow import Ui_MainWindow
-from .AboutBox import Ui_AboutBox
+from PyQt4 import uic
 
 from ..propositional.parser import propositional_parser, propositional_lexer
 from ..propositional import resolution as propositional_resolution
@@ -17,8 +15,7 @@ from ..first_order.parser import first_order_parser, first_order_lexer
 class MyMainWindow(QMainWindow):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
+        self.ui = uic.loadUi("pylogic/gui/mainwindow.ui", self)
 
 
     def getInputString(self):
@@ -103,8 +100,7 @@ class MyMainWindow(QMainWindow):
 class MyAboutBox(QDialog):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        self.ui = Ui_AboutBox()
-        self.ui.setupUi(self)
+        self.ui = uic.loadUi("pylogic/gui/aboutBox.ui", self)
 
 
 
