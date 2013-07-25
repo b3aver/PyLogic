@@ -7,10 +7,14 @@ class OutputTextEdit(QPlainTextEdit):
         QPlainTextEdit.__init__(self, parent)
 
     def write(self, txt):
-        sys.__stdout__.write(txt+'\n')
-        sys.__stdout__.flush()
+        txt = txt.rstrip('\n')+'\n'
+        sys.__stdout__.write(txt)
+        # sys.__stdout__.flush()
         #self.appendPlainText(QString(string.rstrip(txt, '\n')))
         self.moveCursor(QTextCursor.End)
-        self.insertPlainText(txt.rstrip('\n')+'\n')
+        self.insertPlainText(txt)
         self.moveCursor(QTextCursor.End)
         self.ensureCursorVisible()
+
+    def flush(self):
+        sys.__stdout__.flush()
