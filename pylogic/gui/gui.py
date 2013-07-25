@@ -6,7 +6,7 @@ from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import *
 
 from .MainWindow import Ui_MainWindow
-from .AboutBox import Ui_Dialog
+from .AboutBox import Ui_AboutBox
 
 from ..propositional.parser import propositional_parser, propositional_lexer
 from ..propositional import resolution as propositional_resolution
@@ -28,9 +28,6 @@ class MyMainWindow(QMainWindow):
     def appendOutput(self, string=""):
         outputBox = self.ui.textEditOutput
         outputBox.write(string)
-        # outputBox.appendPlainText(QString(string))
-        # outputBox.moveCursor(QTextCursor.End)
-        # outputBox.ensureCursorVisible()
 
 
     def showAboutBox(self):
@@ -106,7 +103,7 @@ class MyMainWindow(QMainWindow):
 class MyAboutBox(QDialog):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        self.ui = Ui_Dialog()
+        self.ui = Ui_AboutBox()
         self.ui.setupUi(self)
 
 
