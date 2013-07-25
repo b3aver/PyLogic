@@ -372,6 +372,27 @@ class TestGeneralization(unittest.TestCase):
         self.assertIs(1, g2.get_non_literal_position())
 
 
+    def test_remove_every(self):
+        g1 = Generalization("and", [
+                self.f1, Formula("Z"), self.f2, Formula("Z")])
+        exp1 = Generalization("and", [self.f1, self.f2])
+        g2 = Generalization("and", [
+                self.f1, Formula("Z"), self.f1, Formula("Z"), self.f2])
+        exp2 = Generalization("and", [Formula("Z"), Formula("Z"), self.f2])
+        g1.remove_every(Formula("Z"))
+        self.assertEqual(exp1, g1)
+
+    def test_remove_every_generalization(self):
+        g1 = Generalization("and", [
+                self.f1, Formula("Z"), self.f2, Formula("Z")])
+        g2 = Generalization("and", [
+                self.f1, Formula("Z"), g1, self.f1, Formula("Z"), self.f2, g1])
+        exp = Generalization("and", [
+                Formula("Z"), g1, Formula("Z"), self.f2, g1])
+        g2.remove_every(self.f1)
+        self.assertEqual(exp, g2)
+
+
     def test_cnf_wrong(self):
         g1 = Generalization("or", [Generalization("and", [self.f1, self.f2])])
         self.assertRaises(Exception, g1.cnf)

@@ -352,6 +352,12 @@ class Generalization():
         return None
 
 
+    def remove_every(self, formula):
+        """Remove from the list every formula equivalent to the given."""
+        self.list = [f for f in self.list
+                     if isinstance(f, Generalization) or f != formula]
+
+
     def cnf_action(self):
         """Take a clause and return a list of clauses in cnf."""
         if self.connective != "or":
