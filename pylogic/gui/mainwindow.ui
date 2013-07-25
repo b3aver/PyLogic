@@ -21,10 +21,22 @@
        <enum>Qt::Horizontal</enum>
       </property>
       <widget class="QSplitter" name="splitter">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <horstretch>1</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
        <property name="orientation">
         <enum>Qt::Vertical</enum>
        </property>
-       <widget class="QGroupBox" name="groupBox">
+       <widget class="QGroupBox" name="groupBoxInput">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>1</verstretch>
+         </sizepolicy>
+        </property>
         <property name="title">
          <string>Input</string>
         </property>
@@ -34,7 +46,13 @@
          </item>
         </layout>
        </widget>
-       <widget class="QGroupBox" name="groupBox_2">
+       <widget class="QGroupBox" name="groupBoxOutput">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>4</verstretch>
+         </sizepolicy>
+        </property>
         <property name="title">
          <string>Output</string>
         </property>
@@ -76,62 +94,106 @@
         </layout>
        </widget>
       </widget>
-      <widget class="QWidget" name="horizontalLayoutWidget">
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QTabWidget" name="tabWidget">
-          <property name="currentIndex">
-           <number>0</number>
-          </property>
-          <widget class="QWidget" name="tabPropositional">
-           <attribute name="title">
-            <string>Propositional</string>
-           </attribute>
-           <layout class="QFormLayout" name="formLayout">
-            <item row="0" column="0">
-             <widget class="QPushButton" name="pushButtonCheckPropositional">
-              <property name="text">
-               <string>Check</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QPushButton" name="pushButtonNNF">
-              <property name="text">
-               <string>NNF</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QPushButton" name="pushButtonCNF">
-              <property name="text">
-               <string>CNF</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="tabPropositional">
+        <attribute name="title">
+         <string>Propositional</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QPushButton" name="pushButtonCheckPropositional">
+           <property name="text">
+            <string>Check</string>
+           </property>
           </widget>
-          <widget class="QWidget" name="tabFirstOrder">
-           <attribute name="title">
-            <string>First Order</string>
-           </attribute>
-           <widget class="QPushButton" name="ushButtonCheckFirstOrder">
-            <property name="geometry">
-             <rect>
-              <x>10</x>
-              <y>10</y>
-              <width>85</width>
-              <height>31</height>
-             </rect>
-            </property>
-            <property name="text">
-             <string>Check</string>
-            </property>
-           </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelNormalForms">
+           <property name="text">
+            <string>Normal Forms:</string>
+           </property>
           </widget>
-         </widget>
-        </item>
-       </layout>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonNNF">
+           <property name="text">
+            <string>NNF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonCNF">
+           <property name="text">
+            <string>CNF</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="labelProofProcedures">
+           <property name="text">
+            <string>Proof Procedures:</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonResolution">
+           <property name="text">
+            <string>Resolution</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="tabFirstOrder">
+        <attribute name="title">
+         <string>First Order</string>
+        </attribute>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#ff0000;&quot;&gt;Beta! Under construction&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="ushButtonCheckFirstOrder">
+           <property name="text">
+            <string>Check</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
       </widget>
      </widget>
     </item>
@@ -255,7 +317,7 @@
    <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>397</x>
+     <x>486</x>
      <y>446</y>
     </hint>
     <hint type="destinationlabel">
@@ -303,8 +365,8 @@
    <slot>propositionalCheck()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>515</x>
-     <y>111</y>
+     <x>516</x>
+     <y>110</y>
     </hint>
     <hint type="destinationlabel">
      <x>425</x>
@@ -319,8 +381,8 @@
    <slot>propositionalNNF()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>515</x>
-     <y>148</y>
+     <x>516</x>
+     <y>147</y>
     </hint>
     <hint type="destinationlabel">
      <x>561</x>
@@ -335,8 +397,8 @@
    <slot>propositionalCNF()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>515</x>
-     <y>185</y>
+     <x>516</x>
+     <y>184</y>
     </hint>
     <hint type="destinationlabel">
      <x>578</x>
@@ -351,12 +413,28 @@
    <slot>firstOrderCheck()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>469</x>
-     <y>99</y>
+     <x>598</x>
+     <y>137</y>
     </hint>
     <hint type="destinationlabel">
      <x>349</x>
      <y>246</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButtonResolution</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>propositionalResolution()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>561</x>
+     <y>207</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>540</x>
+     <y>464</y>
     </hint>
    </hints>
   </connection>
@@ -370,5 +448,6 @@
   <slot>propositionalNNF()</slot>
   <slot>propositionalCNF()</slot>
   <slot>firstOrderCheck()</slot>
+  <slot>propositionalResolution()</slot>
  </slots>
 </ui>

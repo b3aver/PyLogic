@@ -9,6 +9,7 @@ from .MainWindow import Ui_MainWindow
 from .AboutBox import Ui_Dialog
 
 from ..propositional.parser import propositional_parser, propositional_lexer
+from ..propositional import resolution as propositional_resolution
 from ..first_order.parser import first_order_parser, first_order_lexer
 
 
@@ -71,15 +72,23 @@ class MyMainWindow(QMainWindow):
         """Transform the current formula in input in NNF"""
         formula = propositional_parser.parse(self.getInputString(),
                                              lexer = propositional_lexer)
-        output = formula.nnf() #"NNF not yet implemented."
+        output = formula.nnf()
         self.appendOutput(output.__str__())
 
     def propositionalCNF(self):
         """Transform the current formula in input in CNF"""
         formula = propositional_parser.parse(self.getInputString(),
                                              lexer = propositional_lexer)
-        output = formula.cnf() #"CNF not yet implemented."
+        output = formula.cnf()
         self.appendOutput(output.__str__())
+
+    def propositionalResolution(self):
+        """Test if the current formula is a tautology, using the resolution
+        method"""
+        formula = propositional_parser.parse(self.getInputString(),
+                                             lexer = propositional_lexer)
+        output = propositional_resolution.is_tautology(formula)
+        self.appendOutput("%s: %s" % (str(formula), output.__str__()) )
 
 
     def firstOrderCheck(self):
