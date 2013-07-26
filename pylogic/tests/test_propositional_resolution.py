@@ -1,9 +1,7 @@
 import unittest
 from pylogic.propositional.propositional_logic import Formula, Generalization
 from pylogic.propositional import resolution
-from pylogic.propositional.parser \
-    import propositional_parser as parser, \
-    propositional_lexer as lexer
+from pylogic.propositional import parser
 
 
 class TestResolution(unittest.TestCase):
@@ -13,7 +11,7 @@ class TestResolution(unittest.TestCase):
         self.l1 = Formula("!", Formula("X"))
         self.fand1 = Formula("&", Formula("X"), Formula("Y"))
         self.for1 = Formula("|", Formula("X"), Formula("Y"))
-        self.taut1 = parser.parse("((P->Q)->P)->P", lexer = lexer)
+        self.taut1 = parser.parse("((P->Q)->P)->P")
 
 
     def test_is_tautology(self):

@@ -1,8 +1,6 @@
 import unittest
 from pylogic.propositional.propositional_logic import Formula, Generalization
-from pylogic.propositional.parser \
-    import propositional_parser as parser, \
-    propositional_lexer as lexer
+from pylogic.propositional import parser
 
 
 class TestFormula(unittest.TestCase):
@@ -261,9 +259,9 @@ class TestFormula(unittest.TestCase):
         r = Formula("R")
         # formulas
         f1s = "-(P-> (Q-> R)) -> ((P->Q) -> (P -> R))"
-        f1 = parser.parse(f1s, lexer = lexer)
+        f1 = parser.parse(f1s)
         f2s = "-(P&Q) -> R"
-        f2 = parser.parse(f2s, lexer = lexer)
+        f2 = parser.parse(f2s)
         # expected
         exp1 = Generalization("and", [
                 Generalization("or", [np, nq, r, p, np, r]),

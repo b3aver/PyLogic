@@ -8,9 +8,9 @@ from PyQt4.QtGui import *
 from .MainWindow import Ui_MainWindow
 from .AboutBox import Ui_AboutBox
 
-from ..propositional.parser import propositional_parser, propositional_lexer
-from ..propositional import resolution as propositional_resolution
-from ..first_order.parser import first_order_parser, first_order_lexer
+from pylogic.propositional import parser as propositional_parser
+from pylogic.propositional import resolution as propositional_resolution
+from pylogic.first_order.parser import first_order_parser, first_order_lexer
 
 
 
@@ -61,29 +61,25 @@ class MyMainWindow(QMainWindow):
 
     def propositionalCheck(self):
         """Check the sintax of the formula in input"""
-        output = propositional_parser.parse(self.getInputString(),
-                                            lexer = propositional_lexer)
+        output = propositional_parser.parse(self.getInputString())
         self.appendOutput(output.__str__())
 
     def propositionalNNF(self):
         """Transform the current formula in input in NNF"""
-        formula = propositional_parser.parse(self.getInputString(),
-                                             lexer = propositional_lexer)
+        formula = propositional_parser.parse(self.getInputString())
         output = formula.nnf()
         self.appendOutput(output.__str__())
 
     def propositionalCNF(self):
         """Transform the current formula in input in CNF"""
-        formula = propositional_parser.parse(self.getInputString(),
-                                             lexer = propositional_lexer)
+        formula = propositional_parser.parse(self.getInputString())
         output = formula.cnf()
         self.appendOutput(output.__str__())
 
     def propositionalResolution(self):
         """Test if the current formula is a tautology, using the resolution
         method"""
-        formula = propositional_parser.parse(self.getInputString(),
-                                             lexer = propositional_lexer)
+        formula = propositional_parser.parse(self.getInputString())
         output = propositional_resolution.is_tautology(formula)
         self.appendOutput("%s: %s" % (str(formula), output.__str__()) )
 

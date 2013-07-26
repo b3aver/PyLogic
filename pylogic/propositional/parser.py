@@ -103,6 +103,11 @@ def p_error(p):
 propositional_parser = yacc.yacc()
 
 
+def parse(string):
+    """Given a string parse it and return the object Formula representing it."""
+    return propositional_parser.parse(string, lexer = propositional_lexer)
+
+
 if __name__ == "__main__":
     # Test the lexer
     data = '''(A & B) -> A'''
