@@ -4,7 +4,10 @@ PROJECT = PyLogic
 all: pylogic.py compile
 	./pylogic.py
 
-compile: pylogic/gui/MainWindow.py pylogic/gui/AboutBox.py
+compile: deps pylogic/gui/MainWindow.py pylogic/gui/AboutBox.py
+
+deps: requirements.txt
+	pip install -r requirements.txt
 
 clean:
 	-@rm pylogic/gui/MainWindow.py pylogic/gui/AboutBox.py
