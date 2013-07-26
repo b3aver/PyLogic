@@ -11,7 +11,9 @@ class TestResolution(unittest.TestCase):
         self.l1 = Formula("!", Formula("X"))
         self.fand1 = Formula("&", Formula("X"), Formula("Y"))
         self.for1 = Formula("|", Formula("X"), Formula("Y"))
-        self.taut1 = parser.parse("((P->Q)->P)->P")
+        self.taut1 = parser.parse("((P->Q)&(Q->R))->-(-R&P)")
+        self.taut2 = parser.parse("(-P->Q)->((P->Q)->Q)")
+        self.taut3 = parser.parse("((P->Q)->P)->P")
 
 
     def test_is_tautology(self):
@@ -20,6 +22,8 @@ class TestResolution(unittest.TestCase):
         self.assertFalse(resolution.is_tautology(self.fand1))
         self.assertFalse(resolution.is_tautology(self.for1))
         self.assertTrue(resolution.is_tautology(self.taut1))
+        self.assertTrue(resolution.is_tautology(self.taut2))
+        self.assertTrue(resolution.is_tautology(self.taut3))
 
 
     def test_is_closed(self):
