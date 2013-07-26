@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -14,10 +15,29 @@
    height="64"
    id="svg2993"
    version="1.1"
-   inkscape:version="0.48.1 r9760"
-   sodipodi:docname="logo.svg">
+   inkscape:version="0.48.4 r9939"
+   sodipodi:docname="logo2.svg">
   <defs
      id="defs2995">
+    <linearGradient
+       id="linearGradient5378">
+      <stop
+         style="stop-color:#74bfff;stop-opacity:0.95031059;"
+         offset="0"
+         id="stop5390" />
+      <stop
+         style="stop-color:#1192ff;stop-opacity:0.33540374;"
+         offset="1"
+         id="stop5382" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient5336"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#b0e4ff;stop-opacity:1;"
+         offset="0"
+         id="stop5338" />
+    </linearGradient>
     <radialGradient
        cx="299.70135"
        cy="371.76376"
@@ -32,11 +52,11 @@
        id="linearGradient4966">
       <stop
          id="stop4968"
-         style="stop-color:#8ceded;stop-opacity:1;"
+         style="stop-color:#1e8dc0;stop-opacity:1;"
          offset="0" />
       <stop
          id="stop4970"
-         style="stop-color:#b6b3d8;stop-opacity:0"
+         style="stop-color:#c0bede;stop-opacity:0.22360249;"
          offset="1" />
     </linearGradient>
     <radialGradient
@@ -50,6 +70,15 @@
        id="radialGradient3062"
        xlink:href="#linearGradient4966"
        inkscape:collect="always" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4966"
+       id="linearGradient5384"
+       x1="1.6363634"
+       y1="32.545452"
+       x2="59.272728"
+       y2="32.545452"
+       gradientUnits="userSpaceOnUse" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -58,17 +87,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.7781746"
-     inkscape:cx="28.544844"
-     inkscape:cy="29.143012"
-     inkscape:current-layer="layer1"
+     inkscape:zoom="5.5"
+     inkscape:cx="23.940557"
+     inkscape:cy="32.88436"
+     inkscape:current-layer="layer5"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
      inkscape:window-width="1366"
-     inkscape:window-height="710"
+     inkscape:window-height="709"
      inkscape:window-x="0"
-     inkscape:window-y="26"
+     inkscape:window-y="27"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2998">
@@ -85,16 +114,51 @@
   <g
      id="layer1"
      inkscape:label="Layer 1"
-     inkscape:groupmode="layer">
+     inkscape:groupmode="layer"
+     style="display:none">
+    <path
+       d="M 38.995779,47.805231 C 38.24457,53.667352 30.228577,57.603473 21.093214,56.595905 11.957858,55.588333 5.1640086,50.018784 5.9202641,44.157221 6.671451,38.295098 14.68747,34.358975 23.822828,35.366545 c 9.13536,1.00757 15.929207,6.577122 15.172951,12.438686 l 0,0 z"
+       id="path4946"
+       style="fill:url(#radialGradient3062);fill-opacity:1;stroke:#7b0000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:connector-curvature="0"
+       inkscape:transform-center-x="-9.5890791"
+       inkscape:transform-center-y="-1.0683438" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="shadow"
+     style="display:inline">
     <rect
        id="rect3009-1"
-       width="59.090908"
-       height="56.181816"
+       width="57.738689"
+       height="55.80526"
        x="3.3636367"
-       y="3.2727289"
-       rx="15.476192"
-       ry="22.230215"
+       y="3.6492867"
+       rx="15.12204"
+       ry="22.081217"
        style="fill:#cccccc" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="shape2"
+     style="display:inline">
+    <rect
+       id="rect3009-8"
+       width="57.636364"
+       height="54.909088"
+       x="1.636"
+       y="5.0909119"
+       rx="15.095239"
+       ry="21.726618"
+       style="fill:#b0e4ff;fill-opacity:1" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="shape"
+     style="display:inline">
     <rect
        id="rect3009"
        width="57.636364"
@@ -103,36 +167,41 @@
        y="5.090909"
        rx="15.095239"
        ry="21.726618"
-       style="fill:#00adad;fill-opacity:1" />
-    <path
-       d="M 38.995779,47.805231 C 38.24457,53.667352 30.228577,57.603473 21.093214,56.595905 11.957858,55.588333 5.1640086,50.018784 5.9202641,44.157221 6.671451,38.295098 14.68747,34.358975 23.822828,35.366545 c 9.13536,1.00757 15.929207,6.577122 15.172951,12.438686 l 0,0 z"
-       id="path4946"
-       style="fill:url(#radialGradient3062);fill-opacity:1;stroke:#7b0000;stroke-width:0;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       inkscape:connector-curvature="0"
-       inkscape:transform-center-x="-9.5890791"
-       inkscape:transform-center-y="-1.0683438" />
+       style="fill:url(#linearGradient5384);fill-opacity:1.0;stroke:#414141;stroke-width:0.20000000000000001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer7"
+     inkscape:label="string shadow"
+     style="display:inline">
     <text
        xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.0000006%;letter-spacing:0px;word-spacing:0px;fill:#1f6061;fill-opacity:1;stroke:none;font-family:Sans"
-       x="6.4701705"
-       y="38.677334"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.0000006%;letter-spacing:0px;word-spacing:0px;fill:#1f6061;fill-opacity:1;stroke:none;display:inline;font-family:Sans"
+       x="6.0523348"
+       y="37.127312"
        id="text3001-1"
        sodipodi:linespacing="15.000001%"><tspan
          sodipodi:role="line"
-         x="6.4701705"
-         y="38.677334"
+         x="6.0523348"
+         y="37.127312"
          id="tspan3005-9"
          style="font-size:13px;line-height:15.0000006%;fill:#1f6061;fill-opacity:1">PyLogic</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="string"
+     style="display:inline">
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:15.0000006%;letter-spacing:0px;word-spacing:0px;fill:#0000ff;fill-opacity:1;stroke:none;font-family:Sans"
        x="5.6363621"
-       y="39.272724"
+       y="37.272724"
        id="text3001"
        sodipodi:linespacing="15.000001%"><tspan
          sodipodi:role="line"
          x="5.6363621"
-         y="39.272724"
+         y="37.272724"
          id="tspan3005"
          style="font-size:13px;line-height:15.0000006%;fill:#0000ff">PyLogic</tspan></text>
   </g>

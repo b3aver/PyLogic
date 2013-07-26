@@ -1,26 +1,16 @@
-#!/usr/bin/python
-
-
-#from PyQt4 import *
-#from PyQt4 import QtGui
-
-#from form import *
 import sys
 import string
-# for file checks
-import os.path
+import os.path  # for file checks
 
-
-from PyQt4.QtCore import Qt, SIGNAL, QString
+from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import *
 
+from .MainWindow import Ui_MainWindow
+from .AboutBox import Ui_AboutBox
 
-from MainWindow import Ui_MainWindow
-from AboutBox import Ui_Dialog
-
-
-from propositional.parser import propositional_parser, propositional_lexer
-from first_order.parser import first_order_parser, first_order_lexer
+from pylogic.propositional import parser as propositional_parser
+from pylogic.propositional import resolution as propositional_resolution
+from pylogic.first_order.parser import first_order_parser, first_order_lexer
 
 
 
@@ -38,9 +28,6 @@ class MyMainWindow(QMainWindow):
     def appendOutput(self, string=""):
         outputBox = self.ui.textEditOutput
         outputBox.write(string)
-        # outputBox.appendPlainText(QString(string))
-        # outputBox.moveCursor(QTextCursor.End)
-        # outputBox.ensureCursorVisible()
 
 
     def showAboutBox(self):
@@ -53,9 +40,9 @@ class MyMainWindow(QMainWindow):
         filename = QFileDialog.getOpenFileName()
         if filename != "":
             if os.path.isfile(filename):
-                print "open file"
+                print("open file")
                 f = open(filename, "r")
-                self.ui.textEditInput.setPlainText(QString(f.read()))
+                self.ui.textEditInput.setPlainText(f.read())
             else:
                 QMessageBox.warning(self,
                                     "File not found!",
@@ -67,30 +54,34 @@ class MyMainWindow(QMainWindow):
     def saveFile(self):
         filename = QFileDialog.getSaveFileName()
         if filename != "":
-            print "save to file"
+            print("save to file")
             f = open(filename, "w")
             f.write(self.getInputString())
 
 
     def propositionalCheck(self):
         """Check the sintax of the formula in input"""
-        output = propositional_parser.parse(self.getInputString(),
-                                            lexer = propositional_lexer)
+        output = propositional_parser.parse(self.getInputString())
         self.appendOutput(output.__str__())
 
     def propositionalNNF(self):
         """Transform the current formula in input in NNF"""
-        formula = propositional_parser.parse(self.getInputString(),
-                                             lexer = propositional_lexer)
-        output = formula.nnf() #"NNF not yet implemented."
+        formula = propositional_parser.parse(self.getInputString())
+        output = formula.nnf()
         self.appendOutput(output.__str__())
 
     def propositionalCNF(self):
         """Transform the current formula in input in CNF"""
-        formula = propositional_parser.parse(self.getInputString(),
-                                             lexer = propositional_lexer)
-        output = formula.cnf() #"CNF not yet implemented."
+        formula = propositional_parser.parse(self.getInputString())
+        output = formula.cnf()
         self.appendOutput(output.__str__())
+
+    def propositionalResolution(self):
+        """Test if the current formula is a tautology, using the resolution
+        method"""
+        formula = propositional_parser.parse(self.getInputString())
+        output = propositional_resolution.is_tautology(formula)
+        self.appendOutput("%s: %s" % (str(formula), output.__str__()) )
 
 
     def firstOrderCheck(self):
@@ -99,41 +90,24 @@ class MyMainWindow(QMainWindow):
                                           lexer = first_order_lexer)
         self.appendOutput(output.__str__())
 
-        
+
     def getOutputBox(self):
         return self.ui.textEditOutput
 
-        
+
 
 class MyAboutBox(QDialog):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
-        self.ui = Ui_Dialog()
+        self.ui = Ui_AboutBox()
         self.ui.setupUi(self)
 
 
 
-class OutputTextEdit(QPlainTextEdit):
-    def __init__(self, parent=None):
-        QPlainTextEdit.__init__(self, parent)
-
-    def write(self, txt):
-        sys.__stdout__.write(txt+'\n')
-        sys.__stdout__.flush()
-        #self.appendPlainText(QString(string.rstrip(txt, '\n')))
-        self.moveCursor(QTextCursor.End)
-        self.insertPlainText(QString(string.rstrip(txt, '\n')+'\n'))
-        self.moveCursor(QTextCursor.End)
-        self.ensureCursorVisible()
-
-        
-        
-if __name__ == "__main__":
+def start():
     app = QApplication(sys.argv)
     window = MyMainWindow() #Window()
     app.setWindowIcon(QIcon('img/logo.svg'))
     window.show()
     sys.stdout = window.getOutputBox()
     sys.exit(app.exec_())
-
-

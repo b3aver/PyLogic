@@ -1,25 +1,22 @@
-#!/usr/bin/python
-
 '''Definition of the elements of the First Order Logic:
    Variable, Constant, Relation, Function, Formula'''
 
 import copy
 import sys
 import re
-sys.path.append("..")
-import logic
+from pylogic import logic
 
 
 class Variable():
     '''Variable'''
     def __init__(self, var):
         self.var = var
-        
+
 
     def __str__(self):
         return self.var
 
-        
+
 
 class Constant():
     '''Constant'''
@@ -29,7 +26,7 @@ class Constant():
 
     def __str__(self):
         return self.const
-        
+
 
 
 class Relation():
@@ -50,10 +47,9 @@ class Relation():
         #string = self.symbol + '('
         parameters = ''
         for par in self.parameters:
-            parameters += par.__str__() + ', '            
+            parameters += par.__str__() + ', '
         if parameters != '':
             parameters = parameters[:-2]
-        
         return '%s(%s)' % (self.symbol, parameters)
 
 
@@ -76,10 +72,9 @@ class Function():
         #string = self.symbol + '('
         parameters = ''
         for par in self.parameters:
-            parameters += par.__str__() + ', '            
+            parameters += par.__str__() + ', '
         if parameters != '':
             parameters = parameters[:-2]
-        
         return '%s(%s)' % (self.name, parameters)
 
 
@@ -140,13 +135,13 @@ class Formula():
                 subformula1 = args[2]
             else:
                 # binary connective
-                if args[0] in logic.CONN.viewvalues():
+                if args[0] in list(logic.CONN.values()):
                     connective = [ item[0]
                                    for item
-                                   in logic.CONN.items()
+                                   in list(logic.CONN.items())
                                    if item[1] == args[0]
                                    ][0]
-                elif args[0] in logic.CONN.viewkeys():
+                elif args[0] in list(logic.CONN.keys()):
                     connective = args[0]
                 else:
                     raise Exception("Wrong connective: " + args[0])
@@ -184,18 +179,17 @@ class Formula():
 
 
 if __name__ == '__main__':
-    
-    print Variable('x')
-    print Constant('c')
-    print Relation('A', Variable('y'), Variable('y'))
-    print Relation('A', [Variable('y'), Variable('z')])
-    print Function('f', Constant('c'), Constant('d'), Variable('x'))
-    print Formula('&', Formula(Relation('A', 'B')), Formula(Relation('C', 'B')))
-    print Formula('exists',
+    print(Variable('x'))
+    print(Constant('c'))
+    print(Relation('A', Variable('y'), Variable('y')))
+    print(Relation('A', [Variable('y'), Variable('z')]))
+    print(Function('f', Constant('c'), Constant('d'), Variable('x')))
+    print(Formula('&', Formula(Relation('A', 'B')), Formula(Relation('C', 'B'))))
+    print(Formula('exists',
                   Variable('x'),
-                  Formula(Relation('A', Variable('y'), Variable('x'))))
-    print Formula('exists',
+                  Formula(Relation('A', Variable('y'), Variable('x')))))
+    print(Formula('exists',
                   Variable('x'),
                   Formula('all',
                           Variable('y'),
-                          Formula(Relation('A', Variable('y'), Variable('x')))))
+                          Formula(Relation('A', Variable('y'), Variable('x'))))))
