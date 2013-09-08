@@ -76,12 +76,12 @@ def resolution_rule(clause1, clause2, formula):
     new_clause = copy.deepcopy(clause1)
     other = copy.deepcopy(clause2)
     new_clause.remove_every(formula)
-    other.remove_every(temp_formula)
+    other.remove_every(formula.complement())
     new_clause.list.extend(other.list)
     return new_clause
 
 
-def resolution_rule_exhaust(clause1, clause2):
+def resolution_rule_complete(clause1, clause2):
     """Apply the resolution rule to the given clauses
     for every possible inner formulas"""
     new_clauses = []
@@ -110,7 +110,7 @@ def is_tautology(formula):
     closed = is_closed(expansion)
     while not closed and not picker.is_empty():
         clauses = picker.pick()
-        new_clauses = resolution_rule_exhaust(clauses[0], clauses[1])
+        new_clauses = resolution_rule_complete(clauses[0], clauses[1])
         picker.update(expansion, new_clauses)
         expansion.extend(new_clauses)
         disjs = ""

@@ -88,6 +88,14 @@ class TestResolution(unittest.TestCase):
         self.assertEqual(exp_clauses, clauses)
 
 
+    def test_resolution_rule(self):
+        cl1 = Generalization("or", [self.a2, self.l1, self.bottom])
+        cl2 = Generalization("or", [self.top, self.a1])
+        form = self.l1
+        exp_cl = Generalization("or", [self.a2, self.bottom, self.top])
+        self.assertEqual(exp_cl, resolution.resolution_rule(cl1, cl2, form))
+
+
     def test_is_tautology(self):
         self.assertFalse(resolution.is_tautology(self.a1))
         self.assertFalse(resolution.is_tautology(self.l1))
