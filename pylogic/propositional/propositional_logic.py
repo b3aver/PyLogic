@@ -277,6 +277,10 @@ class Generalization():
         return not self.__eq__(other)
 
 
+    def __len__(self):
+        return len(self.list)
+
+
     def has_non_literal(self):
         """Check if in the list of formulas there are non-literal formulas."""
         if len(self.list) == 0:

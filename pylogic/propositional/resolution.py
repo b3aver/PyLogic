@@ -28,9 +28,9 @@ def manage_complementary(clauses):
         clause = clauses[c]
         found = False
         f = 0
-        while not found and f < len(clause.list):
+        while not found and f < len(clause):
             formula1 = clause.list[f]
-            for f2 in range(f+1, len(clause.list)):
+            for f2 in range(f+1, len(clause)):
                 formula2 = clause.list[f2]
                 if formula1 == formula2.complement():
                     removable.append(c)
@@ -49,10 +49,10 @@ def manage_copies(clauses):
     """Remove from every clause repetions of inner formulas."""
     for clause in clauses:
         f = 0
-        while f < len(clause.list)-1:
+        while f < len(clause)-1:
             formula = clause.list[f]
             f2 = f+1
-            while f2 < len(clause.list):
+            while f2 < len(clause):
                 formula2 = clause.list[f2]
                 if formula == formula2:
                     clause.list.pop(f2)
@@ -65,7 +65,7 @@ def is_closed(expansion):
     """Given a list of clauses, return True if it contains an empty clause,
     False otherwise"""
     for clause in expansion:
-        if len(clause.list) == 0:
+        if len(clause) == 0:
             return True
         # else ignore it
     return False
@@ -83,10 +83,10 @@ def resolution_rule(clause1, clause2, formula):
 
 def apply_resolution_rule(clause1, clause2):
     """Apply the resolution rule to the given clauses"""
-    for f in range(len(clause1.list)):
+    for f in range(len(clause1)):
         formula = clause1.list[f]
         # check if exists a complement of formula
-        for f2 in range(len(clause2.list)):
+        for f2 in range(len(clause2)):
             formula2 = clause2.list[f2]
             if formula == formula2.complement():
                 new_clause = resolution_rule(clause1, clause2, formula)
