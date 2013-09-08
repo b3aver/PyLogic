@@ -64,8 +64,7 @@ def manage_copies(clauses):
 def is_closed(expansion):
     """Given a list of clauses, return True if it contains an empty clause,
     False otherwise"""
-    for el in expansion:
-        clause = el[1]
+    for clause in expansion:
         if len(clause.list) == 0:
             return True
         # else ignore it

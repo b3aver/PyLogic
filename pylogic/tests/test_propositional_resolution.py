@@ -102,11 +102,9 @@ class TestResolution(unittest.TestCase):
     def test_is_closed(self):
         expansion1 = [Generalization("or", [self.a1, self.l1]),
                       Generalization("or", [self.a2])]
-        expansion1 = [[False, disj] for disj in expansion1]
         expansion2 = [Generalization("or", [self.a1, self.l1]),
                       Generalization("or", []),
                       Generalization("or", [self.a2])]
-        expansion2 = [[False, disj] for disj in expansion2]
         self.assertFalse(resolution.is_closed(expansion1))
         self.assertTrue(resolution.is_closed(expansion2))
 
