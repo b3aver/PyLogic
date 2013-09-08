@@ -81,18 +81,22 @@ def resolution_rule(clause1, clause2, formula):
     return new_clause
 
 
-def resolution_rule_complete(clause1, clause2):
-    """Apply the resolution rule to the given clauses
-    for every possible inner formulas"""
-    new_clauses = []
+def apply_resolution_rule(clause1, clause2):
+    """Apply the resolution rule to the given clauses"""
     for f in range(len(clause1.list)):
         formula = clause1.list[f]
         # check if exists a complement of formula
-        for nf in range(len(clause2.list)):
-            temp_formula = clause2.list[nf]
-            if formula == temp_formula.complement():
-                clause = resolution_rule(clause1, clause2, formula)
-                new_clauses.append(clause)
+        for f2 in range(len(clause2.list)):
+            formula2 = clause2.list[f2]
+            if formula == formula2.complement():
+                new_clause = resolution_rule(clause1, clause2, formula)
+                clauses = [new_clause]
+                manage_complementary(clauses)
+                manage_copies(clauses)
+                if clauses == []:
+                    return None
+                else:
+                    return new_clause
 
 
 def is_tautology(formula):
@@ -110,9 +114,10 @@ def is_tautology(formula):
     closed = is_closed(expansion)
     while not closed and not picker.is_empty():
         clauses = picker.pick()
-        new_clauses = resolution_rule_complete(clauses[0], clauses[1])
-        picker.update(expansion, new_clauses)
-        expansion.extend(new_clauses)
+        new_clause = apply_resolution_rule(clauses[0], clauses[1])
+        if new_clause != None:
+            picker.update(expansion, new_clause)
+            expansion.append(new_clause)
         disjs = ""
         for g in expansion:
             disjs = disjs + " " + g[1].__str__()

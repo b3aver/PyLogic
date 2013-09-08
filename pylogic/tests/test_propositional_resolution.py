@@ -8,9 +8,12 @@ class TestResolution(unittest.TestCase):
     def setUp(self):
         self.a1 = Formula("X")
         self.a2 = Formula("Y")
+        self.a3 = Formula("Z")
+        self.a4 = Formula("W")
         self.top = Formula("T")
         self.bottom = Formula("F")
         self.l1 = Formula("!", Formula("X"))
+        self.l2 = Formula("!", Formula("Y"))
         self.fand1 = Formula("&", Formula("X"), Formula("Y"))
         self.for1 = Formula("|", Formula("X"), Formula("Y"))
         self.taut1 = parser.parse("((P->Q)&(Q->R))->-(-R&P)")
@@ -94,6 +97,23 @@ class TestResolution(unittest.TestCase):
         form = self.l1
         exp_cl = Generalization("or", [self.a2, self.bottom, self.top])
         self.assertEqual(exp_cl, resolution.resolution_rule(cl1, cl2, form))
+
+
+    def test_apply_resolution_rule(self):
+        cl1 = Generalization("or", [self.a2, self.l1, self.a3])
+        cl2 = Generalization("or", [self.a4, self.a1])
+        exp_cls = Generalization("or", [self.a2, self.a3, self.a4])
+        self.assertEqual(exp_cls, resolution.apply_resolution_rule(cl1, cl2))
+        # complementary litterals in the result clause
+        cl1 = Generalization("or", [self.a2, self.l1, self.a3])
+        cl2 = Generalization("or", [self.a4, self.a1, self.l2])
+        exp_cls = None
+        self.assertEqual(exp_cls, resolution.apply_resolution_rule(cl1, cl2))
+        # copied litterals in the result clause
+        cl1 = Generalization("or", [self.a2, self.l1, self.a3])
+        cl2 = Generalization("or", [self.a4, self.a1, self.a2])
+        exp_cls = Generalization("or", [self.a2, self.a3, self.a4])
+        self.assertEqual(exp_cls, resolution.apply_resolution_rule(cl1, cl2))
 
 
     def test_is_tautology(self):
