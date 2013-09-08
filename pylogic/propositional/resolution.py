@@ -97,6 +97,7 @@ def apply_resolution_rule(clause1, clause2):
                     return None
                 else:
                     return new_clause
+    return None
 
 
 def is_tautology(formula):
@@ -111,31 +112,69 @@ def is_tautology(formula):
     expansion = cnf.list
     preliminary_steps(expansion)
     picker = ClausePicker(expansion)
-    closed = is_closed(expansion)
-    while not closed and not picker.is_empty():
-        clauses = picker.pick()
-        new_clause = apply_resolution_rule(clauses[0], clauses[1])
-        if new_clause != None:
-            picker.update(expansion, new_clause)
+    if is_closed(expansion):
+        return True
+    while not picker.is_empty():
+        cl = picker.pick()
+        new_clause = apply_resolution_rule(expansion[cl[0]], expansion[cl[1]])
+        if new_clause is not None:
+            if len(new_clause) == 0:
+                return True
+            picker.add_clause(new_clause)
             expansion.append(new_clause)
-        disjs = ""
-        for g in expansion:
-            disjs = disjs + " " + g[1].__str__()
-        print(disjs)
-        closed = is_closed(expansion)
-    return is_closed(expansion)
+            disjs = ""
+            for g in expansion:
+                disjs = disjs + " " + g.__str__()
+            print(disjs)
+    return False
 
 
 
 class ClausePicker():
     def __init__(self, expansion):
-        pass
+        # list with a couple (<size>, <index in espansion>) for each clause
+        self.db = [(len(clause), i) for i, clause in enumerate(expansion)]
+        self.db.sort()
+        # list where every entry is a couple of clauses indexes
+        # on which apply the resolution rule
+        self.couples = [(cl1, cl2)
+                        for (size, cl1) in self.db
+                        for (size2, cl2) in self.db if cl2 != cl1]
+
 
     def pick(self):
-        return None
+        if self.is_empty():
+            raise Exception("No more choices")
+        return self.couples.pop(0)
 
-    def add_clause(self, expansion, clause):
-        pass
+
+    def add_clause(self, clause):
+        ex_index = len(self.db) # index in the expansion list
+        db_entry = (len(clause), ex_index)
+        # insert in self.db
+        self.db.append(db_entry)
+        self.db.sort()
+        db_ind = self.db.index(db_entry) # index in the list self.db
+        # insert in self.couples
+        new_c = [(ex_index, cl2) for (size2, cl2) in self.db if cl2 != ex_index]
+        if db_ind + 1 == len(self.db):
+            # append in the end of self.couples
+            self.couples.extend(new_c)
+        else:
+            # insert at a specific index of self.couples
+            (succ_size, succ_ex_ind) = self.db[db_ind+1]
+            # find the index of the successive in self.couples
+            found = False
+            succ_ind = 0
+            while not found and succ_ind < len(self.couples):
+                (ind1, ind2) = self.couples[succ_ind]
+                if (ind1 == succ_ex_ind):
+                    found = True
+                    succ_ind = succ_ind - 1
+                succ_ind = succ_ind + 1
+            pos = succ_ind
+            self.couples = self.couples[:pos] + new_c + self.couples[pos:]
+
 
     def is_empty(self):
-        pass
+        return len(self.couples) == 0

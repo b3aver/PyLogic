@@ -1,5 +1,6 @@
 import unittest
 from pylogic.propositional.propositional_logic import Formula, Generalization
+from pylogic.propositional.resolution import ClausePicker
 from pylogic.propositional import resolution
 from pylogic.propositional import parser
 
@@ -20,6 +21,7 @@ class TestResolution(unittest.TestCase):
         self.taut2 = parser.parse("(-P->Q)->((P->Q)->Q)")
         self.taut3 = parser.parse("((P->Q)->P)->P")
         self.taut4 = parser.parse("(P->(Q->R))->((P->Q)->(P->R))")
+        self.taut5 = parser.parse("(F->X)")
 
 
     def test_preliminary_steps(self):
@@ -125,6 +127,7 @@ class TestResolution(unittest.TestCase):
         self.assertTrue(resolution.is_tautology(self.taut2))
         self.assertTrue(resolution.is_tautology(self.taut3))
         self.assertTrue(resolution.is_tautology(self.taut4))
+        self.assertTrue(resolution.is_tautology(self.taut5))
 
 
     def test_is_closed(self):
@@ -136,6 +139,25 @@ class TestResolution(unittest.TestCase):
         self.assertFalse(resolution.is_closed(expansion1))
         self.assertTrue(resolution.is_closed(expansion2))
 
+
+
+class TestClausePicker(unittest.TestCase):
+    def setUp(self):
+        self.a1 = Formula("X")
+        self.a2 = Formula("Y")
+        self.a3 = Formula("Z")
+        self.a4 = Formula("W")
+        self.l1 = Formula("!", Formula("X"))
+
+
+    def test_init(self):
+        expansion = [Generalization("or", [self.a1, self.a3, self.l1]),
+                     Generalization("or", [self.a2, self.l1]),
+                     Generalization("or", [self.l1, self.a4, self.a1]),
+                     Generalization("or", [self.a3])]
+        cp = ClausePicker(expansion)
+        exp_db = [(1, 3), (2, 1), (3, 0), (3, 2)]
+        self.assertEqual(exp_db, cp.db)
 
 
 
