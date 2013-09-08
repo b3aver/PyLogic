@@ -18,7 +18,7 @@ def manage_tops(clauses):
             if formula == Formula("T"):
                 removable.append(c)
                 break
-    for i in removable:
+    for i in reversed(removable):
         clauses.pop(i)
 
 def manage_complementary(clauses):
@@ -26,7 +26,7 @@ def manage_complementary(clauses):
     removable = []
     for c in range(len(clauses)):
         clause = clauses[c]
-        found == False
+        found = False
         f = 0
         while not found and f < len(clause.list):
             formula1 = clause.list[f]
@@ -37,7 +37,7 @@ def manage_complementary(clauses):
                     found = True
                     break
             f = f + 1
-    for i in removable:
+    for i in reversed(removable):
         clauses.pop(i)
 
 def manage_bottoms(clauses):
@@ -46,10 +46,10 @@ def manage_bottoms(clauses):
         clause.remove_every(Formula("F"))
 
 def manage_copies(clauses):
-    """Remove from every clause repetion of inner formulas."""
+    """Remove from every clause repetions of inner formulas."""
     for clause in clauses:
         f = 0
-        while f < len(clause.list):
+        while f < len(clause.list)-1:
             formula = clause.list[f]
             f2 = f+1
             while f2 < len(clause.list):
@@ -58,6 +58,7 @@ def manage_copies(clauses):
                     clause.list.pop(f2)
                 else:
                     f2 = f2+1
+            f = f+1
 
 
 def is_closed(expansion):
