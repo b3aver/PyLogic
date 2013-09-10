@@ -284,6 +284,8 @@ class Generalization():
     def equivalent(self, other):
         """Check if two generalizations have the same elements independently of
         their order"""
+        if self.connective != other.connective:
+            return False
         if len(self.list) != len(other.list):
             return False
         other_list = list(other.list)
