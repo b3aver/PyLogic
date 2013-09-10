@@ -158,6 +158,19 @@
            </property>
           </spacer>
          </item>
+         <item>
+          <widget class="QCheckBox" name="checkBoxExecutionTime">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="text">
+            <string>execution time</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </widget>
        <widget class="QWidget" name="tabFirstOrder">

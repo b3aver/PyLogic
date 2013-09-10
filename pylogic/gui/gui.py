@@ -1,6 +1,7 @@
 import sys
 import string
 import os.path  # for file checks
+import time
 
 from PyQt4.QtCore import Qt, SIGNAL
 from PyQt4.QtGui import *
@@ -28,6 +29,18 @@ class MyMainWindow(QMainWindow):
     def appendOutput(self, string=""):
         outputBox = self.ui.textEditOutput
         outputBox.write(string)
+
+
+    def execute(self, func):
+         check_box = self.ui.checkBoxExecutionTime.isChecked()
+         start = 0
+         if check_box:
+             start = time.time()
+         output = func()
+         if check_box:
+             execution_time = time.time() - start
+             self.appendOutput("Execution time: " + execution_time.__str__())
+         return output
 
 
     def showAboutBox(self):
@@ -67,20 +80,23 @@ class MyMainWindow(QMainWindow):
     def propositionalNNF(self):
         """Transform the current formula in input in NNF"""
         formula = propositional_parser.parse(self.getInputString())
-        output = formula.nnf()
+        func = lambda: formula.nnf()
+        output = self.execute(func)
         self.appendOutput(output.__str__())
 
     def propositionalCNF(self):
         """Transform the current formula in input in CNF"""
         formula = propositional_parser.parse(self.getInputString())
-        output = formula.cnf()
+        func = lambda: formula.cnf()
+        output = self.execute(func)
         self.appendOutput(output.__str__())
 
     def propositionalResolution(self):
         """Test if the current formula is a tautology, using the resolution
         method"""
         formula = propositional_parser.parse(self.getInputString())
-        output = propositional_resolution.is_tautology(formula)
+        func = lambda: propositional_resolution.is_tautology(formula)
+        output = self.execute(func)
         self.appendOutput("%s: %s" % (str(formula), output.__str__()) )
 
 
