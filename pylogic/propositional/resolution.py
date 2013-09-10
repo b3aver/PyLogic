@@ -140,6 +140,46 @@ def is_tautology(formula):
 
 
 
+class Expansion():
+    def __init__(self, clauses):
+        self.clauses = clauses
+        self.clause_picker = ClausePicker(clauses)
+
+    def __getitem__(self, key):
+        return self.clauses[key]
+
+    def __str__(self):
+        disjs = ""
+        first = True
+        for cl in expansion:
+            if first:
+                disjs = cl.__str__()
+                first = False
+            else:
+                disjs = disjs + " " + cl.__str__()
+        return disjs
+
+    def insert(self, clause):
+        if self.is_new(clause):
+            self.clauses.append(clause)
+            self.clause_picker.add_clause(clause)
+
+    def pick(self):
+        (i, j) = self.clause_picker.pick()
+        return (self.clauses[i], self.clauses[j])
+
+    def is_new(self, clause):
+        found = False
+        i = 0
+        while not found and i < len(self.clauses):
+            cl = self.clauses[i]
+            i = i + 1
+            if cl.equivalent(clause):
+                return False
+        return True
+
+
+
 class ClausePicker():
     def __init__(self, expansion):
         # list with a couple (<size>, <index in espansion>) for each clause
