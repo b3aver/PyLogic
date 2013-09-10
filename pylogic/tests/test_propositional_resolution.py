@@ -140,6 +140,18 @@ class TestResolution(unittest.TestCase):
         self.assertTrue(resolution.is_closed(expansion2))
 
 
+    def test_is_new(self):
+        expansion1 = [Generalization("or", [self.a1, self.l1]),
+                      Generalization("or", [self.a2])]
+        gen1 = Generalization("or", [self.l1, self.a1])
+        self.assertFalse(resolution.is_new(expansion1, gen1))
+        expansion2 = [Generalization("or", [self.a1, self.l1]),
+                      Generalization("or", []),
+                      Generalization("or", [self.a2])]
+        gen2 = Generalization("or", [self.l1])
+        self.assertTrue(resolution.is_new(expansion2, gen2))
+
+
 
 class TestClausePicker(unittest.TestCase):
     def setUp(self):

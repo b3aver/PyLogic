@@ -71,6 +71,18 @@ def is_closed(expansion):
     return False
 
 
+def is_new(expansion, clause):
+    """Check if the given clause is already present in the given expansion."""
+    found = False
+    i = 0
+    while not found and i < len(expansion):
+        cl = expansion[i]
+        i = i + 1
+        if cl.equivalent(clause):
+            return False
+    return True
+
+
 def resolution_rule(clause1, clause2, formula):
     """Apply the resolution rule to the given clauses and formula."""
     new_clause = copy.deepcopy(clause1)
@@ -120,12 +132,10 @@ def is_tautology(formula):
         if new_clause is not None:
             if len(new_clause) == 0:
                 return True
-            picker.add_clause(new_clause)
-            expansion.append(new_clause)
-            disjs = ""
-            for g in expansion:
-                disjs = disjs + " " + g.__str__()
-            print(disjs)
+            if is_new(expansion, new_clause):
+                expansion.append(new_clause)
+                picker.add_clause(new_clause)
+                print(" ".join([cl.__str__() for cl in expansion]))
     return False
 
 
