@@ -168,8 +168,13 @@ class TestClausePicker(unittest.TestCase):
                      Generalization("or", [self.l1, self.a4, self.a1]),
                      Generalization("or", [self.a3])]
         cp = ClausePicker(expansion)
-        exp_db = [(1, 3), (2, 1), (3, 0), (3, 2)]
-        self.assertEqual(exp_db, cp.db)
+        exp_sizes = [3, 2, 3, 1]
+        self.assertEqual(exp_sizes, cp.sizes)
+        exp_buckets = {3: [(1, 3)],
+                       4: [(0, 3), (2, 3)],
+                       5: [(0, 1), (1, 2)],
+                       6: [(0, 2)]}
+        self.assertEqual(exp_buckets, cp.buckets)
 
 
 

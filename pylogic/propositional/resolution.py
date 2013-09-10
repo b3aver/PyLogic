@@ -142,49 +142,43 @@ def is_tautology(formula):
 
 class ClausePicker():
     def __init__(self, expansion):
-        # list with a couple (<size>, <index in espansion>) for each clause
-        self.db = [(len(clause), i) for i, clause in enumerate(expansion)]
-        self.db.sort()
-        # list where every entry is a couple of clauses indexes
-        # on which apply the resolution rule
-        self.couples = [(cl1, cl2)
-                        for (size, cl1) in self.db
-                        for (size2, cl2) in self.db if cl2 != cl1]
+        self.sizes = [len(clause) for clause in expansion]
+        # dict containing the couples of clauses (their indexes)
+        # it is indexed with the sum of the two clauses' sizes
+        self.buckets = dict()
+        for i in range(len(self.sizes)-1):
+            size_i = self.sizes[i]
+            for j in range(i+1, len(self.sizes)):
+                size = size_i + self.sizes[j]
+                if size in self.buckets:
+                    self.buckets[size].append((i,j))
+                else:
+                    self.buckets[size] = [(i,j)]
 
 
     def pick(self):
         if self.is_empty():
             raise Exception("No more choices")
-        return self.couples.pop(0)
+        bucket = min(self.buckets.keys())
+        couple = self.buckets[bucket].pop(0)
+        if len(self.buckets[bucket]) == 0:
+            del self.buckets[bucket]
+        return couple
 
 
     def add_clause(self, clause):
-        ex_index = len(self.db) # index in the expansion list
-        db_entry = (len(clause), ex_index)
-        # insert in self.db
-        self.db.append(db_entry)
-        self.db.sort()
-        db_ind = self.db.index(db_entry) # index in the list self.db
-        # insert in self.couples
-        new_c = [(ex_index, cl2) for (size2, cl2) in self.db if cl2 != ex_index]
-        if db_ind + 1 == len(self.db):
-            # append in the end of self.couples
-            self.couples.extend(new_c)
-        else:
-            # insert at a specific index of self.couples
-            (succ_size, succ_ex_ind) = self.db[db_ind+1]
-            # find the index of the successive in self.couples
-            found = False
-            succ_ind = 0
-            while not found and succ_ind < len(self.couples):
-                (ind1, ind2) = self.couples[succ_ind]
-                if (ind1 == succ_ex_ind):
-                    found = True
-                    succ_ind = succ_ind - 1
-                succ_ind = succ_ind + 1
-            pos = succ_ind
-            self.couples = self.couples[:pos] + new_c + self.couples[pos:]
+        i = len(self.sizes) # index in the expansion list
+        # insert in self.sizes
+        size_i = len(clause)
+        self.sizes.append(size_i)
+        # insert in self.buckets
+        for j in range(len(self.sizes)-1):
+                size = size_i + self.sizes[j]
+                if size in self.buckets:
+                    self.buckets[size].append((i,j))
+                else:
+                    self.buckets[size] = [(i,j)]
 
 
     def is_empty(self):
-        return len(self.couples) == 0
+        return len(self.buckets) == 0
