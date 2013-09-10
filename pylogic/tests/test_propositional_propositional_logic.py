@@ -345,6 +345,14 @@ class TestGeneralization(unittest.TestCase):
         self.assertEqual(0, len(g3))
 
 
+    def test_equivalent(self):
+        g1 = Generalization("and", [self.f1, self.f2])
+        g2 = Generalization("and", [self.f2, self.f1])
+        g3 = Generalization("and", [self.f1])
+        self.assertTrue(g1.equivalent(g2))
+        self.assertFalse(g1.equivalent(g3))
+
+
     def test_has_non_literal(self):
         g1 = Generalization("and", [self.f1, Formula("Z"), self.f2])
         g2 = Generalization("or", [Formula("Z"), Formula("!", Formula("Y"))])
