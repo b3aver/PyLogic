@@ -1,4 +1,5 @@
 import unittest
+import copy
 from pylogic.propositional.propositional_logic import Formula, Generalization
 from pylogic.propositional.resolution import ClausePicker
 from pylogic.propositional import resolution
@@ -93,6 +94,28 @@ class TestResolution(unittest.TestCase):
         self.assertEqual(exp_clauses, clauses)
 
 
+    def test_is_closed(self):
+        expansion1 = [Generalization("or", [self.a1, self.l1]),
+                      Generalization("or", [self.a2])]
+        expansion2 = [Generalization("or", [self.a1, self.l1]),
+                      Generalization("or", []),
+                      Generalization("or", [self.a2])]
+        self.assertFalse(resolution.is_closed(expansion1))
+        self.assertTrue(resolution.is_closed(expansion2))
+
+
+    def test_is_new(self):
+        expansion1 = [Generalization("or", [self.a1, self.l1]),
+                      Generalization("or", [self.a2])]
+        gen1 = Generalization("or", [self.l1, self.a1])
+        self.assertFalse(resolution.is_new(expansion1, gen1))
+        expansion2 = [Generalization("or", [self.a1, self.l1]),
+                      Generalization("or", []),
+                      Generalization("or", [self.a2])]
+        gen2 = Generalization("or", [self.l1])
+        self.assertTrue(resolution.is_new(expansion2, gen2))
+
+
     def test_resolution_rule(self):
         cl1 = Generalization("or", [self.a2, self.l1, self.bottom])
         cl2 = Generalization("or", [self.top, self.a1])
@@ -116,6 +139,11 @@ class TestResolution(unittest.TestCase):
         cl2 = Generalization("or", [self.a4, self.a1, self.a2])
         exp_cls = Generalization("or", [self.a2, self.a3, self.a4])
         self.assertEqual(exp_cls, resolution.apply_resolution_rule(cl1, cl2))
+        # no complementary formulas in the clauses
+        cl1 = Generalization("or", [self.a2, self.a4, self.a3])
+        cl2 = Generalization("or", [self.a4, self.a1, self.a3])
+        exp_cls = None
+        self.assertEqual(exp_cls, resolution.apply_resolution_rule(cl1, cl2))
 
 
     def test_is_tautology(self):
@@ -130,28 +158,6 @@ class TestResolution(unittest.TestCase):
         self.assertTrue(resolution.is_tautology(self.taut5))
 
 
-    def test_is_closed(self):
-        expansion1 = [Generalization("or", [self.a1, self.l1]),
-                      Generalization("or", [self.a2])]
-        expansion2 = [Generalization("or", [self.a1, self.l1]),
-                      Generalization("or", []),
-                      Generalization("or", [self.a2])]
-        self.assertFalse(resolution.is_closed(expansion1))
-        self.assertTrue(resolution.is_closed(expansion2))
-
-
-    def test_is_new(self):
-        expansion1 = [Generalization("or", [self.a1, self.l1]),
-                      Generalization("or", [self.a2])]
-        gen1 = Generalization("or", [self.l1, self.a1])
-        self.assertFalse(resolution.is_new(expansion1, gen1))
-        expansion2 = [Generalization("or", [self.a1, self.l1]),
-                      Generalization("or", []),
-                      Generalization("or", [self.a2])]
-        gen2 = Generalization("or", [self.l1])
-        self.assertTrue(resolution.is_new(expansion2, gen2))
-
-
 
 class TestClausePicker(unittest.TestCase):
     def setUp(self):
@@ -160,21 +166,66 @@ class TestClausePicker(unittest.TestCase):
         self.a3 = Formula("Z")
         self.a4 = Formula("W")
         self.l1 = Formula("!", Formula("X"))
+        self.expansion = [Generalization("or", [self.a1, self.l1, self.a3]),
+                          Generalization("or", [self.a2, self.l1]),
+                          Generalization("or", [self.l1, self.a1, self.a4]),
+                          Generalization("or", [self.a3])]
+        self.sizes = [3, 2, 3, 1]
+        self.buckets = {3: [(1, 3)],
+                        4: [(0, 3), (2, 3)],
+                        5: [(0, 1), (1, 2)],
+                        6: [(0, 2)]}
 
 
     def test_init(self):
-        expansion = [Generalization("or", [self.a1, self.a3, self.l1]),
-                     Generalization("or", [self.a2, self.l1]),
-                     Generalization("or", [self.l1, self.a4, self.a1]),
-                     Generalization("or", [self.a3])]
-        cp = ClausePicker(expansion)
-        exp_sizes = [3, 2, 3, 1]
+        cp = ClausePicker(self.expansion)
+        self.assertEqual(self.sizes, cp.sizes)
+        self.assertEqual(self.buckets, cp.buckets)
+
+
+    def test_pick(self):
+        cp = ClausePicker(self.expansion)
+        self.assertEqual((1, 3), cp.pick())
+        self.assertEqual((0, 3), cp.pick())
+        self.assertEqual((2, 3), cp.pick())
+        self.assertEqual((0, 1), cp.pick())
+        self.assertEqual((1, 2), cp.pick())
+        self.assertEqual((0, 2), cp.pick())
+        # empty buckets
+        self.assertRaises(Exception, cp.pick)
+
+
+    def test_add_clause(self):
+        cp = ClausePicker(self.expansion)
+        gen = Generalization("or", [self.a1, self.a2, self.a3, self.a4])
+        cp.add_clause(gen)
+        exp_sizes = list(self.sizes)
+        exp_sizes.append(len(gen))
         self.assertEqual(exp_sizes, cp.sizes)
-        exp_buckets = {3: [(1, 3)],
-                       4: [(0, 3), (2, 3)],
-                       5: [(0, 1), (1, 2)],
-                       6: [(0, 2)]}
+        exp_buckets = copy.deepcopy(self.buckets)
+        new_index = 4
+        exp_buckets[7] = [(new_index, 0)]
+        exp_buckets[6].append((new_index, 1))
+        exp_buckets[7].append((new_index, 2))
+        exp_buckets[5].append((new_index, 3))
         self.assertEqual(exp_buckets, cp.buckets)
+
+
+    def test_is_empty(self):
+        cp = ClausePicker(self.expansion)
+        self.assertFalse(cp.is_empty())
+        cp.pick()
+        self.assertFalse(cp.is_empty())
+        cp.pick()
+        self.assertFalse(cp.is_empty())
+        cp.pick()
+        self.assertFalse(cp.is_empty())
+        cp.pick()
+        self.assertFalse(cp.is_empty())
+        cp.pick()
+        self.assertFalse(cp.is_empty())
+        cp.pick()
+        self.assertTrue(cp.is_empty())
 
 
 

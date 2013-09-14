@@ -94,7 +94,21 @@ def resolution_rule(clause1, clause2, formula):
 
 
 def apply_resolution_rule(clause1, clause2):
-    """Apply the resolution rule to the given clauses"""
+    """Apply the resolution rule to the given clauses.
+
+    After that apply the preliminary steps on the resulting clause.
+    It assumes that in clause1 and clause2 are already applied
+    the preliminary steps, that is in them there aren't tops or bottoms;
+    so here are not applied manage_tops or manage_bottoms.
+
+    Moreover the resolution rule is applied only on the first formula
+    of which is found the complementary in the other clause.
+    This because if the resolution rule could be applied, for instance,
+    two times it means that in them there are two distinct couples
+    of complementary formulas, this means that after every application
+    of the resolution rule in the resulting clauses there will be
+    a couple of complementary fomulas and so with the preliminary steps
+    the clauses will be removed."""
     for f in range(len(clause1)):
         formula = clause1.list[f]
         # check if exists a complement of formula
@@ -143,7 +157,8 @@ def is_tautology(formula):
 class ClausePicker():
     def __init__(self, expansion):
         self.sizes = [len(clause) for clause in expansion]
-        # dict containing the couples of clauses (their indexes)
+        # dict containing the couples of clauses
+        # (precisely their indexes in the original expansion list)
         # it is indexed with the sum of the two clauses' sizes
         self.buckets = dict()
         for i in range(len(self.sizes)-1):
