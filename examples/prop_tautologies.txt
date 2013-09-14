@@ -1,0 +1,46 @@
+%% Tautologies from:
+%%   Melvin Fitting. "First-Order Logic and Automated Theorem Proving".
+
+%% from Tableaux exercises
+((P -> Q) & (Q -> R)) -> -(-R & P)
+(-P -> Q) -> ((P -> Q) -> Q)
+((P -> Q) -> P) -> P
+-(-(P & P) & P)
+--(-(P | Q) | (P | Q))
+-(-P | -Q) <- --(P & Q)
+((((A -> B) -> (-C -> -D)) -> C) -> E) -> ((E -> A) -> (D -> A))
+-(-(P & -(Q & R)) & -(-(P & -(R & P)) & -(-(S & Q) & -(-(P & S) & -(P & S)))))
+-(-(P & -(Q & R)) & -(-(-(S & R) & -(-(P & S) & -(P & S))) & -(P & -(P & Q))))
+
+%% from Resolution example
+((P & Q) | (R -> S)) -> ((P | (R -> S)) & (Q | (R -> S)))
+
+%% Hilbert System Axioms
+X -> (Y -> X)
+(X -> (Y -> Z)) -> ((X -> Y) -> (X -> Z))
+F -> X
+X -> T
+--X -> X
+X -> (-X -> Y)
+% axiom scheme 7 application
+(A & B) -> A
+% axiom scheme 8 application
+(A & B) -> B
+% axiom scheme 9 application
+(A -> X) -> ((B -> X) -> ((A | B) -> X))
+
+%% from Natural Deduction exercises
+% X -> (Y -> X)
+(X -> (Y -> Z)) -> ((X -> Y) -> (X -> Z))
+(-Y -> -X) -> ((-Y -> X) -> Y)
+% ((X -> Y) -> X) -> X
+(X & (Y | Z)) -> ((X & Y) | (X & Z))
+(X -> Y) -> (-(Y | Z) -> -(X | Z))
+-(-(P & P) & P)
+--(-(P | Q) | (P | Q))
+-(-P | -Q) <- --(P & Q)
+
+%% from Davis-Putnam exercises
+((P -> Q) -> (P -> R)) -> (P -> (Q -> R))
+(P & Q) <-> -(-P | -Q)
+(P -> Q) | (Q -> R)

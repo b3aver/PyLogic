@@ -147,15 +147,17 @@ class TestResolution(unittest.TestCase):
 
 
     def test_is_tautology(self):
-        self.assertFalse(resolution.is_tautology(self.a1))
-        self.assertFalse(resolution.is_tautology(self.l1))
-        self.assertFalse(resolution.is_tautology(self.fand1))
-        self.assertFalse(resolution.is_tautology(self.for1))
-        self.assertTrue(resolution.is_tautology(self.taut1))
-        self.assertTrue(resolution.is_tautology(self.taut2))
-        self.assertTrue(resolution.is_tautology(self.taut3))
-        self.assertTrue(resolution.is_tautology(self.taut4))
-        self.assertTrue(resolution.is_tautology(self.taut5))
+        def test(filename, truth):
+            f = open(filename, "r")
+            for formula_s in f:
+                if len(formula_s) > 0 and formula_s[0] not in ["%", "\n"]:
+                    formula = parser.parse(formula_s)
+                    self.assertEqual(truth, resolution.is_tautology(formula))
+
+        tautologies_fn = "examples/prop_tautologies.txt"
+        test(tautologies_fn, True)
+        satisfiables_fn = "examples/prop_satisfiables.txt"
+        test(satisfiables_fn, False)
 
 
 
