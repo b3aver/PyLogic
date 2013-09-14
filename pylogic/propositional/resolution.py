@@ -8,6 +8,7 @@ def preliminary_steps(clauses):
     manage_complementary(clauses)
     manage_bottoms(clauses)
     manage_copies(clauses)
+    manage_duplicated_clauses(clauses)
 
 def manage_tops(clauses):
     """Remove the clauses containg the top."""
@@ -59,6 +60,25 @@ def manage_copies(clauses):
                 else:
                     f2 = f2+1
             f = f+1
+
+def manage_duplicated_clauses(clauses):
+    """Remove duplicated clauses, independently of the order of the formulas."""
+    # old_clauses = copy.deepcopy(clauses)
+    # clauses = list()
+    # for clause in old_clauses:
+    #     if is_new(clauses, clause):
+    #         clauses.append(clause)
+    removable = []
+    for i in range(len(clauses)):
+        if i not in removable:
+            clause = clauses[i]
+            for j in range(i + 1, len(clauses)):
+                if j not in removable:
+                    clause2 = clauses[j]
+                    if clause.equivalent(clause2):
+                        removable.append(j)
+    for i in reversed(removable):
+        clauses.pop(i)
 
 
 def is_closed(expansion):

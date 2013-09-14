@@ -29,11 +29,11 @@ class TestResolution(unittest.TestCase):
         clauses = [Generalization("or", [self.top, self.a1, self.a2]),
                    Generalization("or", [self.a2, self.a1, self.l1]),
                    Generalization("or", [self.a1, self.a2, self.bottom]),
-                   Generalization("or", [self.a1, self.a2, self.a1]),
-                   Generalization("or", [self.a1, self.a2])]
+                   Generalization("or", [self.a1, self.a3, self.a1]),
+                   Generalization("or", [self.a1, self.a4])]
         exp_clauses = [Generalization("or", [self.a1, self.a2]),
-                       Generalization("or", [self.a1, self.a2]),
-                       Generalization("or", [self.a1, self.a2])]
+                       Generalization("or", [self.a1, self.a3]),
+                       Generalization("or", [self.a1, self.a4])]
         resolution.preliminary_steps(clauses)
         self.assertEqual(exp_clauses, clauses)
 
@@ -90,7 +90,17 @@ class TestResolution(unittest.TestCase):
                        Generalization("or", [self.a2, self.a1]),
                        Generalization("or", [self.a1, self.a2])]
         resolution.manage_copies(clauses)
+        self.assertEqual(exp_clauses, clauses)
 
+
+    def test_manage_duplicated_clauses(self):
+        clauses = [Generalization("or", [self.a1, self.a2]),
+                   Generalization("or", [self.a2, self.l1, self.a1]),
+                   Generalization("or", [self.a2, self.a1]),
+                   Generalization("or", [self.a1, self.a2, self.l1])]
+        exp_clauses = [Generalization("or", [self.a1, self.a2]),
+                       Generalization("or", [self.a2, self.l1, self.a1])]
+        resolution.manage_duplicated_clauses(clauses)
         self.assertEqual(exp_clauses, clauses)
 
 
