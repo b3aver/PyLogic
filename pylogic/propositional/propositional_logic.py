@@ -36,6 +36,7 @@ class Formula():
             connective = None
             subformula1 = letter
             subformula2 = None
+            depth = 0
         elif len(args) == 2:
             if args[0] != "not" and args[0] != logic.CONN["not"]:
                 raise Exception("Wrong connective: " + args[0])
@@ -44,6 +45,7 @@ class Formula():
             connective = "not"
             subformula1 = args[1]
             subformula2 = None
+            depth = subformula1.depth + 1
         else:
             if args[0] in list(set(logic.CONN.values()) - set("!")):
                 connective = [ item[0]
@@ -61,10 +63,13 @@ class Formula():
                 raise Exception("Wrong formula: " + args[2])
             subformula1 = args[1]
             subformula2 = args[2]
+            depth = max(subformula1.depth, subformula2.depth)
+            depth = depth + 1
 
         self.connective = connective
         self.subformula1 = subformula1
         self.subformula2 = subformula2
+        self.depth = depth
 
 
     def __str__(self):
@@ -83,6 +88,8 @@ class Formula():
             return False
         if self.connective == None and other.connective == None:
             return self.subformula1 == other.subformula1
+        if self.depth != other.depth:
+            return False
         else:
             return self.connective == other.connective \
                 and self.subformula1 == other.subformula1 \
