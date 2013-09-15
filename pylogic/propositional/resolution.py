@@ -100,11 +100,15 @@ def is_new(expansion, clause):
 
 def resolution_rule(clause1, clause2, formula):
     """Apply the resolution rule to the given clauses and formula."""
-    new_clause = copy.deepcopy(clause1)
-    other = copy.deepcopy(clause2)
-    new_clause.remove_every(formula)
-    other.remove_every(formula.complement())
-    new_clause.list.extend(other.list)
+    new_clause = Generalization("or", [])
+    for f1 in clause1.list:
+        if f1 != formula:
+            new_clause.list.append(f1)
+
+    formula_compl = formula.complement()
+    for f2 in clause2.list:
+        if f2 != formula_compl:
+            new_clause.list.append(f2)
     return new_clause
 
 
