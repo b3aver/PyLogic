@@ -63,11 +63,6 @@ def manage_copies(clauses):
 
 def manage_duplicated_clauses(clauses):
     """Remove duplicated clauses, independently of the order of the formulas."""
-    # old_clauses = copy.deepcopy(clauses)
-    # clauses = list()
-    # for clause in old_clauses:
-    #     if is_new(clauses, clause):
-    #         clauses.append(clause)
     removable = []
     for i in range(len(clauses)):
         if i not in removable:
