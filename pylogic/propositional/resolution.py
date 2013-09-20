@@ -9,6 +9,7 @@ def preliminary_steps(clauses):
     manage_bottoms(clauses)
     manage_copies(clauses)
     manage_duplicated_clauses(clauses)
+    manage_subsumption_rule(clauses)
 
 def manage_tops(clauses):
     """Remove the clauses containg the top."""
@@ -74,6 +75,25 @@ def manage_duplicated_clauses(clauses):
                         removable.append(j)
     for i in reversed(removable):
         clauses.pop(i)
+
+def manage_subsumption_rule(clauses):
+    """Remove the clauses subsumed by another clause"""
+    i = 0
+    while i < len(clauses) - 1:
+        cl1 = clauses[i]
+        j = i + 1
+        deleted = False
+        while j < len(clauses) and not deleted:
+            cl2 = clauses[j]
+            if cl1.subsume(cl2):
+                del clauses[j]
+            elif cl2.subsume(cl1):
+                del clauses[i]
+                deleted = True
+            else:
+                j = j + 1
+        if not deleted:
+            i = i + 1
 
 
 def is_closed(expansion):

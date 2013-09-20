@@ -304,6 +304,22 @@ class Generalization():
         return not other_list
 
 
+    def subsume(self, other):
+        """Check if the current generalization subsumes the 'other'
+        generalization"""
+        if self.connective != other.connective:
+            return False
+        if len(self.list) > len(other.list):
+            return False
+        other_list = list(other.list)
+        try:
+            for formula in self.list:
+                other_list.remove(formula)
+        except ValueError:
+            return False
+        return True
+
+
     def has_non_literal(self):
         """Check if in the list of formulas there are non-literal formulas."""
         if len(self.list) == 0:

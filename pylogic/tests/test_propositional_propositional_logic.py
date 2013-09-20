@@ -277,6 +277,10 @@ class TestFormula(unittest.TestCase):
 
 class TestGeneralization(unittest.TestCase):
     def setUp(self):
+        self.a1 = Formula("X")
+        self.a2 = Formula("Y")
+        self.a3 = Formula("Z")
+        self.a4 = Formula("W")
         self.f1 = Formula("&", Formula("X"), Formula("Y"))
         self.f2 = Formula("|", Formula("X"), Formula("Y"))
 
@@ -353,6 +357,15 @@ class TestGeneralization(unittest.TestCase):
         self.assertTrue(g1.equivalent(g2))
         self.assertFalse(g1.equivalent(g3))
         self.assertFalse(g1.equivalent(g4))
+
+
+    def test_subsume(self):
+        g1 = Generalization("or", [self.a1, self.a2])
+        g2 = Generalization("or", [self.a2, self.a1, self.a3])
+        g3 = Generalization("or", [self.a2, self.a1, self.a3, self.a4])
+        self.assertTrue(g1.subsume(g2))
+        self.assertTrue(g1.subsume(g3))
+        self.assertFalse(g3.subsume(g1))
 
 
     def test_has_non_literal(self):

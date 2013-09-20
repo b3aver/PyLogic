@@ -104,6 +104,18 @@ class TestResolution(unittest.TestCase):
         self.assertEqual(exp_clauses, clauses)
 
 
+    def test_manage_subsumption_rule(self):
+        clauses = [Generalization("or", [self.a1, self.a2]),
+                   Generalization("or", [self.a2, self.l1, self.a1]),
+                   Generalization("or", [self.a2, self.a1, self.a3]),
+                   Generalization("or", [self.a2, self.a3, self.a4]),
+                   Generalization("or", [self.a2, self.a3])]
+        exp_clauses = [Generalization("or", [self.a1, self.a2]),
+                       Generalization("or", [self.a2, self.a3])]
+        resolution.manage_subsumption_rule(clauses)
+        self.assertEqual(exp_clauses, clauses)
+
+
     def test_is_closed(self):
         expansion1 = [Generalization("or", [self.a1, self.l1]),
                       Generalization("or", [self.a2])]
